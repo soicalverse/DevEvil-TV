@@ -69,10 +69,6 @@ const Movies = () => {
 
   return (
     <section className="movies" id='movies'>
-      <div className="filter-bar">
-      <p style={{textAlign:'center', textTransform:'uppercase', width:'100%'}}>NOTE: DevEvil TV DOES NOT HOST ANY VIDEOS, ONLY PROVIDES EMBEDDED LINKS TO OTHER HOSTED CONTENT <br /><br /> Please disable AD blocker <br/>We dont show ads while you watch movies/series</p>
-        </div>
-
 
     <div className="filter-bar">
       <h1>Movies <i className="fa-solid fa-camera-movie"></i></h1>

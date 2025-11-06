@@ -145,31 +145,6 @@ const MovieDetails = () => {
         </div>
       )}
 
-<div id="frame" style={{ width: "350px" }}>
-  <iframe
-    data-aa="2336504"
-    src="//acceptable.a-ads.com/2336504"
-    style={{
-      border: "0px",
-      padding: "0",
-      width: "350px",
-      height: "100%",
-      overflow: "hidden",
-      backgroundColor: "transparent"
-    }}
-  ></iframe>
-  <a
-    style={{
-      display: "block",
-      textAlign: "right",
-      fontSize: "12px"
-    }}
-    id="frame-link"
-    href="https://a-ads.com/?partner=2336504"
-  >
-    Advertise here
-  </a>
-</div>
 
 
           {/* Add your existing Play button logic here */}

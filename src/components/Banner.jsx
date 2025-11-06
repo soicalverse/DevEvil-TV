@@ -90,7 +90,6 @@ const Banner = () => {
             <span>
               Watch Now <i className="fa-solid fa-play banneri"></i>
             </span>
-            <p>Instantly stream the movie online.</p>
           </Link>
 
           <p className="line"></p>
@@ -99,7 +98,6 @@ const Banner = () => {
             <span>
               Movie Insights <i className="fa-solid fa-stars banneri"></i>
             </span>
-            <p>Explore in-depth information about the film</p>
           </Link>
         </div>
       </div>

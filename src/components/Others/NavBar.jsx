@@ -34,7 +34,6 @@ const Navbar = () => {
       </div>
       <div className="right-side">
       <a href="search"><i className='fas fa-magnifying-glass search-icon'></i></a>
-      <a className='signupbtn' href="https://devevil.com/users/signup" target='_blank noreferrer noopener'>Signup For DevEvil Universe</a>
         
       </div>
 

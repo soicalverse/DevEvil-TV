@@ -1,7 +1,6 @@
 <div align="center" dir="auto">
-<h1 align="center">DevEvil TV</h1>
-<p align="center">DevEvil TV is a free and open-source movie and tv show streaming site. DevEvil TV offers users the chance to watch their favorite movies and series completely free of charge, without any annoying ads or the need to create an account.</p>
-<a align="center" href="https://discord.gg/jsQ9UP7kCA" rel="nofollow"><img align="center" src="https://img.shields.io/discord/763094597454397490?color=5865F2&labelColor=white&label=Support%20Server&logo=Discord" style="max-width: 100%;"></a>
+<h1 align="center">Movie Streaming Website</h1>
+<p align="center">This is a free and open-source movie and tv show streaming site. It offers users the chance to watch their favorite movies and series completely free of charge, without any annoying ads or the need to create an account.</p>
 </div>
 <br>
 
@@ -18,10 +17,9 @@
 6. [Customizing Styles and Pages](#-customizing-styles-and-pages)  
 7. [Enabling Adult & NSFW Content](#-enabling-adult--nsfw-content)
 8. [Run & Build](#-run--build)  
-9. [Publishing](#-publishing)  
-10. [Contributing Your Website](#-contributing-your-website)  
-11. [Support & Donations](#-support--donations)  
-12. [License](#-license)
+9. [Publishing](#-publishing)    
+10. [Support](#-support)  
+11. [License](#-license)
 
 ---
 
@@ -61,8 +59,8 @@ Once you have your key, you’ll use it in the configuration step.
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/DevEvil99/DevEvil-TV.git
-   cd DevEvil-TV
+   git clone <repository-url>
+   cd <repository-directory>
    ```
 
 2. **Install dependencies:**
@@ -98,8 +96,6 @@ To update colors and themes:
    ```bash
    src/components/Others/SideButtons.jsx
    ```
-
-> ⚠️ Please don’t remove or modify core functionality — you're free to customize layout, styles, and content, but try to preserve the app’s essential logic.
 
 ---
 
@@ -150,33 +146,14 @@ That's it — your site is live!
 
 ---
 
-## 🌟 Contributing Your Website
-
-Built something cool with DevEvil TV? Share it!
-
-1. Go to the [Issues](https://github.com/DevEvil99/DevEvil-TV/issues) tab.
-2. Click **"New Issue"**.
-3. Select the **"Submit Site"** template.
-4. Provide your site's name and link.
-
-Your site may be featured in this README under a "Showcase" section!
-
----
-
-## 💖 Support & Donations
+## 💖 Support
 
 If you like this project, consider supporting it!
-
-- 🌐 Donate in crypto: [https://devevil.com/#donate](https://devevil.com/#donate)  
-- 📢 Or support by sharing and using the code in your own projects.
-
-Every bit helps me keep building!
 
 ---
 
 ## 📜 License
 
-This project is licensed under the **MIT License** — feel free to use, modify, and share it.  
-Just don’t remove the core functionality credits.
+This project is licensed under the **MIT License** — feel free to use, modify, and share it.
 
 ---

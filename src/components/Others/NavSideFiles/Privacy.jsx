@@ -13,7 +13,7 @@ const Privacy = () => {
   textAlign: 'center'
 
 }} className="privacy">
-						<p>DevEvil TV (&rsquo;we,&rsquo; &rsquo;us,&rsquo; &rsquo;DevEvil,&rsquo; or &rsquo;our&rsquo;) takes the privacy of our users seriously. This privacy
+						<p>We (&rsquo;we,&rsquo; &rsquo;us,&rsquo; or &rsquo;our&rsquo;) take the privacy of our users seriously. This privacy
 							policy explains how we collect, use, and disclose information about our users.</p>
 						<br />
 						<h1>Information We Collect</h1>

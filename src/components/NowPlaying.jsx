@@ -22,31 +22,6 @@ fetchTrendingMovies();
 
 	return (
 		<section className="live" id="nowplaying">
-      <div id="frame" style={{ width: "100%" }}>
-  <iframe
-    data-aa="2336504"
-    src="//acceptable.a-ads.com/2336504"
-    style={{
-      border: "0px",
-      padding: "0",
-      width: "100%",
-      height: "100%",
-      overflow: "hidden",
-      backgroundColor: "transparent"
-    }}
-  ></iframe>
-  <a
-    style={{
-      display: "block",
-      textAlign: "right",
-      fontSize: "12px"
-    }}
-    id="frame-link"
-    href="https://a-ads.com/?partner=2336504"
-  >
-    Advertise here
-  </a>
-</div>
 
     <div className="filter-bar">
       <h1>Now Playing Movies <i className="fa-solid fa-circle-small fa-beat-fade" style={{color:'#ca1212'}}></i></h1>
