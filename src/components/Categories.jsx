@@ -1,39 +1,44 @@
 import React, { useState, useEffect } from 'react';
 import { getMoviesByGenre, getGenres, getTvGenres, getTvByGenre } from '../services/tmdbService';
-import { Link } from "react-router-dom";
+import Carousel from './Carousel';
+import GenreFilter from './GenreFilter';
+import '../styles/Movies.css';
 
 const Categories = () => {
   const [moviesByCategory, setMoviesByCategory] = useState([]);
   const [tvByCategory, setTvByCategory] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState('28');
-  const [selectedTvCategory, setSelectedTvCategory] = useState('10759');
-  const [genres, setGenres] = useState([]);
-  const [genrestv, setTvGenres] = useState([]);
+  const [selectedMovieGenre, setSelectedMovieGenre] = useState('28');
+  const [selectedTvGenre, setSelectedTvGenre] = useState('10759');
+  const [movieGenres, setMovieGenres] = useState([]);
+  const [tvGenres, setTvGenres] = useState([]);
   const [currentPageMovies, setCurrentPageMovies] = useState(1);
   const [currentPageTv, setCurrentPageTv] = useState(1);
+  const [showSeeMoreMovies, setShowSeeMoreMovies] = useState(false);
+  const [showSeeMoreTv, setShowSeeMoreTv] = useState(false);
 
   useEffect(() => {
-    const fetchGenresAndMovies = async () => {
+    const fetchGenres = async () => {
       try {
-        const fetchedGenres = await getGenres();
-        setGenres(fetchedGenres);
+        const fetchedMovieGenres = await getGenres();
+        setMovieGenres(fetchedMovieGenres);
 
-        const fetchedGenres2 = await getTvGenres();
-        setTvGenres(fetchedGenres2);
+        const fetchedTvGenres = await getTvGenres();
+        setTvGenres(fetchedTvGenres);
       } catch (error) {
         // Handle error
       }
     };
 
-    fetchGenresAndMovies();
+    fetchGenres();
   }, []);
 
   useEffect(() => {
     const fetchMoviesByCategory = async () => {
-      if (selectedCategory) {
+      if (selectedMovieGenre) {
         try {
-          const movies = await getMoviesByGenre(selectedCategory, currentPageMovies);
-          setMoviesByCategory(movies);
+          const movies = await getMoviesByGenre(selectedMovieGenre, currentPageMovies);
+          setMoviesByCategory(prev => currentPageMovies === 1 ? movies : [...prev, ...movies]);
+          setShowSeeMoreMovies(movies.length > 0);
         } catch (error) {
           // Handle error
         }
@@ -43,166 +48,60 @@ const Categories = () => {
     };
 
     fetchMoviesByCategory();
-  }, [selectedCategory, currentPageMovies]);
+  }, [selectedMovieGenre, currentPageMovies]);
 
   useEffect(() => {
     const fetchTvByCategory = async () => {
-      if (selectedTvCategory) {
+      if (selectedTvGenre) {
         try {
-          const tv = await getTvByGenre(selectedTvCategory, currentPageTv);
-          setTvByCategory(tv);
+          const tv = await getTvByGenre(selectedTvGenre, currentPageTv);
+          setTvByCategory(prev => currentPageTv === 1 ? tv : [...prev, ...tv]);
+          setShowSeeMoreTv(tv.length > 0);
         } catch (error) {
           // Handle error
         }
       } else {
-
         setTvByCategory([]);
       }
     };
 
     fetchTvByCategory();
-  }, [selectedTvCategory, currentPageTv]);
+  }, [selectedTvGenre, currentPageTv]);
 
-  const handleCategoryChange = (category) => {
-    setSelectedCategory(category);
+  const handleMovieGenreChange = (genre) => {
+    setSelectedMovieGenre(genre);
     setCurrentPageMovies(1);
   };
 
-  const handleTvCategoryChange = (categorytv) => {
-    setSelectedTvCategory(categorytv);
+  const handleTvGenreChange = (genre) => {
+    setSelectedTvGenre(genre);
     setCurrentPageTv(1);
   };
 
-  const limitmovie = moviesByCategory.slice(0, 20);
-  const limittv = tvByCategory.slice(0, 20);
-
-  const handlePageChangeMovies = (direction) => {
-    setCurrentPageMovies((prevPage) => (direction === 'next' ? prevPage + 1 : Math.max(prevPage - 1, 1)));
+  const handleSeeMoreMovies = () => {
+    setCurrentPageMovies(prev => prev + 1);
   };
-  
-  const handlePageChangeTv = (direction) => {
-    setCurrentPageTv((prevPage) => (direction === 'next' ? prevPage + 1 : Math.max(prevPage - 1, 1)));
+
+  const handleSeeMoreTv = () => {
+    setCurrentPageTv(prev => prev + 1);
   };
 
   return (
     <div>
-      <section className="movies" id='categories'>
-
-        <div className="filter-bar">
-          <h1>Movie Categories <i className="fa-solid fa-popcorn"></i></h1>
-          <div className="filter-dropdown">
-            <select
-              id="category"
-              className='genre'
-              name='genre'
-              value={selectedCategory}
-              onChange={(e) => handleCategoryChange(e.target.value)}
-            >
-              <option value="" disabled>Select a category</option>
-              {genres.map((genre) => (
-                <option key={genre.id} value={genre.id}>
-                  {genre.name}
-                </option>
-              ))}
-            </select>
-          </div>
+      <section className="movies-section" id='categories'>
+        <div className="section-header">
+          <h2>Movie Categories</h2>
+          <GenreFilter genres={movieGenres} selectedGenre={selectedMovieGenre} onGenreChange={handleMovieGenreChange} title="Select Movie Genre" />
         </div>
-
-        <div className="movies-grid">
-          {limitmovie.map((movie) => (
-            <Link to={`/movie/${movie.id}`} key={movie.id}>
-              <div className="movie-card">
-                <div className="card-head">
-                  <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title} className="card-img" />
-                  <div className="card-overlay">
-                    <div className="rating">
-                      <i className="star-outline fa-solid fa-sparkles"></i>
-                      <span>{Math.round(movie.vote_average * 10)}%</span>
-                    </div>
-                    <div className="play">
-                      <i className="play-circle-outline fa-solid fa-circle-play"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-
-        <p className='page' style={{ textAlign: 'center' }}>
-        <i
-          className="fa-solid fa-left"
-          onClick={() => handlePageChangeMovies('prev')}
-        ></i>
-                <span 
-         className={`pagination-number ${currentPageMovies ? 'current-page' : ''}`}
-        style={{ marginRight: '10px' }}>
-          {currentPageMovies}
-          </span>
-        <span onClick={() => handlePageChangeMovies('next')}>{currentPageMovies + 1}</span>
-        <i
-          className="fa-solid fa-right"
-          onClick={() => handlePageChangeMovies('next')}
-        ></i>
-      </p>
+        <Carousel items={moviesByCategory} type="movie" handleSeeMore={handleSeeMoreMovies} showSeeMore={showSeeMoreMovies} />
       </section>
 
-      <section className="movies">
-        <div className="filter-bar">
-          <h1>TV Show Categories <i className="fa-solid fa-popcorn"></i></h1>
-          <div className="filter-dropdown">
-            <select
-              id="categorytv"
-              className='genre'
-              name='genre'
-              value={selectedTvCategory}
-              onChange={(e) => handleTvCategoryChange(e.target.value)}
-            >
-              <option value="" disabled>Select a category</option>
-              {genrestv.map((genre) => (
-                <option key={genre.id} value={genre.id}>
-                  {genre.name}
-                </option>
-              ))}
-            </select>
-          </div>
+      <section className="movies-section">
+        <div className="section-header">
+          <h2>TV Show Categories</h2>
+          <GenreFilter genres={tvGenres} selectedGenre={selectedTvGenre} onGenreChange={handleTvGenreChange} title="Select TV Show Genre" />
         </div>
-        <div className="movies-grid">
-          {limittv.map((tv) => (
-            <Link to={`/tv/${tv.id}`} key={tv.id}>
-              <div className="movie-card">
-                <div className="card-head">
-                  <img src={`https://image.tmdb.org/t/p/w500/${tv.poster_path}`} alt={tv.title} className="card-img" />
-                  <div className="card-overlay">
-                    <div className="rating">
-                      <i className="star-outline fa-solid fa-sparkles"></i>
-                      <span>{Math.round(tv.vote_average * 10)}%</span>
-                    </div>
-                    <div className="play">
-                      <i className="play-circle-outline fa-solid fa-circle-play"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-         <p className='page' style={{ textAlign: 'center' }}>
-        <i
-          className="fa-solid fa-left"
-          onClick={() => handlePageChangeTv('prev')}
-        ></i>
-                <span 
-         className={`pagination-number ${currentPageTv ? 'current-page' : ''}`}
-        style={{ marginRight: '10px' }}>
-          {currentPageTv}
-          </span>
-        <span onClick={() => handlePageChangeTv('next')}>{currentPageTv + 1}</span>
-        <i
-          className="fa-solid fa-right"
-          onClick={() => handlePageChangeTv('next')}
-        ></i>
-      </p>
+        <Carousel items={tvByCategory} type="tv" handleSeeMore={handleSeeMoreTv} showSeeMore={showSeeMoreTv} />
       </section>
     </div>
   );

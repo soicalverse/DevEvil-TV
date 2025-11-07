@@ -409,25 +409,14 @@ export const getAnimeTv = async (page = 1) => {
   }
 }
 
-
-export const getTrendingMovieTrailers = async () => {
+export const getPopularPerformers = async (page = 1) => {
   try {
-    const trendingMovies = await getNowPlayingMovies();
-
-    const trailerPromises = trendingMovies.map(async (movie) => {
-      const trailerKey = await getMovieTrailer(movie.id);
-      return {
-        id: movie.id,
-        title: movie.title,
-        trailerKey: trailerKey,
-      };
-    });
-
-    const movieTrailers = await Promise.all(trailerPromises);
-
-    return movieTrailers;
+    const response = await tmdbService.get(
+      `/person/popular?api_key=${TMDB_API_KEY}&page=${page}`
+    );
+    return response.data.results;
   } catch (error) {
-    console.error('Error fetching trending movie trailers:', error);
+    console.error('Error fetching popular performers:', error);
     throw error;
   }
 };

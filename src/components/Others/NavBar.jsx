@@ -23,7 +23,6 @@ const Navbar = () => {
             <>
               <a href="/#movies" className="navbar-link">Movies</a>
               <a href="/#tvshows" className="navbar-link">TV Shows</a>
-              <a href="/#categories" className="navbar-link">Categories</a>
               <div className="dropdown">
                 <button className="dropbtn">Others <i className='fas fa-sort-down'></i></button>
                 <div className="dropdown-content">
@@ -59,7 +58,6 @@ const Navbar = () => {
             <>
               <a href="/#movies" className="navbar-link">Movies</a>
               <a href="/#tvshows" className="navbar-link">TV Shows</a>
-              <a href="/#categories" className="navbar-link">Categories</a>
               <a href="#anime" className="navbar-link">Anime</a>
               <a href="#nowplaying" className="navbar-link">Now Playing</a>
               <a href="#trailers" className="navbar-link">Trailers</a>

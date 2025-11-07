@@ -1,55 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { getNowPlayingMovies } from '../services/tmdbService';
-import { Link } from "react-router-dom";
-import '../styles/NowPlaying.css'
+import Carousel from './Carousel';
+import '../styles/Movies.css';
 
 const NowPlaying = () => {
-	const [trendingMovies, setTrendingMovies] = useState([]);
+  const [movies, setMovies] = useState([]);
+  const [page, setPage] = useState(1);
+  const [showSeeMore, setShowSeeMore] = useState(false);
 
-	useEffect(() => {
-const fetchTrendingMovies = async () => {
-		try {
- const movies = await getNowPlayingMovies();
-  setTrendingMovies(movies.slice(0, 20));
-		} catch (error) {
- // Handle error
-  console.error('Error fetching trending movies:', error);
-		}
- };
-  
-fetchTrendingMovies();
-	}, []);
+  useEffect(() => {
+    const fetchNowPlayingMovies = async () => {
+      const response = await getNowPlayingMovies(page);
+      setMovies(prev => page === 1 ? response : [...prev, ...response]);
+      setShowSeeMore(response.length > 0);
+    };
+    fetchNowPlayingMovies();
+  }, [page]);
 
-	return (
-		<section className="live" id="nowplaying">
-
-    <div className="filter-bar">
-      <h1>Now Playing Movies <i className="fa-solid fa-circle-small fa-beat-fade" style={{color:'#ca1212'}}></i></h1>
-        </div>
-  <div className="live-grid">
-  {trendingMovies.map((movie) => (
-	<Link to={`/movie/${movie.id}`} key={movie.id}>
-    <div className="live-card">
-      <div className="category-card">
-        <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title} className="card-img" />
-		<h3 className="name">{movie.title}</h3>
-
-    <div className="card-overlay">
-                  <div className="play">
-                  <i style={{fontSize:"50px"}} className="play-circle-outline fa-solid fa-circle-play"></i>
-                  </div>
-                </div>
-      </div>
-
-    </div>
-	</Link>
- ))}
-  </div>
-
-</section>
-
-
-	);
+  const handleSeeMore = () => {
+    setPage(prev => prev + 1);
   };
+
+  return (
+    <div className="movies-section">
+      <div className="section-header">
+          <h2>Now Playing Movies</h2>
+      </div>
+      <Carousel items={movies} type="movie" handleSeeMore={handleSeeMore} showSeeMore={showSeeMore} />
+    </div>
+  );
+};
 
 export default NowPlaying;

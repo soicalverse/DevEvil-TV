@@ -15,24 +15,23 @@ import Terms from './components/Others/NavSideFiles/Terms';
 import DMCA from './components/Others/NavSideFiles/DMCA';
 import About from './components/Others/NavSideFiles/About';
 import Categories from './components/Categories';
-import TopActorsActresses from './components/TopActorsActresses';
 import NowPlaying from './components/NowPlaying';
 import Footer from './components/Others/Footer';
 import Anime from './components/Anime';
 import AnimeTv from './components/AnimeTv';
-import MovieTrailers from './components/MovieTrailers';
 import SideBtn from './components/Others/SideButtons';
 import reportWebVitals from './reportWebVitals';
 import './styles/root.css';
 import './styles/Carousel.css';
 import './styles/Movies.css';
+import PopularPerformers from './components/PopularPerformers';
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Router>
       <Routes>
-        <Route path="/" element={<React.Fragment><NavBar /><Banner /><SideBtn /><Movies /><TvShows /><Categories /><Anime /><AnimeTv /><NowPlaying /><MovieTrailers /><TopActorsActresses /><Footer /></React.Fragment>} />
+        <Route path="/" element={<React.Fragment><NavBar /><Banner /><SideBtn /><Movies /><TvShows /><Categories /><Anime /><AnimeTv /><NowPlaying /><PopularPerformers /><Footer /></React.Fragment>} />
         <Route path="/movie/:id" element={<React.Fragment><NavBar /><MovieDetail /><SideBtn /></React.Fragment>} />
         <Route path="/tv/:id" element={<React.Fragment><NavBar /><TvShowDetails /><SideBtn /></React.Fragment>} />
         <Route path="/player/:id" element={<Player/>} />
