@@ -24,7 +24,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: var(--main);
+  background: var(--bg2);
   padding: 20px 30px;
   border-radius: 20px;
   margin-bottom: 30px;
@@ -123,7 +123,8 @@ input ~ .checked-radio-bg {
 
 .movie-card .card-head {
   position: relative;
-  height: 250px;
+  height: 0;
+  padding-bottom: 150%;
   border-radius: 15px;
   margin-bottom: 15px;
   overflow: hidden;

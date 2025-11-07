@@ -1,0 +1,28 @@
+
+.movies-section {
+    padding-top: 16px; /* Adjust this value to create the desired space below the banner */
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.section-header h2 {
+   display: none;
+}
+
+.movie-type-buttons button {
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: 1rem;
+}
+
+.movie-type-buttons button.active {
+    font-weight: bold;
+    color: #8A2BE2;
+}
