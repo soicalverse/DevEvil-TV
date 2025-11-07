@@ -23,7 +23,9 @@ import AnimeTv from './components/AnimeTv';
 import MovieTrailers from './components/MovieTrailers';
 import SideBtn from './components/Others/SideButtons';
 import reportWebVitals from './reportWebVitals';
-import './styles/root.css'
+import './styles/root.css';
+import './styles/Carousel.css';
+import './styles/Movies.css';
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -31,8 +33,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <Router>
       <Routes>
         <Route path="/" element={<React.Fragment><NavBar /><Banner /><SideBtn /><Movies /><TvShows /><Categories /><Anime /><AnimeTv /><NowPlaying /><MovieTrailers /><TopActorsActresses /><Footer /></React.Fragment>} />
-        <Route path="/movie/:id" element={<React.Fragment><NavBar /><MovieDetail /><SideBtn /><Footer /></React.Fragment>} />
-        <Route path="/tv/:id" element={<React.Fragment><NavBar /><TvShowDetails /><SideBtn /><Footer /></React.Fragment>} />
+        <Route path="/movie/:id" element={<React.Fragment><NavBar /><MovieDetail /><SideBtn /></React.Fragment>} />
+        <Route path="/tv/:id" element={<React.Fragment><NavBar /><TvShowDetails /><SideBtn /></React.Fragment>} />
         <Route path="/player/:id" element={<Player/>} />
         <Route path="/player/:id?e=:episode&s=:season" element={<Player/>} />
         <Route path="/search" element={<React.Fragment><NavBar /><SearchPage /><SideBtn /><Footer /></React.Fragment>} />

@@ -1,143 +1,45 @@
 import React, { useState, useEffect } from 'react';
-import {
-  getTrendingMovies,
-  getPopularMovies,
-  getUpcomingMovies,
-} from '../services/tmdbService';
-import { Link } from 'react-router-dom';
-import '../styles/main.css';
-  
+import { getTrendingMovies, getPopularMovies } from '../services/tmdbService';
+import Carousel from './Carousel';
+import '../styles/Movies.css';
 
 const Movies = () => {
-  const [trendingMovies, setTrendingMovies] = useState([]);
-  const [popularMovies, setPopularMovies] = useState([]);
-  const [upcomingMovies, setUpcomingMovies] = useState([]);
-  const [selectedFilterMovies, setSelectedFilterMovies] = useState(
-    'trending'
-  ); 
-  const [currentPage, setCurrentPage] = useState(1);
+  const [movies, setMovies] = useState([]);
+  const [page, setPage] = useState(1);
+  const [movieType, setMovieType] = useState('trending');
+  const [showSeeMore, setShowSeeMore] = useState(false);
 
   useEffect(() => {
     const fetchMovies = async () => {
-      try {
-        let movies = [];
-        switch (selectedFilterMovies) {
-          case 'trending':
-            movies = await getTrendingMovies(currentPage);
-            setTrendingMovies(movies);
-            break;
-          case 'popular':
-            movies = await getPopularMovies(currentPage);
-            setPopularMovies(movies);
-            break;
-          case 'upcoming':
-            movies = await getUpcomingMovies(currentPage);
-            setUpcomingMovies(movies);
-            break;
-          default:
-            break;
-        }
-      } catch (error) {
-        // Handle error
-      }
+      const fetchFunction = movieType === 'trending' ? getTrendingMovies : getPopularMovies;
+      const response = await fetchFunction(page);
+      setMovies(prev => page === 1 ? response : [...prev, ...response]);
+      setShowSeeMore(response.length > 0);
     };
-
     fetchMovies();
-  }, [selectedFilterMovies, currentPage]);
+  }, [page, movieType]);
 
-  const handleFilterChangeMovies = (filter) => {
-    setSelectedFilterMovies(filter);
-    setCurrentPage(1); 
+  const handleSeeMore = () => {
+    setPage(prev => prev + 1);
+    setShowSeeMore(false);
   };
 
-  const handlePageChange = (direction) => {
-    setCurrentPage((prevPage) =>
-      direction === 'next' ? prevPage + 1 : Math.max(prevPage - 1, 1)
-    );
-  };
-
-  const limitedMoviesToDisplay =
-    selectedFilterMovies === 'trending'
-      ? trendingMovies.slice(0, 20)
-      : selectedFilterMovies === 'popular'
-      ? popularMovies.slice(0, 20)
-      : upcomingMovies.slice(0, 20);
-
-
-      
-      
+  const handleMovieTypeChange = (type) => {
+    setMovieType(type);
+    setPage(1);
+  }
 
   return (
-    <section className="movies" id='movies'>
-
-    <div className="filter-bar">
-      <h1>Movies <i className="fa-solid fa-camera-movie"></i></h1>
-      <div className="filter-radios">
-            <input
-              type="radio"
-              name="grade"
-              id="trending"
-              checked={selectedFilterMovies === 'trending'}
-              onChange={() => handleFilterChangeMovies('trending')}
-            />
-            <label htmlFor="trending">Trending</label>
-            <input
-              type="radio"
-              name="grade"
-              id="popular"
-              checked={selectedFilterMovies === 'popular'}
-              onChange={() => handleFilterChangeMovies('popular')}
-            />
-            <label htmlFor="popular">Popular</label>
-            <input
-              type="radio"
-              name="grade"
-              id="upcoming"
-              checked={selectedFilterMovies === 'upcoming'}
-              onChange={() => handleFilterChangeMovies('upcoming')}
-            />
-            <label htmlFor="upcoming">Upcoming</label>
-            <div className="checked-radio-bg" />
+    <div className="movies-section">
+      <div className="section-header">
+          <h2>Movies</h2>
+          <div className="movie-type-buttons">
+              <button className={movieType === 'trending' ? 'active' : ''} onClick={() => handleMovieTypeChange('trending')}>Trending</button>
+              <button className={movieType === 'popular' ? 'active' : ''} onClick={() => handleMovieTypeChange('popular')}>Popular</button>
           </div>
-        </div>
-    <div className="movies-grid">
-    {limitedMoviesToDisplay.map((movie) => (
-      <Link to={`/movie/${movie.id}`} key={movie.id}>
-            <div className="movie-card">
-              <div className="card-head">
-                <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title} className="card-img" />
-                <div className="card-overlay">
-                  <div className="rating">
-                  <i className="star-outline fa-solid fa-sparkles"></i>
-                    <span>{Math.round(movie.vote_average * 10)}%</span>
-                  </div>
-                  <div className="play">
-                  <i className="play-circle-outline fa-solid fa-circle-play"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-            </Link>
-          ))}
-        </div>
-
-      <p className='page' style={{ textAlign: 'center' }}>
-        <i
-          className="fa-solid fa-left"
-          onClick={() => handlePageChange('prev')}
-        ></i>
-        <span 
-         className={`pagination-number ${currentPage ? 'current-page' : ''}`}
-        style={{ marginRight: '10px' }}>
-          {currentPage}
-          </span>
-        <span onClick={() => handlePageChange('next')}>{currentPage + 1}</span>
-        <i
-          className="fa-solid fa-right"
-          onClick={() => handlePageChange('next')}
-        ></i>
-      </p>
-    </section>
+      </div>
+      <Carousel items={movies} type="movie" handleSeeMore={handleSeeMore} showSeeMore={showSeeMore} />
+    </div>
   );
 };
 

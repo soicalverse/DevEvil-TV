@@ -1,31 +1,30 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-const MediaCard = ({ media }) => {
-  const linkTo = media.media_type === 'movie' ? `/movie/${media.id}` : `/tv/${media.id}`;
+const MediaCard = ({ item, type }) => {
+  if (!item) {
+    return null;
+  }
+
+  const { id, poster_path, title, name } = item;
+  const cardTitle = title || name;
 
   return (
-    <div className="media-card">
-      <Link to={linkTo}>
-        <img
-          src={`https://image.tmdb.org/t/p/w500/${media.poster_path}`}
-          alt={media.title || media.name}
-        />
+    <div className="movie-card">
+      <Link to={`/${type}/${id}`}>
+        <img src={`https://image.tmdb.org/t/p/w500${poster_path}`} alt={cardTitle} className="card-img" />
+        <div className="card-overlay">
+          <div className="card-bottom-content">
+            <h3 className="card-title">{cardTitle}</h3>
+            <div className="play-button-hover">
+              <i className="fa-solid fa-play"></i>
+              <span>Play</span>
+            </div>
+          </div>
+        </div>
       </Link>
     </div>
   );
 };
 
-MediaCard.propTypes = {
-  media: PropTypes.shape({
-    media_type: PropTypes.string.isRequired,
-    id: PropTypes.number.isRequired,
-    poster_path: PropTypes.string.isRequired,
-    title: PropTypes.string, 
-    name: PropTypes.string, 
-  }).isRequired,
-};
-
 export default MediaCard;
- 

@@ -88,7 +88,7 @@ const Banner = () => {
         <div className="center-text">
           <Link to={latestReleased ? `/player/${latestReleased.id}` : '/'}>
             <span>
-              Watch Now <i className="fa-solid fa-play banneri"></i>
+              Watch Now  <i className="fa-solid fa-play banneri   "></i>
             </span>
           </Link>
 
@@ -96,7 +96,7 @@ const Banner = () => {
 
           <Link to={latestReleased ? `/movie/${latestReleased.id}` : '/'}>
             <span>
-              Movie Insights <i className="fa-solid fa-stars banneri"></i>
+                   Movie Insights <i className="fa-solid fa-stars banneri"></i>
             </span>
           </Link>
         </div>
