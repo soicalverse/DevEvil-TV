@@ -1,94 +1,77 @@
-:root {
-  --bg: #080808;
-  --bg2: #19161f;
-  --main: #5f22d9;
-  --sec: #ac73ff;
-  --text: #e7e7e7;
-  --ff-inter: "Montserrat", sans-serif;
-  --section-heading: 40px;
-  --fs-lg: 22px;
-  --fs-md: 17px;
-  --fs-sm: 14px;
-  --fs-x-sm: 12px;
-  --fw-7: 700;
-  --fw-6: 600;
-  --fw-5: 500;
-  --px: 120px;
+.player {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background-color: #000;
 }
 
-.player iframe{
-  position: absolute;
-
-  top: 0;
-  left: 0;
-
+.player iframe {
   width: 100%;
   height: 100%;
-
-  border: 0;
-
-  z-index: 11;
+  border: none;
 }
 
-.player .overlay{
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  color: var(--main);
+.player-overlay-nav {
   position: absolute;
-  
-  top: 15px;
-  right: 15px;
-  
-  z-index: 12;
-
-  cursor: pointer;
-}
-
-.player .overlay i{
-  margin: 0 10px;
-  font-weight: bold;
-  font-size: 20px;
-  color: var(--main);
-}
-
-.fa-xmark{
-  font-size: 26px !important;
-}
-
-.ad {
-  text-align: center;
-  color: var(--text);
-  background: var(--main);
-  padding: 10px;
-  margin: 0 50px 10px 50px;
-  border-radius: 20px;
-  position: absolute;
-  bottom: 0;
+  top: 0;
   left: 0;
   right: 0;
-  z-index: 12;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+  z-index: 10;
+  color: white;
 }
 
-.ad i {
+.player-overlay-nav a, .player-overlay-nav button {
+  color: white;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 10px 15px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 1.2rem;
+  border: none;
   cursor: pointer;
+  transition: background 0.3s ease;
 }
 
-.ad img {
-  border-radius: 15px;
-  width: 100%;
+.player-overlay-nav a:hover, .player-overlay-nav button:hover {
+  background: rgba(0, 0, 0, 0.8);
 }
 
-@media screen and (max-width: 600px){
-  .player .overlay i{
-    font-size: 16px;
+.source-selector {
+  display: flex;
+  gap: 10px;
+}
 
-    margin: 0 5px;
+.source-btn {
+  background-color: transparent;
+  border: 1px solid white;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
 
-    vertical-align: middle;
-    
-    &.fa-xmark{
-      font-size: 18px;
-    }
-  }
+.source-btn.active {
+  background-color: white;
+  color: black;
+  font-weight: bold;
+}
+
+.episode-selector {
+  display: flex;
+  gap: 10px;
+}
+
+.episode-selector select {
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: 1px solid white;
+  padding: 8px 12px;
+  border-radius: 5px;
+  font-size: 0.9rem;
 }

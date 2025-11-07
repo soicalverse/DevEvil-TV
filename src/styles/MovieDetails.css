@@ -1,3 +1,4 @@
+
 :root {
   --bg: #080808;
   --bg2: #19161f;
@@ -21,199 +22,254 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
-
-  background-position: top;
+  height: 60%; /* Adjust as needed */
+  background-position: center top;
   background-size: cover;
   background-repeat: no-repeat;
-
   transition: opacity 150ms linear;
-
-
-  aspect-ratio: 1920/1080;
-  border: 0;
+  z-index: -1; /* Ensure it's behind other content */
 }
 
 .banner-details::after {
   content: "";
-  display: block;
-  background-image: radial-gradient(
-    farthest-side at 73% 21%,
-    transparent,
-    rgb(0, 0, 0)
-  );
-  width: 100%;
-  height: 100%;
   position: absolute;
   top: 0;
   left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(8, 8, 8, 1) 10%, rgba(8, 8, 8, 0) 100%);
 }
 
 .logo-container{
-	all: unset;
-
-	display: flex;
-	align-items: center;
-	justify-content: center;
-  
-	padding: 10px 28px;
-  
-	border-radius: 5px;
-
-	max-width: 200px;
+  margin-top: -100px; /* Pulls the logo up into the banner */
+  position: relative;
+  z-index: 2;
+  text-align: center;
 }
 
 .logo-container img{
-  display: block;
-
-  max-height: 300px;
-  max-width: 100%;
-
-  animation: media-logo 500ms linear forwards;
+  max-width: 300px;
+  max-height: 150px;
 }
 
 .media-content {
-  margin-top: 20%;
   padding: 0 5vw;
-
-  animation: media-content 250ms linear forwards;
-  user-select: none;
-  z-index: 999;
   position: relative;
+  z-index: 1;
+  margin-top: 20px;
 }
 
-
-.tagline {
-  color: var(--text);
-  font-size: 18px;
-  font-weight: 500;
-  font-style: italic;
+.genre-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
-.genre {
+.genre-button {
   background-color: var(--main);
-  color: var(--bg);
-  padding: 5px;
-  border-radius: 5px;
-  margin-right: 10px;
-  font-weight: bold;
-}
-.dot {
-  margin: 0 10px 0 10px;
   color: var(--text);
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.date {
-  color: var(--text);
-  margin-left: 10px;
-}
-.time {
-  color: var(--text);
+.genre-button.rating {
+  background-color: #ffc107;
+  color: #000;
 }
 
-.rating {
-  color: var(--text);
+.genre-button:hover {
+  transform: scale(1.05);
 }
 
-a {
-  text-decoration: none;
+.btn-glass-action {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.btn-glass-action:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.overview {
+  color: var(--text);
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 20px;
+  font-size: 16px;
+  line-height: 1.6;
 }
 
 .media-actions {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-
-  margin-top: 25px;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 30px;
 }
 
 .media-actions button {
   all: unset;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
-  padding: 10px 28px;
-
-  border-radius: 5px;
-
+  padding: 12px 30px;
+  border-radius: 80px;
   transition: all 150ms ease-in-out;
-  will-change: color, background;
-
   cursor: pointer;
-
-  color: var(--bg);
-  background-color: var(--main);
-  border: 1px solid transparent;
-}
-
-.media-actions i {
-  font-size: 20px;
-}
-
-.media-actions p {
-  margin-left: 20px;
-
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
-
-  text-transform: uppercase;
 }
 
 .media-actions .primary {
-	margin-right: 20px;
+  background-color: var(--main);
+  color: var(--text);
 }
 
-.overview {
-	max-width: 850px;
-	color: var(--text);
-	margin-top: 15px;
-  
-	font-size: 18px;
-	font-weight: bold;
-  
-	line-height: 30px;
-	letter-spacing: .6px;
+.media-actions .secondary {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: var(--text);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.castul {
-	display: flex;
-    list-style: none;
+.media-actions i {
+  margin-right: 10px;
 }
 
-.cast-poster {
-	width: 150px;
-    border-radius: 15px;
-    margin-right: 23px;
-}
-
-.cast-poster:hover {
-	box-shadow: inset 0 0 0 3px #9900ff;
-    transform: scale(1.05);
+.tab-section {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 20px;
 }
 
 .tab-button {
-  margin: 20px 25px 20px 0;
-    font-size: 20px;
-    background: none;
-    border: none;
-    color: var(--text);
-    cursor: pointer;
+  background: none;
+  border: none;
+  color: var(--text);
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 10px 0;
+  position: relative;
 }
 
-.tab-button.active {
-  color: var(--main);
+.tab-button.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: var(--main);
+}
+
+.castul {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  list-style: none;
+  padding: 0;
+}
+
+.cast-poster {
+  width: 140px;
+  height: 210px;
+  border-radius: 15px;
+  object-fit: cover;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cast-poster:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
 
 .reviews-list {
-  display: block;
   list-style: none;
+  padding: 0;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .review {
-  background: var(--main);
-    padding: 10px;
-    border-radius: 25px;
-    margin: 10px 0 10px 0;
+  background-color: var(--bg2);
+  padding: 20px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+}
+
+.review p:first-child {
+  font-weight: bold;
+  color: var(--sec);
+}
+
+@media (max-width: 768px) {
+  .banner-details {
+    height: 50%;
+  }
+
+  .logo-container img {
+    max-width: 250px;
+  }
+
+  .cast-poster {
+    width: 120px;
+    height: 180px;
+  }
+}
+
+@media (max-width: 480px) {
+  .banner-details {
+    height: 40%;
+  }
+
+  .logo-container img {
+    max-width: 200px;
+  }
+
+  .genre-container {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .genre-button {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+
+  .media-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .overview {
+    font-size: 14px;
+  }
+
+  .cast-poster {
+    width: 100px;
+    height: 150px;
+  }
+
+  .tab-button {
+    font-size: 16px;
+  }
 }

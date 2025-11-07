@@ -1,0 +1,40 @@
+.floating-buttons-container {
+    position: fixed; /* Changed to fixed */
+    bottom: 20px; /* Position at the bottom */
+    right: 20px; /* Position at the right */
+    z-index: 100; /* Higher z-index */
+  }
+  
+  .top-buttons, .bottom-buttons {
+    display: flex;
+    flex-direction: column; /* Arrange buttons vertically */
+    gap: 10px; /* Add space between buttons */
+  }
+  
+  .btn-glass {
+    background-color: rgba(0, 0, 0, 0.4);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .btn-glass:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+  }
+  
+  .btn-glass:active {
+    transform: scale(0.95);
+  }
+  

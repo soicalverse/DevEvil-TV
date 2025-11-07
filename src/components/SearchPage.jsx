@@ -51,12 +51,6 @@ const SearchPage = () => {
         ))}
       </div>
 
-      <div className="sidebtn">
-        <ul>
-          <a href="/"><li><i className='fas fa-home'></i></li></a>
-        </ul>
-      </div>
-
     </div>
   );
 };

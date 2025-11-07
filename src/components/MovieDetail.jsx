@@ -12,6 +12,20 @@ const MovieDetails = () => {
   const [movieReviews, setMovieReviews] = useState([]);
   const [activeTab, setActiveTab] = useState('suggested');
 
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: movieDetails.title,
+        text: `Check out ${movieDetails.title}!_blank`,
+        url: window.location.href,
+      })
+        .then(() => console.log('Successful share'))
+        .catch((error) => console.log('Error sharing', error));
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      alert('Link copied to clipboard!');
+    }
+  };
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
@@ -50,17 +64,13 @@ const MovieDetails = () => {
 
   const {
     title,
-    release_date,
     runtime,
     genres,
     overview,
     vote_average,
-    budget,
-    revenue,
     images,
     credits,
     backdrop_path,
-    tagline,
   } = movieDetails;
 
   const formatTime = (minutes) => {
@@ -69,21 +79,12 @@ const MovieDetails = () => {
     return `${hours}h ${remainingMinutes}m`;
   };
 
-  const formatCurrency = (amount) => {
-    return amount.toLocaleString("en-US", {
-      style: "currency",
-      currency: "USD",
-      minimumFractionDigits: 2,
-    });
-  };
-
   const toggleTab = (tab) => {
     setActiveTab(tab);
   };
 
   return (
     <div>
-   
       <div
         className="banner-details"
         style={{
@@ -91,27 +92,33 @@ const MovieDetails = () => {
         }}
       ></div>
 
-<div className="media-content">
-      
-        <p className="tagline">{tagline}</p>
-        <p>
+      <div className="media-content">
+        {images && images.logos && images.logos.length > 0 && (
+          <div className="logo-container">
+            <img
+              src={`https://image.tmdb.org/t/p/original/${images.logos[0].file_path}`}
+              alt={`${title} Logo`}
+              draggable={'false'}
+            />
+          </div>
+        )}
+
+        <div className="genre-container">
           {genres.map((genre) => (
-            <span key={genre.id} className="genre">
+            <span key={genre.id} className="genre-button">
               {genre.name}
             </span>
-          ))}{" "}
-          <span className="date">{release_date}</span>{" "}
-          <span className="dot">•</span>{" "}
-          <span className="time">{formatTime(runtime)}</span>{" "}
-          <span className="dot">•</span>{" "}
-          <span className="rating">
-            User Score: {Math.round(vote_average * 10)}%
-          </span>{" "}
-          <span className="dot">•</span>{" "}
-          <span className="budget">Budget: {formatCurrency(budget)}</span>{" "}
-          <span className="dot">•</span>{" "}
-          <span className="revenue">Revenue: {formatCurrency(revenue)}</span>
-        </p>
+          ))}
+          <span className="genre-button">{formatTime(runtime)}</span>
+          <span className="genre-button rating">
+            <i className="fas fa-star"></i> {vote_average.toFixed(1)}
+          </span>
+          <button className="btn-glass-action share-btn" onClick={handleShare}>
+            <i className="fas fa-share-alt"></i>
+          </button>
+        </div>
+
+        <p className="overview">{overview}</p>
 
         <div className="media-actions">
           <Link to={`/player/${id}`}>
@@ -128,29 +135,12 @@ const MovieDetails = () => {
               rel="noopener noreferrer"
             >
               <button className="secondary">
-                <i className="fa-solid fa-popcorn"></i>
+                <i className="fa-solid fa-film"></i>
                 <p>Watch Trailer</p>
               </button>
             </a>
           )}
-
-{images && images.logos && images.logos.length > 0 && (
-        <div className="logo-container">
-          <img
-            src={`https://image.tmdb.org/t/p/original/${images.logos[0].file_path}`}
-            alt={`${title} Logo`}
-            draggable={'false'}
-          />
-          
         </div>
-      )}
-
-
-
-          {/* Add your existing Play button logic here */}
-        </div>
-
-        <p className="overview">{overview}</p>
 
         <div className="tab-section">
           <button
@@ -166,26 +156,25 @@ const MovieDetails = () => {
             Top Billed Cast
           </button>
           <button
-  className={`tab-button ${activeTab === 'reviews' ? 'active' : ''}`}
-  onClick={() => toggleTab('reviews')}
->
-Users Reviews
-</button>
+            className={`tab-button ${activeTab === 'reviews' ? 'active' : ''}`}
+            onClick={() => toggleTab('reviews')}
+          >
+            Users Reviews
+          </button>
         </div>
 
         {activeTab === "suggested" && (
           <div>
             <div className="castul">
-
               {suggestedMovies.slice(0, 8).map((movie) => (
-              <Link to={`/movie/${movie.id}`} key={movie.id}>
-                <div>
-                  <img
-                  className="cast-poster"
-                    src={`https://image.tmdb.org/t/p/w300/${movie.poster_path}`}
-                    alt={movie.title}
-                  />
-                </div>
+                <Link to={`/movie/${movie.id}`} key={movie.id}>
+                  <div>
+                    <img
+                      className="cast-poster"
+                      src={`https://image.tmdb.org/t/p/w300/${movie.poster_path}`}
+                      alt={movie.title}
+                    />
+                  </div>
                 </Link>
               ))}
             </div>
@@ -210,20 +199,18 @@ Users Reviews
           </div>
         )}
 
-{activeTab === 'reviews' && (
-  <div>
-    <ul className="reviews-list">
-      {movieReviews.map((review) => (
-        <li key={review.id} className="review">
-          <p>
-A review by {review.author}</p>
-          <p>{review.content}</p>
-        </li>
-      ))}
-    </ul>
-  </div>
-)}
-
+        {activeTab === 'reviews' && (
+          <div>
+            <ul className="reviews-list">
+              {movieReviews.map((review) => (
+                <li key={review.id} className="review">
+                  <p>A review by {review.author}</p>
+                  <p>{review.content}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1,3 +1,4 @@
+
 :root {
   --bg: #080808;
   --bg2: #19161f;
@@ -5,169 +6,124 @@
   --sec: #ac73ff;
   --text: #e7e7e7;
   --ff-inter: "Montserrat", sans-serif;
-  --section-heading: 40px;
-  --fs-lg: 22px;
-  --fs-md: 17px;
-  --fs-sm: 14px;
-  --fs-x-sm: 12px;
   --fw-7: 700;
   --fw-6: 600;
   --fw-5: 500;
-  --px: 120px;
+}
+
+.sidebar, .sidebar-trending {
+  position: fixed;
+  top: 90px; 
+  height: calc(100vh - 110px); 
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border-radius: 30px;
+  z-index: 990;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  border: 1.5px solid rgba(255, 255, 255, 0.18);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
 }
 
 .sidebar {
-  background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(10px);
-  border-right: 2px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  padding: 10px;
-  width: 230px;
-  position: fixed;
-  height: 100%;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  z-index: 1;
+  left: 20px;
+  width: 240px;
 }
 
-.sidebar img {
-  width: 100%;
-  height: 100%;
+.sidebar-trending {
+  right: 20px;
+  width: 300px;
+}
+
+@media (max-width: 1200px) {
+    .sidebar-trending {
+        display: none;
+    }
+}
+
+@media (max-width: 992px) {
+    .sidebar {
+        display: none;
+    }
+}
+
+.sidebar img.logo-sidebar {
+    width: 80%;
+    margin: 0 auto 20px auto;
 }
 
 .menu-list {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   list-style: none;
-  font-size: 18px;
-  margin-left: 10px;
+  font-size: 16px;
+  margin: 0;
+  padding: 0;
 }
 
 .menu-list h1 {
-  font-size: 25px;
-  margin-top: 20px;
+  font-size: 20px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  color: var(--text);
+  font-weight: 600;
+  padding-left: 15px;
 }
 
 .menu-list a {
   text-decoration: none;
   color: var(--text);
-  margin-left: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  padding: 12px 15px;
+  border-radius: 25px;
+  transition: all 0.3s ease;
 }
 
 .menu-list .menui {
-  margin-right: 10px;
+  margin-right: 15px;
+  width: 20px;
+  text-align: center;
 }
 
-.menu-list .active {
-  color: var(--main);
-  margin-left: 10px;
-  margin-bottom: 10px;
-}
-
-.menu-list a:hover {
-  color: var(--sec);
+.menu-list a.active, .menu-list a:hover {
+  color: white;
+  background-color: rgba(95, 34, 217, 0.6);
+  font-weight: 500;
 }
 
 .infocard {
-  border-radius: 10px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  position: absolute;
-  bottom: 0;
-
-  margin: 0 15px 5px 0;
-  padding: 12px 5px;
+  margin-top: auto;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  padding: 15px;
+  text-align: center;
 }
 
 .infocard p {
-  text-align: center;
   font-size: 13px;
-}
-
-.sidebar-trending {
-  background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(10px);
-  border-left: 2px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  padding: 10px;
-  width: 300px;
-  position: fixed;
-  height: 100%;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  overflow: scroll !important;
-  z-index: 999;
+  line-height: 1.5;
+  color: #c0c0c0;
 }
 
 .sidebar-trending .poster {
-  width: 170px;
-  height: 220px;
+  width: 100%;
+  height: auto;
+  border-radius: 15px;
 }
 
-.sidebar-trending  h1 {
-  font-size: 25px;
+.sidebar-trending h1 {
+  font-size: 20px;
+  color: var(--text);
+  font-weight: 600;
+  margin-bottom: 15px;
 }
 
-.chat-details {
-  display: flex;
-}
-
-.chat-details img {
-  width: 50px;
-  border-radius: 5px;
-}
-
-.chat-details p {
-  margin-left: 10px;
-}
-
-.chat-content {
-  margin-top: 25px;
-}
-
-.input {
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  left: 0;
-}
-
-.input p {
-  text-align: center;
-}
-
-#chat-input::placeholder, #chat-input {
-  color: var(--main) !important;
-  padding-left: 5px;
-}
-
-#chat-input {
-  background: red;
-    padding: 15px 0;
-    border-radius: 10px;
-    width: 100%;
-}
-
-.buttonschat {
-  display: flex;
-  position: absolute;
-  bottom: 110px;
-
-}
-
-#send-btn {
-  margin-right: 10px;
-  background: red;
-  padding: 10px;
-  border-radius: 10px;
-}
-
-#delete-btn {
-  background: red;
-  padding: 10px;
-  border-radius: 10px;
+/* Hiding old chat elements */
+.chat-details, .chat-content, .input, .buttonschat {
+    display: none;
 }

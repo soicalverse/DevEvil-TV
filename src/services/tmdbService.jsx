@@ -152,6 +152,7 @@ export const getSeasonEpisodes = async (tvShowId, seasonNumber) => {
       name: episode.name,
       still_path: episode.still_path,
       image: `https://image.tmdb.org/t/p/original/${episode.still_path}`,
+      episode_number: episode.episode_number,
     }));
 
     return episodes;

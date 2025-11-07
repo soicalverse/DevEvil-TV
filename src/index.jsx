@@ -31,16 +31,16 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <Router>
       <Routes>
         <Route path="/" element={<React.Fragment><NavBar /><Banner /><SideBtn /><Movies /><TvShows /><Categories /><Anime /><AnimeTv /><NowPlaying /><MovieTrailers /><TopActorsActresses /><Footer /></React.Fragment>} />
-        <Route path="/movie/:id" element={<MovieDetail />} />
-        <Route path="/tv/:id" element={<TvShowDetails />} />
+        <Route path="/movie/:id" element={<React.Fragment><NavBar /><MovieDetail /><SideBtn /><Footer /></React.Fragment>} />
+        <Route path="/tv/:id" element={<React.Fragment><NavBar /><TvShowDetails /><SideBtn /><Footer /></React.Fragment>} />
         <Route path="/player/:id" element={<Player/>} />
         <Route path="/player/:id?e=:episode&s=:season" element={<Player/>} />
-        <Route path="/search" element={<SearchPage />} />
-        <Route path="/upcoming" element={<UpcomingPage />} />
-        <Route path="/privacy" element={<Privacy />} />
-        <Route path="/terms" element={<Terms />} />
-        <Route path="/dmca" element={<DMCA />} />
-        <Route path="/about" element={<About />} />
+        <Route path="/search" element={<React.Fragment><NavBar /><SearchPage /><SideBtn /><Footer /></React.Fragment>} />
+        <Route path="/upcoming" element={<React.Fragment><NavBar /><UpcomingPage /><SideBtn /><Footer /></React.Fragment>} />
+        <Route path="/privacy" element={<React.Fragment><NavBar /><Privacy /><SideBtn /><Footer /></React.Fragment>} />
+        <Route path="/terms" element={<React.Fragment><NavBar /><Terms /><SideBtn /><Footer /></React.Fragment>} />
+        <Route path="/dmca" element={<React.Fragment><NavBar /><DMCA /><SideBtn /><Footer /></React.Fragment>} />
+        <Route path="/about" element={<React.Fragment><NavBar /><About /><SideBtn /><Footer /></React.Fragment>} />
       </Routes>
     </Router>
   </React.StrictMode>,
