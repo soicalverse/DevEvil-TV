@@ -15,6 +15,19 @@ const Categories = () => {
   const [currentPageTv, setCurrentPageTv] = useState(1);
   const [showSeeMoreMovies, setShowSeeMoreMovies] = useState(false);
   const [showSeeMoreTv, setShowSeeMoreTv] = useState(false);
+  const [buttonText, setButtonText] = useState(window.innerWidth < 768 ? 'Category' : 'Select Category');
+
+  useEffect(() => {
+    const handleResize = () => {
+        setButtonText(window.innerWidth < 768 ? 'Category' : 'Select Category');
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+        window.removeEventListener('resize', handleResize);
+    };
+}, []);
 
   useEffect(() => {
     const fetchGenres = async () => {
@@ -91,7 +104,7 @@ const Categories = () => {
       <section className="movies-section" id='categories'>
         <div className="section-header">
           <h2>Movie Categories</h2>
-          <GenreFilter genres={movieGenres} selectedGenre={selectedMovieGenre} onGenreChange={handleMovieGenreChange} title="Select Movie Genre" />
+          <GenreFilter genres={movieGenres} selectedGenre={selectedMovieGenre} onGenreChange={handleMovieGenreChange} title={buttonText} />
         </div>
         <Carousel items={moviesByCategory} type="movie" handleSeeMore={handleSeeMoreMovies} showSeeMore={showSeeMoreMovies} />
       </section>
@@ -99,7 +112,7 @@ const Categories = () => {
       <section className="movies-section">
         <div className="section-header">
           <h2>TV Show Categories</h2>
-          <GenreFilter genres={tvGenres} selectedGenre={selectedTvGenre} onGenreChange={handleTvGenreChange} title="Select TV Show Genre" />
+          <GenreFilter genres={tvGenres} selectedGenre={selectedTvGenre} onGenreChange={handleTvGenreChange} title={buttonText} />
         </div>
         <Carousel items={tvByCategory} type="tv" handleSeeMore={handleSeeMoreTv} showSeeMore={showSeeMoreTv} />
       </section>

@@ -21,18 +21,19 @@
 }
 
 .movie-type-buttons button {
-    background-color: transparent;
-    border: 1px solid #fff;
+    background-color: #000;
+    border: none;
     color: #fff;
     cursor: pointer;
     font-size: 1rem;
     padding: 0.5rem 1rem;
-    border-radius: 20px;
-    transition: background-color 0.3s;
+    border-radius: 0;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .movie-type-buttons button:hover {
-    background-color: #ffffff1a;
+    background-color: #fff;
+    color: #000;
 }
 
 .movie-type-buttons button.active {

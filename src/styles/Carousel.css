@@ -28,7 +28,6 @@
   position: relative;
   overflow: hidden;
   border-radius: 8px;
-  height: 320px;
   background: #121212;
   width: 100%;
   display: block;
@@ -141,4 +140,16 @@
 .see-more-card i {
   color: white;
   font-size: 2rem;
+}
+
+@media (max-width: 768px) {
+    .carousel-item {
+        flex: 0 0 30%;
+    }
+}
+
+@media (max-width: 480px) {
+    .carousel-item {
+        flex: 0 0 45%;
+    }
 }

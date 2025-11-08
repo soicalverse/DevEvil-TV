@@ -95,31 +95,42 @@
     padding-top: 16px;
 }
 
-.movie-type-buttons {
-    position: absolute;
-    bottom: 2rem;
-    right: 5%;
-    z-index: 1;
-    display: flex;
-    gap: 1rem;
-}
-
-.movie-type-buttons button {
-    background-color: transparent;
-    border: none;
-    color: #fff;
-    cursor: pointer;
-    text-decoration: underline;
-    font-size: 1rem;
-}
-
-.movie-type-buttons button.active {
-    font-weight: bold;
-    color: #8A2BE2;
-}
-
 .carousel-item:hover {
     border: 2px solid white;
     border-radius: 5px;
     transition: border 0.2s;
+}
+
+@media (max-width: 768px) {
+    .banner {
+        height: 70vh;
+    }
+
+    .banner-title {
+        font-size: 50px;
+    }
+
+    .card-content {
+        max-width: 80%;
+    }
+}
+
+@media (max-width: 480px) {
+    .banner-title {
+        font-size: 30px;
+    }
+
+    .card-content {
+        max-width: 90%;
+        margin-left: 2rem;
+    }
+
+    .watch-now-button {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
+    }
+
+    .card-info {
+        font-size: 14px;
+    }
 }
