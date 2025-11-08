@@ -24,9 +24,9 @@ const Home = () => {
   return (
     <React.Fragment>
       <NavBar />
-      <Banner onMovieTypeChange={handleMovieTypeChange} movieType={movieType} />
+      <Banner />
       <SideBtn />
-      <Movies movieType={movieType} page={page} setPage={setPage} />
+      <Movies movieType={movieType} page={page} setPage={setPage} onMovieTypeChange={handleMovieTypeChange} />
       <TvShows />
       <Categories />
       <Anime />

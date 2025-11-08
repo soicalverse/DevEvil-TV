@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { getTrendingMovies } from '../services/tmdbService';
 import { Link } from 'react-router-dom';
-import '../styles/Banner.css';
 
 const Banner = () => {
   const [latestReleased, setLatestReleased] = useState(null);
@@ -53,15 +52,14 @@ const Banner = () => {
               <span>{Math.round(latestReleased.vote_average * 10)}% liked</span>
             </div>
           )}
+          {latestReleased && (
+            <div className="banner-nav">
+              <Link to={`/player/${latestReleased.id}`} className="watch-now-button">
+                Watch Now <i className="fa-solid fa-play"></i>
+              </Link>
+            </div>
+          )}
         </div>
-
-        {latestReleased && (
-          <div className="banner-nav">
-            <Link to={`/player/${latestReleased.id}`} className="watch-now-button">
-              Watch Now <i className="fa-solid fa-play"></i>
-            </Link>
-          </div>
-        )}
       </div>
     </section>
   );

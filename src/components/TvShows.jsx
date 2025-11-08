@@ -32,10 +32,20 @@ const TvShows = () => {
     setShowSeeMore(false);
   };
 
+  const handleShowTypeChange = (type) => {
+    setShowType(type);
+    setPage(1);
+  }
+
   return (
     <div className="movies-section">
       <div className="section-header">
           <h2>TV Shows <i className="fa-solid fa-tv"></i></h2>
+          <div className="movie-type-buttons">
+            <button onClick={() => handleShowTypeChange('trending')} className={showType === 'trending' ? 'active' : ''}>Trending</button>
+            <button onClick={() => handleShowTypeChange('popular')} className={showType === 'popular' ? 'active' : ''}>Popular</button>
+            <button onClick={() => handleShowTypeChange('upcoming')} className={showType === 'upcoming' ? 'active' : ''}>Upcoming</button>
+          </div>
       </div>
       <Carousel items={tvShows} type="tv" handleSeeMore={handleSeeMore} showSeeMore={showSeeMore} />
     </div>
