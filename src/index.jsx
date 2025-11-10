@@ -17,6 +17,7 @@ import reportWebVitals from './reportWebVitals';
 import './styles/root.css';
 import './styles/Carousel.css';
 import './styles/Movies.css';
+import './styles/mobile.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

@@ -24,7 +24,7 @@ const Movies = ({ movieType, page, setPage, onMovieTypeChange }) => {
   };
 
   return (
-    <div className="movies-section">
+    <div className="movies-section with-buttons">
       <div className="section-header">
           <h2>Movies</h2>
           <div className="movie-type-buttons">

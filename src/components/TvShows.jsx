@@ -38,7 +38,7 @@ const TvShows = () => {
   }
 
   return (
-    <div className="movies-section">
+    <div className="movies-section with-buttons">
       <div className="section-header">
           <h2>TV Shows <i className="fa-solid fa-tv"></i></h2>
           <div className="movie-type-buttons">
