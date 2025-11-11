@@ -1,17 +1,5 @@
-/* Keyframe animation for mobile (scrolling) */
-@keyframes settleInMobile {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Keyframe animation for desktop (fixed and centered) */
-@keyframes settleInDesktop {
+/* Keyframe animation for the navbar */
+@keyframes settleIn {
   from {
     opacity: 0;
     transform: translateY(-20px) translateX(-50%);
@@ -27,9 +15,11 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  /* Mobile-first: default to scrolling with the page */
-  position: relative;
-  margin: 10px auto 0; /* Top margin and horizontal centering */
+  /* Always floating */
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
   width: 95%;
   max-width: 1400px;
   z-index: 1000;
@@ -43,7 +33,7 @@
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 
   /* Animation */
-  animation: settleInMobile 0.8s ease-out forwards;
+  animation: settleIn 0.8s ease-out forwards;
 }
 
 .nav-left, .nav-right {
@@ -140,15 +130,6 @@
 
 /* Desktop Styles */
 @media (min-width: 768px) {
-  .navbar {
-    position: fixed; /* Fixed position for desktop */
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    margin: 0; /* Reset margin */
-    animation-name: settleInDesktop; /* Switch to desktop animation */
-  }
-
   .desktop-links {
     display: flex;
     align-items: center;

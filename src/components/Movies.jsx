@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { getTrendingMovies, getPopularMovies } from '../services/tmdbService';
+import { getTrendingMovies, getPopularMovies, getUpcomingMovies } from '../services/tmdbService';
 import Carousel from './Carousel';
 import '../styles/Movies.css';
 
@@ -10,7 +10,14 @@ const Movies = ({ movieType, page, setPage, onMovieTypeChange }) => {
 
   useEffect(() => {
     const fetchMovies = async () => {
-      const fetchFunction = movieType === 'trending' ? getTrendingMovies : getPopularMovies;
+      let fetchFunction;
+      if (movieType === 'trending') {
+        fetchFunction = getTrendingMovies;
+      } else if (movieType === 'popular') {
+        fetchFunction = getPopularMovies;
+      } else {
+        fetchFunction = getUpcomingMovies;
+      }
       const response = await fetchFunction(page);
       setMovies(prev => page === 1 ? response : [...prev, ...response]);
       setShowSeeMore(response.length > 0);
@@ -30,6 +37,7 @@ const Movies = ({ movieType, page, setPage, onMovieTypeChange }) => {
           <div className="movie-type-buttons">
             <button onClick={() => onMovieTypeChange('trending')} className={movieType === 'trending' ? 'active' : ''}>Trending</button>
             <button onClick={() => onMovieTypeChange('popular')} className={movieType === 'popular' ? 'active' : ''}>Popular</button>
+            <button onClick={() => onMovieTypeChange('upcoming')} className={movieType === 'upcoming' ? 'active' : ''}>Upcoming</button>
           </div>
       </div>
       <Carousel items={movies} type="movie" handleSeeMore={handleSeeMore} showSeeMore={showSeeMore} />

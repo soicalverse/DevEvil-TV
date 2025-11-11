@@ -113,16 +113,13 @@ const MovieDetails = () => {
           <span className="genre-button rating">
             <i className="fas fa-star"></i> {vote_average.toFixed(1)}
           </span>
-          <button className="btn-glass-action share-btn" onClick={handleShare}>
-            <i className="fas fa-share-alt"></i>
-          </button>
         </div>
 
         <p className="overview">{overview}</p>
 
         <div className="media-actions">
           <Link to={`/player/${id}`}>
-            <button className="primary">
+            <button>
               <i className="fa-solid fa-play"></i>
               <p>Play</p>
             </button>
@@ -134,12 +131,15 @@ const MovieDetails = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <button className="secondary">
+              <button>
                 <i className="fa-solid fa-film"></i>
                 <p>Watch Trailer</p>
               </button>
             </a>
           )}
+          <button className="btn-glass-action" onClick={handleShare}>
+            <i className="fas fa-share-alt"></i>
+          </button>
         </div>
 
         <div className="tab-section">
@@ -194,7 +194,7 @@ const MovieDetails = () => {
                     draggable="false"
                   />
                 </li>
-              ))}
+              ))}"
             </ul>
           </div>
         )}

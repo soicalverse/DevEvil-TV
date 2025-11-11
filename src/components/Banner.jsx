@@ -54,9 +54,11 @@ const Banner = () => {
           )}
           {latestReleased && (
             <div className="banner-nav">
+             
               <Link to={`/player/${latestReleased.id}`} className="watch-now-button">
-                Watch Now <i className="fa-solid fa-play"></i>
+              Watch Now <i className="fa-solid fa-play"></i>
               </Link>
+            
             </div>
           )}
         </div>

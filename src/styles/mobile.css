@@ -4,22 +4,6 @@
         overflow-x: hidden;
     }
 
-    .navbar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        padding: 15px 20px;
-        background-color: rgba(0, 0, 0, 0.7);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        z-index: 1000;
-        border-radius: 0;
-        border: none;
-        transform: none;
-        box-shadow: none;
-    }
-
     .banner {
         height: 100vh;
     }
@@ -45,21 +29,14 @@
         margin-bottom: 1rem;
     }
 
-    .with-buttons .section-header {
-        flex-wrap: wrap;
-    }
-
     .with-buttons .movie-type-buttons {
         display: flex;
-        gap: 10px;
-        margin-top: 1rem;
-        width: 100%;
-        justify-content: flex-start;
+        gap: 5px;
     }
 
     .movie-type-buttons button {
-        font-size: 0.8rem;
-        padding: 0.4rem 0.8rem;
+        font-size: 0.7rem;
+        padding: 0.3rem 0.6rem;
     }
 
     .genre-filter-sheet {

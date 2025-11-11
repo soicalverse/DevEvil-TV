@@ -14,10 +14,16 @@ import Footer from './components/Others/Footer';
 
 const Home = () => {
   const [movieType, setMovieType] = useState('trending');
+  const [tvShowType, setTvShowType] = useState('trending');
   const [page, setPage] = useState(1);
 
   const handleMovieTypeChange = (type) => {
     setMovieType(type);
+    setPage(1);
+  };
+
+  const handleTvShowTypeChange = (type) => {
+    setTvShowType(type);
     setPage(1);
   };
 
@@ -27,7 +33,7 @@ const Home = () => {
       <Banner />
       <SideBtn />
       <Movies movieType={movieType} page={page} setPage={setPage} onMovieTypeChange={handleMovieTypeChange} />
-      <TvShows />
+      <TvShows showType={tvShowType} page={page} setPage={setPage} onShowTypeChange={handleTvShowTypeChange} />
       <Categories />
       <Anime />
       <AnimeTv />

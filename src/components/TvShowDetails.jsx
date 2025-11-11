@@ -15,7 +15,7 @@ const TvShowDetails = () => {
   const { id } = useParams();
   const [tvShowDetails, setTvShowDetails] = useState(null);
   const [activeTab, setActiveTab] = useState("seasons"); 
-  const [seasonTab, setSeasonTab] = useState("");
+  const [seasonTab, setSeasonTab] = useState("season1");
   const [suggestedTvShows, setSuggestedTvShows] = useState([]);
   const [tvReviews, setTvReviews] = useState([]);
   const [trailerKey, setTrailerKey] = useState(null);
@@ -221,6 +221,7 @@ const TvShowDetails = () => {
                   <SeasonDetails
                     tvShowId={id}
                     seasonNumber={season.season_number}
+                    tvShowBackdrop={backdrop_path}
                   />
                 </div>
               ))}

@@ -12,11 +12,11 @@
 
 
 :root {
-  --bg: #080808;
+  --bg: #170D0C;
   --bg2: #19161f;
-  --main: #5f22d9;
+  --main: #FC9732;
   --sec: #ac73ff;
-  --text: #e7e7e7;
+  --text: #E8E8E8;
   --ff-inter: "Montserrat", sans-serif;
   --section-heading: 40px;
   --fs-lg: 22px;
@@ -195,12 +195,7 @@ a {
     --px: 40px;
   }
 
-  .navbar {
-    padding: 10px;
-    position: relative;
-  }
-
-  .left-side a, button{
+  .left-side a, .left-side button{
     display: none;
     align-items: center;
   }
