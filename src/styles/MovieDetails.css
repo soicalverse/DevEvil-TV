@@ -157,24 +157,62 @@
 }
 
 .recommendations-container, .cast-container {
-  overflow-x: auto;
-  width: 100%;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.recommendations-container::-webkit-scrollbar, .cast-container::-webkit-scrollbar {
+    display: none;
 }
 
 .recommendations-ul, .cast-ul {
   display: flex;
   gap: 20px;
+  padding-left: 20px;
 }
+
+.recommendations-ul li, .cast-ul li {
+  flex: 0 0 180px;
+}
+
 
 /* Responsive Styles */
 @media (max-width: 480px) {
   .media-actions {
-    flex-direction: column;
-    align-items: stretch;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .recommendations-ul, .cast-ul {
+    gap: 15px;
+    padding-left: 15px;
+  }
+
+  .media-actions button {
+    padding: 10px 24px;
+    font-size: 14px;
+  }
+
+  .media-actions .btn-glass-action {
+    width: 40px;
+    height: 40px;
   }
 
   .tab-button {
     font-size: 11px;
     padding: 7px 12px;
+  }
+
+  .recommendations-ul li, .cast-ul li {
+    flex: 0 0 140px;
+  }
+
+  .overview {
+      font-size: 14px;
+      line-height: 1.5;
   }
 }

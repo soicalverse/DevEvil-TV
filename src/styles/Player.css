@@ -19,7 +19,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
+  padding: 10px;
   background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
   z-index: 10;
   color: white;
@@ -28,13 +28,14 @@
 .player-overlay-nav a, .player-overlay-nav button {
   color: white;
   background: rgba(0, 0, 0, 0.5);
-  padding: 10px 15px;
-  border-radius: 5px;
+  padding: 5px 10px;
+  border-radius: 20px;
   text-decoration: none;
-  font-size: 1.2rem;
+  font-size: 0.8rem;
   border: none;
   cursor: pointer;
   transition: background 0.3s ease;
+  flex-shrink: 0;
 }
 
 .player-overlay-nav a:hover, .player-overlay-nav button:hover {
@@ -43,17 +44,18 @@
 
 .source-selector {
   display: flex;
-  gap: 10px;
+  gap: 5px;
+  align-items: center;
 }
 
 .source-btn {
   background-color: transparent;
   border: 1px solid white;
   color: white;
-  padding: 8px 12px;
-  border-radius: 5px;
+  padding: 5px 10px;
+  border-radius: 20px;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 0.7rem;
 }
 
 .source-btn.active {
@@ -64,14 +66,40 @@
 
 .episode-selector {
   display: flex;
-  gap: 10px;
+  gap: 5px;
 }
 
 .episode-selector select {
   background: rgba(0, 0, 0, 0.5);
   color: white;
   border: 1px solid white;
-  padding: 8px 12px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-toggle {
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 5px;
+  font-size: 0.8rem;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: rgba(0, 0, 0, 0.8);
   border-radius: 5px;
-  font-size: 0.9rem;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  z-index: 20;
 }

@@ -1,3 +1,4 @@
+
 :root {
   --bg: #080808;
   --bg2: #19161f;
@@ -177,9 +178,25 @@ a {
 	letter-spacing: .6px;
 }
 
-.castul {
-	display: flex;
-    list-style: none;
+.recommendations-container, .cast-container {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.recommendations-container::-webkit-scrollbar, .cast-container::-webkit-scrollbar {
+    display: none;
+}
+
+.recommendations-ul, .cast-ul {
+  display: flex;
+  gap: 20px;
+  padding-left: 20px;
+}
+
+.recommendations-ul li, .cast-ul li {
+  flex: 0 0 180px;
 }
 
 .cast-poster {
@@ -193,17 +210,30 @@ a {
     transform: scale(1.05);
 }
 
+.tab-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 15px;
+    margin: 20px 0;
+}
+
 .tab-button {
-  margin: 20px 25px 20px 0;
-    font-size: 20px;
+  margin: 0;
+    font-size: 16px;
     background: none;
-    border: none;
+    border: 1px solid var(--text);
     color: var(--text);
     cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 20px;
+    transition: all 0.2s ease-in-out;
 }
 
 .tab-button.active {
-  color: var(--main);
+  color: var(--text);
+  background-color: var(--main);
+  border-color: var(--main);
 }
 
 .reviews-list {
@@ -218,18 +248,121 @@ a {
     margin: 10px 0 10px 0;
 }
 
+.season-tab-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
 .season-tab-button {
-	margin-right: 20px;
-    font-size: var(--fs-md);
+	margin-right: 0;
+    font-size: var(--fs-sm);
+    padding: 8px 15px;
+    border: 1px solid var(--text);
+    border-radius: 15px;
+    background: none;
+    color: var(--text);
+    cursor: pointer;
+}
+
+.season-tab-button.active {
+    background-color: var(--sec);
+    border-color: var(--sec);
 }
 
 .episode-ul {
 	display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 30px;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
 }
 
 .episode-list img{
 	margin-top: 10px;
 	border-radius: 15px;
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+}
+
+@media screen and (max-width: 768px) {
+    .media-content {
+        margin-top: 40%;
+    }
+
+    .overview {
+        font-size: 14px;
+        line-height: 1.6;
+        max-width: 100%;
+    }
+
+    .tab-buttons {
+        gap: 10px;
+        justify-content: center;
+    }
+
+    .tab-button {
+        font-size: 12px;
+        padding: 8px 12px;
+    }
+
+    .season-tab-buttons {
+        justify-content: center;
+    }
+    
+    .season-tab-button {
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+
+    .episode-ul {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 15px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .media-content {
+        margin-top: 50%;
+    }
+    
+    .media-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .media-actions .primary {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    
+    .tab-button {
+        font-size: 11px;
+        padding: 7px 11px;
+    }
+
+    .season-tab-button {
+        font-size: 11px;
+        padding: 5px 9px;
+    }
+
+    .episode-ul {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .recommendations-ul, .cast-ul {
+      gap: 15px;
+      padding-left: 15px;
+    }
+    
+    .recommendations-ul li, .cast-ul li {
+      flex: 0 0 120px;
+    }
+
+
+    .cast-poster {
+        width: 120px;
+        margin-right: 15px;
+    }
 }

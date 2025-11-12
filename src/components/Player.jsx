@@ -1,9 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useLocation, Link, useNavigate } from 'react-router-dom';
 import '../styles/Player.css';
 import { getTvShowDetails } from '../services/tmdbService';
 
 const sources = [
+  {
+    name: 'VidLink',
+    movieUrl: (id) => `https://vidlink.pro/movie/${id}`,
+    tvUrl: (id, s, e) => `https://vidlink.pro/tv/${id}/${s}/${e}`,
+  },
   {
     name: 'VidFast',
     movieUrl: (id) => `https://vidfast.pro/movie/${id}`,
@@ -40,6 +45,8 @@ const Player = () => {
   const { id: routeId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef(null);
 
   const getParams = (search) => {
     const queryParams = new URLSearchParams(search);
@@ -94,6 +101,19 @@ const Player = () => {
     fetchDetails();
   }, [params.id, params.season]);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   const handleSeasonChange = (e) => {
     const newSeason = e.target.value;
     const seasonData = seasons.find(s => s.season_number === parseInt(newSeason, 10));
@@ -126,7 +146,7 @@ const Player = () => {
         </Link>
 
         <div className="source-selector">
-          {sources.map((source, index) => (
+          {sources.slice(0, 4).map((source, index) => (
             <button
               key={source.name}
               className={`source-btn ${index === sourceIndex ? 'active' : ''}`}
@@ -135,6 +155,29 @@ const Player = () => {
               {source.name}
             </button>
           ))}
+          {sources.length > 4 && (
+            <div className="dropdown" ref={dropdownRef}>
+              <button className="dropdown-toggle" onClick={() => setShowDropdown(!showDropdown)}>
+                <i className={`fa-solid fa-chevron-${showDropdown ? 'up' : 'down'}`}></i>
+              </button>
+              {showDropdown && (
+                <div className="dropdown-menu">
+                  {sources.slice(4).map((source, index) => (
+                    <button
+                      key={source.name}
+                      className={`source-btn ${index + 4 === sourceIndex ? 'active' : ''}`}
+                      onClick={() => {
+                        setSourceIndex(index + 4);
+                        setShowDropdown(false);
+                      }}
+                    >
+                      {source.name}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {params.season && (

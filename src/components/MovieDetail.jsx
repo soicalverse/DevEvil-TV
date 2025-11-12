@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { getMovieDetails, getMovieTrailer, getMovieRecommendations, getMovieReviews } from "../services/tmdbService";
+import { useHorizontalScroll } from "../hooks/useHorizontalScroll";
 import "../styles/MovieDetails.css";
 
 const MovieDetails = () => {
@@ -12,15 +13,39 @@ const MovieDetails = () => {
   const [movieReviews, setMovieReviews] = useState([]);
   const [activeTab, setActiveTab] = useState('suggested');
 
-  const handleShare = () => {
+  const recommendationsRef = useHorizontalScroll();
+  const castRef = useHorizontalScroll();
+
+  const handleShare = async () => {
+    const shareData = {
+      title: movieDetails.title,
+      text: `${movieDetails.overview.split('.')[0] + '.'}\n\nWatch Now on Movie Streaming Website (Ad-free streaming)`,
+      url: window.location.href,
+    };
+
     if (navigator.share) {
-      navigator.share({
-        title: movieDetails.title,
-        text: `Check out ${movieDetails.title}!_blank`,
-        url: window.location.href,
-      })
-        .then(() => console.log('Successful share'))
-        .catch((error) => console.log('Error sharing', error));
+      try {
+        const response = await fetch(`https://image.tmdb.org/t/p/original/${movieDetails.backdrop_path}`);
+        const blob = await response.blob();
+        const file = new File([blob], `${movieDetails.title}.jpg`, { type: 'image/jpeg' });
+
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share({
+            ...shareData,
+            files: [file],
+          });
+        } else {
+          await navigator.share(shareData);
+        }
+      } catch (error) {
+        console.error('Error sharing:', error);
+        try {
+            await navigator.share(shareData);
+        } catch (shareError) {
+            console.error('Error in fallback sharing:', shareError);
+            alert('Could not open share dialog.');
+        }
+      }
     } else {
       navigator.clipboard.writeText(window.location.href);
       alert('Link copied to clipboard!');
@@ -164,37 +189,38 @@ const MovieDetails = () => {
         </div>
 
         {activeTab === "suggested" && (
-          <div>
-            <div className="castul">
+          <div className="recommendations-container" ref={recommendationsRef}>
+            <ul className="recommendations-ul">
               {suggestedMovies.slice(0, 8).map((movie) => (
-                <Link to={`/movie/${movie.id}`} key={movie.id}>
-                  <div>
-                    <img
-                      className="cast-poster"
-                      src={`https://image.tmdb.org/t/p/w300/${movie.poster_path}`}
-                      alt={movie.title}
-                    />
-                  </div>
-                </Link>
+                <li key={movie.id}>
+                  <Link to={`/movie/${movie.id}`}>
+                    <div>
+                      <img
+                        className="cast-poster"
+                        src={`https://image.tmdb.org/t/p/w300/${movie.poster_path}`}
+                        alt={movie.title}
+                      />
+                    </div>
+                  </Link>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
         )}
 
         {activeTab === "cast" && (
-          <div>
-            <ul className="castul">
+          <div className="cast-container" ref={castRef}>
+            <ul className="cast-ul">
               {credits.cast.slice(0, 8).map((cast) => (
                 <li key={cast.id}>
                   <img
                     className="cast-poster"
                     src={`https://image.tmdb.org/t/p/w1280/${cast.profile_path}`}
                     alt={cast.title || cast.name}
-                    key={cast.id}
                     draggable="false"
                   />
                 </li>
-              ))}"
+              ))}
             </ul>
           </div>
         )}

@@ -8,6 +8,7 @@ import {
   getTvTrailer
 } from "../services/tmdbService";
 import SeasonDetails from "./TV/SeasonDetails";
+import { useHorizontalScroll } from "../hooks/useHorizontalScroll";
 import "../styles/TvShowDetails.css";
 
 
@@ -19,6 +20,9 @@ const TvShowDetails = () => {
   const [suggestedTvShows, setSuggestedTvShows] = useState([]);
   const [tvReviews, setTvReviews] = useState([]);
   const [trailerKey, setTrailerKey] = useState(null);
+  
+  const recommendationsRef = useHorizontalScroll();
+  const castRef = useHorizontalScroll();
 
   useEffect(() => {
     const fetchTvShowDetails = async () => {
@@ -228,36 +232,33 @@ const TvShowDetails = () => {
           </div>
         )}
 
-{activeTab === "suggest" && (
-        <div>
-          <div className="castul">
-            {suggestedTvShows.slice(0, 8).map((tv) => (
-              <Link to={`/tv/${tv.id}`} key={tv.id}>
-                <div>
-                  <img
-                  style={{marginLeft:'15px'}}
-                    className="cast-poster"
-                    src={`https://image.tmdb.org/t/p/w300/${tv.poster_path}`}
-                    alt={tv.title}
-                  />
-                </div>
-              </Link>
-            ))}
+        {activeTab === "suggest" && (
+          <div className="recommendations-container" ref={recommendationsRef}>
+            <ul className="recommendations-ul">
+              {suggestedTvShows.slice(0, 8).map((tv) => (
+                <li key={tv.id}>
+                  <Link to={`/tv/${tv.id}`}>
+                    <img
+                      className="cast-poster"
+                      src={`https://image.tmdb.org/t/p/w300/${tv.poster_path}`}
+                      alt={tv.name}
+                    />
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
-        </div>
-      )}
-
+        )}
 
         {activeTab === "cast" && (
-          <div>
-            <ul className="castul">
+          <div className="cast-container" ref={castRef}>
+            <ul className="cast-ul">
               {credits.cast.slice(0, 8).map((cast) => (
                 <li key={cast.id}>
                   <img
                     className="cast-poster"
                     src={`https://image.tmdb.org/t/p/w1280/${cast.profile_path}`}
                     alt={cast.title || cast.name}
-                    key={cast.id}
                     draggable="false"
                   />
                 </li>
@@ -265,7 +266,6 @@ const TvShowDetails = () => {
             </ul>
           </div>
         )}
-
 
 {activeTab === 'reviews' && (
   <div>
