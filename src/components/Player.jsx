@@ -5,6 +5,12 @@ import { getTvShowDetails } from '../services/tmdbService';
 
 const sources = [
   {
+    name: 'VIDEASY',
+    abbr: 'VEasy',
+    movieUrl: (id) => `https://player.videasy.net/movie/${id}`,
+    tvUrl: (id, s, e) => `https://player.videasy.net/tv/${id}/${s}/${e}`,
+  },
+  {
     name: 'VidLink',
     abbr: 'VLink',
     movieUrl: (id) => `https://vidlink.pro/movie/${id}`,
@@ -15,12 +21,6 @@ const sources = [
     abbr: 'VFast',
     movieUrl: (id) => `https://vidfast.pro/movie/${id}`,
     tvUrl: (id, s, e) => `https://vidfast.pro/tv/${id}/${s}/${e}`,
-  },
-  {
-    name: 'VIDEASY',
-    abbr: 'VEasy',
-    movieUrl: (id) => `https://player.videasy.net/movie/${id}`,
-    tvUrl: (id, s, e) => `https://player.videasy.net/tv/${id}/${s}/${e}`,
   },
   {
     name: 'MoviesAPI',
@@ -155,7 +155,7 @@ const Player = () => {
           src={embedUrl}
           frameBorder="0"
           allowFullScreen
- sandbox="allow-scripts allow-same-origin"
+          sandbox="allow-scripts allow-same-origin"
         ></iframe>
       )}
 
@@ -164,39 +164,45 @@ const Player = () => {
           <i className="fa-solid fa-home"></i>
         </Link>
 
-        <div className="source-selector">
-          {sources.slice(0, visibleSourcesCount).map((source, index) => (
-            <button
-              key={source.name}
-              className={`source-btn ${index === sourceIndex ? 'active' : ''}`}
-              onClick={() => setSourceIndex(index)}
-            >
-              {isMobile ? source.abbr : source.name}
-            </button>
-          ))}
-          {sources.length > visibleSourcesCount && (
-            <div className="dropdown" ref={dropdownRef}>
-              <button className="dropdown-toggle" onClick={() => setShowDropdown(!showDropdown)}>
-                <i className={`fa-solid fa-chevron-${showDropdown ? 'up' : 'down'}`}></i>
+        <div className="source-selector-wrapper">
+          <div className="server-info">
+            <i className="fa-solid fa-info-circle"></i>
+            <span>If the movie isn't working, try changing the server.</span>
+          </div>
+          <div className="source-selector">
+            {sources.slice(0, visibleSourcesCount).map((source, index) => (
+              <button
+                key={source.name}
+                className={`source-btn ${index === sourceIndex ? 'active' : ''}`}
+                onClick={() => setSourceIndex(index)}
+              >
+                {isMobile ? source.abbr : source.name}
               </button>
-              {showDropdown && (
-                <div className="dropdown-menu">
-                  {sources.slice(visibleSourcesCount).map((source, index) => (
-                    <button
-                      key={source.name}
-                      className={`source-btn ${index + visibleSourcesCount === sourceIndex ? 'active' : ''}`}
-                      onClick={() => {
-                        setSourceIndex(index + visibleSourcesCount);
-                        setShowDropdown(false);
-                      }}
-                    >
-                      {isMobile ? source.abbr : source.name}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
+            ))}
+            {sources.length > visibleSourcesCount && (
+              <div className="dropdown" ref={dropdownRef}>
+                <button className="dropdown-toggle" onClick={() => setShowDropdown(!showDropdown)}>
+                  <i className={`fa-solid fa-chevron-${showDropdown ? 'up' : 'down'}`}></i>
+                </button>
+                {showDropdown && (
+                  <div className="dropdown-menu">
+                    {sources.slice(visibleSourcesCount).map((source, index) => (
+                      <button
+                        key={source.name}
+                        className={`source-btn ${index + visibleSourcesCount === sourceIndex ? 'active' : ''}`}
+                        onClick={() => {
+                          setSourceIndex(index + visibleSourcesCount);
+                          setShowDropdown(false);
+                        }}
+                      >
+                        {isMobile ? source.abbr : source.name}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
 
         {params.season && (
