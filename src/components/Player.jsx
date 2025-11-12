@@ -155,6 +155,7 @@ const Player = () => {
           src={embedUrl}
           frameBorder="0"
           allowFullScreen
+ sandbox="allow-scripts allow-same-origin"
         ></iframe>
       )}
 
