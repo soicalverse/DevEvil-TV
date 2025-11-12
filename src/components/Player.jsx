@@ -6,36 +6,43 @@ import { getTvShowDetails } from '../services/tmdbService';
 const sources = [
   {
     name: 'VidLink',
+    abbr: 'VLink',
     movieUrl: (id) => `https://vidlink.pro/movie/${id}`,
     tvUrl: (id, s, e) => `https://vidlink.pro/tv/${id}/${s}/${e}`,
   },
   {
     name: 'VidFast',
+    abbr: 'VFast',
     movieUrl: (id) => `https://vidfast.pro/movie/${id}`,
     tvUrl: (id, s, e) => `https://vidfast.pro/tv/${id}/${s}/${e}`,
   },
   {
     name: 'VIDEASY',
+    abbr: 'VEasy',
     movieUrl: (id) => `https://player.videasy.net/movie/${id}`,
     tvUrl: (id, s, e) => `https://player.videasy.net/tv/${id}/${s}/${e}`,
   },
   {
     name: 'MoviesAPI',
+    abbr: 'MAPI',
     movieUrl: (id) => `https://moviesapi.club/movie/${id}`,
     tvUrl: (id, s, e) => `https://moviesapi.club/tv/${id}/${s}/${e}`,
   },
   {
     name: 'SuperEmbed',
+    abbr: 'SEmbed',
     movieUrl: (id) => `https://superembed.stream/movie/${id}`,
     tvUrl: (id, s, e) => `https://superembed.stream/tv/${id}/${s}/${e}`,
   },
   {
     name: 'VidSrc.pro',
+    abbr: 'VS.pro',
     movieUrl: (id) => `https://vidsrc.pro/embed/movie/${id}`,
     tvUrl: (id, s, e) => `https://vidsrc.pro/embed/tv/${id}/${s}/${e}`,
   },
    {
     name: 'VidSrc.to',
+    abbr: 'VS.to',
     movieUrl: (id) => `https://vidsrc.to/embed/movie/${id}`,
     tvUrl: (id, s, e) => `https://vidsrc.to/embed/tv/${id}/${s}/${e}`,
   },
@@ -47,6 +54,7 @@ const Player = () => {
   const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   const getParams = (search) => {
     const queryParams = new URLSearchParams(search);
@@ -55,6 +63,14 @@ const Player = () => {
     const episode = queryParams.get('e') || '';
     return { id, season, episode };
   };
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const [params, setParams] = useState(getParams(location.search));
   const [seasons, setSeasons] = useState([]);
@@ -128,6 +144,8 @@ const Player = () => {
     navigate(`/player/${params.id}?s=${params.season}&e=${newEpisode}`);
   };
 
+  const visibleSourcesCount = isMobile ? 3 : 4;
+
   return (
     <div className='player'>
       {embedUrl && (
@@ -146,32 +164,32 @@ const Player = () => {
         </Link>
 
         <div className="source-selector">
-          {sources.slice(0, 4).map((source, index) => (
+          {sources.slice(0, visibleSourcesCount).map((source, index) => (
             <button
               key={source.name}
               className={`source-btn ${index === sourceIndex ? 'active' : ''}`}
               onClick={() => setSourceIndex(index)}
             >
-              {source.name}
+              {isMobile ? source.abbr : source.name}
             </button>
           ))}
-          {sources.length > 4 && (
+          {sources.length > visibleSourcesCount && (
             <div className="dropdown" ref={dropdownRef}>
               <button className="dropdown-toggle" onClick={() => setShowDropdown(!showDropdown)}>
                 <i className={`fa-solid fa-chevron-${showDropdown ? 'up' : 'down'}`}></i>
               </button>
               {showDropdown && (
                 <div className="dropdown-menu">
-                  {sources.slice(4).map((source, index) => (
+                  {sources.slice(visibleSourcesCount).map((source, index) => (
                     <button
                       key={source.name}
-                      className={`source-btn ${index + 4 === sourceIndex ? 'active' : ''}`}
+                      className={`source-btn ${index + visibleSourcesCount === sourceIndex ? 'active' : ''}`}
                       onClick={() => {
-                        setSourceIndex(index + 4);
+                        setSourceIndex(index + visibleSourcesCount);
                         setShowDropdown(false);
                       }}
                     >
-                      {source.name}
+                      {isMobile ? source.abbr : source.name}
                     </button>
                   ))}
                 </div>
