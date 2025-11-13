@@ -1,14 +1,23 @@
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import '../../styles/NavBar.css';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [query, setQuery] = useState('');
   const location = useLocation();
+  const navigate = useNavigate();
   const isHomePage = location.pathname === '/';
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (query.trim()) {
+      navigate(`/search?query=${query.trim()}`);
+    }
   };
 
   return (
@@ -38,6 +47,21 @@ const Navbar = () => {
         </div>
       </div>
 
+      <div className="nav-center">
+        <form onSubmit={handleSearch} className="search-form">
+          <input
+            type="text"
+            placeholder="Search for movies and TV shows"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="search-input"
+          />
+          <button type="submit" className="search-button">
+            <i className="fas fa-magnifying-glass"></i>
+          </button>
+        </form>
+      </div>
+
       <div className="nav-right">
         <div className="mobile-icon">
           {isHomePage ? (
@@ -46,9 +70,6 @@ const Navbar = () => {
             <a href="/" className="home-icon-link"><i className="fa-solid fa-home"></i></a>
           )}
         </div>
-        <a href="/search" className="search-link">
-          <i className='fas fa-magnifying-glass search-icon'></i>
-        </a>
       </div>
 
       {isMenuOpen && (

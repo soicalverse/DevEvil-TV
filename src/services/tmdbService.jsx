@@ -1,3 +1,4 @@
+
 import axios from 'axios';
 
 const TMDB_API_KEY = process.env.REACT_APP_TMDB_API_KEY;
@@ -6,6 +7,26 @@ const BASE_URL = 'https://api.themoviedb.org/3';
 const tmdbService = axios.create({
   baseURL: BASE_URL,
 });
+
+export const getTrendingMedia = async () => {
+    try {
+      const response = await tmdbService.get(`/trending/all/week?api_key=${TMDB_API_KEY}`);
+      return response.data.results;
+    } catch (error) {
+      console.error('Error fetching trending media:', error);
+      throw error;
+    }
+  };
+
+  export const getMediaDetails = async (mediaType, mediaId) => {
+    try {
+      const response = await tmdbService.get(`/${mediaType}/${mediaId}?api_key=${TMDB_API_KEY}&append_to_response=videos,images,credits`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching media details:', error);
+      throw error;
+    }
+  };
 
 export const getTrendingMovies = async (page = 1) => {
   try {
@@ -163,32 +184,16 @@ export const getSeasonEpisodes = async (tvShowId, seasonNumber) => {
 };
 
 export const searchMedia = async (query) => {
-  try {
-    const response = await fetch(
-      `${BASE_URL}/search/multi?include_adult=false&api_key=${TMDB_API_KEY}&query=${query}`
-    );
-
-    if (!response.ok) {
-      throw new Error('Failed to fetch search results');
+    try {
+      const response = await tmdbService.get(
+        `/search/multi?api_key=${TMDB_API_KEY}&query=${query}`
+      );
+      return response.data.results;
+    } catch (error) {
+      console.error('Error fetching search results:', error);
+      throw error;
     }
-
-    const data = await response.json();
-
-    console.log('Search API Response:', data);
-
-    const results = data.results.map((result) => ({
-      id: result.id,
-      title: result.title || result.name,
-      poster_path: result.poster_path ? `${result.poster_path}` : null,
-      media_type: result.media_type,
-    }));
-
-    return results;
-  } catch (error) {
-    console.error('Error fetching search results:', error.message);
-    throw error;
-  }
-};
+  };
 
 
 export const getUpcomingMovies = async (page = 1) => {
