@@ -1,22 +1,31 @@
 import React, { useState, useRef, useEffect } from 'react';
 import '../styles/GenreFilter.css';
 
-const GenreFilter = ({ genres, selectedGenre, onGenreChange, title }) => {
+const GenreFilter = ({ genres, selectedGenre, onGenreChange, title, onToggle }) => {
   const [isOpen, setIsOpen] = useState(false);
   const sheetRef = useRef(null);
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
+    if (onToggle) {
+      onToggle(!isOpen);
+    }
   };
 
   const handleGenreSelect = (genreId) => {
     onGenreChange(genreId);
     setIsOpen(false);
+    if (onToggle) {
+      onToggle(false);
+    }
   };
 
   const handleClickOutside = (event) => {
     if (sheetRef.current && !sheetRef.current.contains(event.target)) {
       setIsOpen(false);
+      if (onToggle) {
+        onToggle(false);
+      }
     }
   };
 

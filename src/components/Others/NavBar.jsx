@@ -1,27 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import '../../styles/NavBar.css';
 
-const Navbar = () => {
+const Navbar = ({ isCategoryOpen }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [query, setQuery] = useState('');
   const location = useLocation();
   const navigate = useNavigate();
   const isHomePage = location.pathname === '/';
+  const isSearchPage = location.pathname === '/search';
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (query.trim()) {
-      navigate(`/search?query=${query.trim()}`);
+  useEffect(() => {
+    if (isSearchPage) {
+      const handler = setTimeout(() => {
+        if (query) {
+          navigate(`/search?query=${query}`);
+        } else {
+          navigate('/search');
+        }
+      }, 300); // Debounce search
+
+      return () => {
+        clearTimeout(handler);
+      };
     }
-  };
+  }, [query, navigate, isSearchPage]);
 
   return (
-    <div className={`navbar ${isMenuOpen ? 'mobile-menu-open' : ''}`}>
+    <div className={`navbar ${isMenuOpen ? 'mobile-menu-open' : ''} ${isCategoryOpen ? 'at-top' : ''}`}>
       <div className="nav-left">
         <a href="/" className="logo-link">
           <img src="/assets/logo2.png" alt="Logo" className="logo" />
@@ -48,7 +58,7 @@ const Navbar = () => {
       </div>
 
       <div className="nav-center">
-        <form onSubmit={handleSearch} className="search-form">
+        {isSearchPage ? (
           <input
             type="text"
             placeholder="Search for movies and TV shows"
@@ -56,10 +66,11 @@ const Navbar = () => {
             onChange={(e) => setQuery(e.target.value)}
             className="search-input"
           />
-          <button type="submit" className="search-button">
-            <i className="fas fa-magnifying-glass"></i>
-          </button>
-        </form>
+        ) : (
+          <a href="/search" className="search-link">
+            <i className="fas fa-magnifying-glass search-icon"></i>
+          </a>
+        )}
       </div>
 
       <div className="nav-right">
@@ -72,8 +83,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      {isMenuOpen && (
-        <div className="mobile-menu">
+      <div className="mobile-menu">
           <a href="/" className="navbar-link">Home</a>
           {isHomePage && (
             <>
@@ -87,7 +97,6 @@ const Navbar = () => {
             </>
           )}
         </div>
-      )}
     </div>
   );
 };

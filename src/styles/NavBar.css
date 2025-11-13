@@ -1,4 +1,16 @@
-/* Keyframe animation for the navbar */
+/* Keyframe animation for the navbar on mobile */
+@keyframes settleInMobile {
+  from {
+    opacity: 0;
+    transform: translateY(20px) translateX(-50%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) translateX(-50%);
+  }
+}
+
+/* Keyframe animation for the navbar on desktop */
 @keyframes settleIn {
   from {
     opacity: 0;
@@ -15,28 +27,23 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  /* Always floating */
   position: fixed;
-  top: 20px;
+  bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
   width: 95%;
   max-width: 1400px;
   z-index: 1000;
-
-  /* Glassmorphism Effect */
   background-color: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-radius: 80px; /* Updated as requested */
+  border-radius: 80px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-
-  /* Animation */
-  animation: settleIn 0.8s ease-out forwards;
+  animation: settleInMobile 0.8s ease-out forwards;
 }
 
-.nav-left, .nav-right {
+.nav-left, .nav-right, .nav-center {
   display: flex;
   align-items: center;
   gap: 1.5rem;
@@ -51,7 +58,7 @@
 }
 
 .desktop-links {
-  display: none; /* Hidden on mobile by default */
+  display: none;
 }
 
 .navbar-link, .dropbtn {
@@ -98,8 +105,20 @@
   grid-template-columns: repeat(2, 1fr);
 }
 
-.search-link {
-  display: block;
+.search-input {
+  background-color: transparent;
+  border: none;
+  color: yellow;
+  font-size: 1rem;
+  outline: none;
+}
+
+.search-button {
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 1.2rem;
 }
 
 .search-icon, .menu-icon, .home-icon-link i {
@@ -113,9 +132,9 @@
 }
 
 .mobile-menu {
-  display: none; /* Hidden by default */
+  display: none;
   position: absolute;
-  top: 70px;
+  bottom: 70px;
   left: 0;
   right: 0;
   background-color: rgba(0, 0, 0, 0.9);
@@ -130,6 +149,12 @@
 
 /* Desktop Styles */
 @media (min-width: 768px) {
+  .navbar {
+    top: 20px;
+    bottom: auto;
+    animation: settleIn 0.8s ease-out forwards;
+  }
+
   .desktop-links {
     display: flex;
     align-items: center;
@@ -138,5 +163,10 @@
 
   .mobile-icon {
     display: none;
+  }
+
+  .search-form {
+    display: flex;
+    align-items: center;
   }
 }

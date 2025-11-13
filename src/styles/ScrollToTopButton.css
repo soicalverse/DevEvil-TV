@@ -1,0 +1,23 @@
+.scroll-to-top {
+  position: fixed;
+  bottom: 95px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.scroll-to-top button {
+  background-color: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 50%;
+  font-size: 20px;
+  backdrop-filter: blur(10px);
+}
+
+@media (min-width: 768px) {
+  .scroll-to-top {
+    display: none;
+  }
+}
