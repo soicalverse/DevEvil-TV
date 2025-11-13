@@ -18,7 +18,7 @@
   right: 0;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start; 
   padding: 10px;
   background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
   z-index: 10;
@@ -42,6 +42,13 @@
   background: rgba(0, 0, 0, 0.8);
 }
 
+.selectors-container {
+  display: flex;
+  flex-direction: column; 
+  align-items: flex-end; 
+  gap: 10px; 
+}
+
 .source-selector-wrapper {
   display: flex;
   flex-direction: column;
@@ -63,7 +70,6 @@
 .server-info i {
   font-size: 1rem;
 }
-
 
 .source-selector {
   display: flex;
@@ -126,4 +132,35 @@
   flex-direction: column;
   gap: 8px;
   z-index: 20;
+}
+
+@media (max-width: 768px) {
+  .player-overlay-nav {
+    align-items: flex-start;
+  }
+
+  .selectors-container {
+    align-items: flex-end;
+  }
+
+  .player-overlay-nav a, .player-overlay-nav button {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+
+  .source-btn {
+    padding: 6px 10px;
+    font-size: 0.7rem;
+  }
+
+  .episode-selector select {
+    padding: 6px 10px;
+    font-size: 0.7rem;
+  }
+
+  .server-info {
+    font-size: 0.7rem;
+    padding: 4px 8px;
+    text-align: right; 
+  }
 }

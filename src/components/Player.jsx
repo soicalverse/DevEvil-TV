@@ -105,8 +105,8 @@ const Player = () => {
           if (details && details.seasons) {
             setSeasons(details.seasons);
             const currentSeasonData = details.seasons.find(s => s.season_number === parseInt(params.season, 10));
-            if (currentSeasonData && currentSeasonData.episodes) {
-              setEpisodes(currentSeasonData.episodes);
+            if (currentSeasonData) {
+              setEpisodes(currentSeasonData.episodes || []);
             }
           }
         } catch (error) {
@@ -155,7 +155,6 @@ const Player = () => {
           src={embedUrl}
           frameBorder="0"
           allowFullScreen
-          sandbox="allow-scripts allow-same-origin"
         ></iframe>
       )}
 
@@ -164,65 +163,67 @@ const Player = () => {
           <i className="fa-solid fa-home"></i>
         </Link>
 
-        <div className="source-selector-wrapper">
-          <div className="server-info">
-            <i className="fa-solid fa-info-circle"></i>
-            <span>If the movie isn't working, try changing the server.</span>
-          </div>
-          <div className="source-selector">
-            {sources.slice(0, visibleSourcesCount).map((source, index) => (
-              <button
-                key={source.name}
-                className={`source-btn ${index === sourceIndex ? 'active' : ''}`}
-                onClick={() => setSourceIndex(index)}
-              >
-                {isMobile ? source.abbr : source.name}
-              </button>
-            ))}
-            {sources.length > visibleSourcesCount && (
-              <div className="dropdown" ref={dropdownRef}>
-                <button className="dropdown-toggle" onClick={() => setShowDropdown(!showDropdown)}>
-                  <i className={`fa-solid fa-chevron-${showDropdown ? 'up' : 'down'}`}></i>
-                </button>
-                {showDropdown && (
-                  <div className="dropdown-menu">
-                    {sources.slice(visibleSourcesCount).map((source, index) => (
-                      <button
-                        key={source.name}
-                        className={`source-btn ${index + visibleSourcesCount === sourceIndex ? 'active' : ''}`}
-                        onClick={() => {
-                          setSourceIndex(index + visibleSourcesCount);
-                          setShowDropdown(false);
-                        }}
-                      >
-                        {isMobile ? source.abbr : source.name}
-                      </button>
-                    ))}
+        <div className="selectors-container">
+            <div className="source-selector-wrapper">
+              <div className="server-info">
+                <i className="fa-solid fa-info-circle"></i>
+                <span>If the movie isn't working, try changing the server.</span>
+              </div>
+              <div className="source-selector">
+                {sources.slice(0, visibleSourcesCount).map((source, index) => (
+                  <button
+                    key={source.name}
+                    className={`source-btn ${index === sourceIndex ? 'active' : ''}`}
+                    onClick={() => setSourceIndex(index)}
+                  >
+                    {isMobile ? source.abbr : source.name}
+                  </button>
+                ))}
+                {sources.length > visibleSourcesCount && (
+                  <div className="dropdown" ref={dropdownRef}>
+                    <button className="dropdown-toggle" onClick={() => setShowDropdown(!showDropdown)}>
+                      <i className={`fa-solid fa-chevron-${showDropdown ? 'up' : 'down'}`}></i>
+                    </button>
+                    {showDropdown && (
+                      <div className="dropdown-menu">
+                        {sources.slice(visibleSourcesCount).map((source, index) => (
+                          <button
+                            key={source.name}
+                            className={`source-btn ${index + visibleSourcesCount === sourceIndex ? 'active' : ''}`}
+                            onClick={() => {
+                              setSourceIndex(index + visibleSourcesCount);
+                              setShowDropdown(false);
+                            }}
+                          >
+                            {isMobile ? source.abbr : source.name}
+                          </button>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
-            )}
-          </div>
-        </div>
+            </div>
 
-        {params.season && (
-          <div className="episode-selector">
-            <select value={params.season} onChange={handleSeasonChange}>
-              {seasons.map(s => (
-                <option key={s.season_number} value={s.season_number}>
-                  Season {s.season_number}
-                </option>
-              ))}
-            </select>
-            <select value={params.episode} onChange={handleEpisodeChange}>
-              {episodes.map(ep => (
-                <option key={ep.id} value={ep.episode_number}>
-                  Episode {ep.episode_number}: {ep.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
+            {params.season && (
+              <div className="episode-selector">
+                <select value={params.season} onChange={handleSeasonChange}>
+                  {seasons.map(s => (
+                    <option key={s.season_number} value={s.season_number}>
+                      {isMobile ? `S${s.season_number}` : `Season ${s.season_number}`}
+                    </option>
+                  ))}
+                </select>
+                <select value={params.episode} onChange={handleEpisodeChange}>
+                  {episodes.map(ep => (
+                    <option key={ep.id} value={ep.episode_number}>
+                      {isMobile ? `E${ep.episode_number}` : `Episode ${ep.episode_number}: ${ep.name}`}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+        </div>
 
         {detailsUrl && (
           <Link to={detailsUrl}>
