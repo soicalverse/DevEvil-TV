@@ -1,42 +1,79 @@
 import React, { useState, useEffect } from 'react';
-import { searchMedia } from '../services/tmdbService';
+import { useLocation } from 'react-router-dom';
+import { searchMedia, getTrendingMedia } from '../services/tmdbService';
 import MediaCard from './MediaCard';
 import '../styles/Search.css';
-import { useLocation } from 'react-router-dom';
 
 const SearchPage = () => {
   const [query, setQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
+  const [loading, setLoading] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
-    const fetchSearchResults = async () => {
+    const fetchMedia = async () => {
+      setLoading(true);
       try {
         if (query.trim() !== '') {
           const results = await searchMedia(query);
           setSearchResults(results);
         } else {
-          setSearchResults([]);
+          const trendingResults = await getTrendingMedia();
+          setSearchResults(trendingResults);
         }
       } catch (error) {
-        // Handle error
+        console.error("Failed to fetch media:", error);
+        setSearchResults([]);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchSearchResults();
-  }, [query]);
-
-  useEffect(() => {
     const searchParam = new URLSearchParams(location.search).get('search');
     if (searchParam) {
       setQuery(searchParam);
+    } else {
+      fetchMedia();
     }
   }, [location.search]);
 
+  useEffect(() => {
+    const fetchQueryResults = async () => {
+        if (query.trim() === '') {
+            // Optionally, you could reload trending media here if the user clears the search
+            // For now, it will just clear the results, which is also a valid approach.
+            setSearchResults([]);
+            return;
+        }
+
+        setLoading(true);
+        try {
+            const results = await searchMedia(query);
+            setSearchResults(results);
+        } catch (error) {
+            console.error("Failed to fetch search results:", error);
+            setSearchResults([]);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // This will avoid running a search on the initial render if the query is set from the URL
+    const searchParam = new URLSearchParams(location.search).get('search');
+    if (query !== searchParam) {
+        const handler = setTimeout(() => {
+            fetchQueryResults();
+        }, 500); // Debounce API calls
+
+        return () => {
+            clearTimeout(handler);
+        };
+    }
+}, [query]);
+
+
   return (
     <div>
-
-      
       <input
         className='search'
         type="text"
@@ -45,12 +82,15 @@ const SearchPage = () => {
         onChange={(e) => setQuery(e.target.value)}
       />
 
-      <div className="search-results">
-        {searchResults.map((media) => (
-          <MediaCard key={media.id} media={media} />
-        ))}
-      </div>
-
+      {loading ? (
+        <div className="loading">Loading...</div>
+      ) : (
+        <div className="search-results">
+          {searchResults.map((media) => (
+            <MediaCard key={media.id} media={media} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
