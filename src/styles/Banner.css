@@ -1,9 +1,8 @@
-
 .banner {
     position: relative;
     height: 100vh;
     width: 100%;
-    padding-top: 100px;
+    /* padding-top: 100px; */ /* Removed to fix black bar issue */
 }
 
 .banner-card {
@@ -36,6 +35,7 @@
     color: #fff;
     margin-left: 5%;
     max-width: 45%;
+    padding-top: 100px; /* Added padding here to position content correctly behind transparent navbar */
 }
 
 .card-info {
@@ -113,6 +113,7 @@
 
     .card-content {
         max-width: 80%;
+        padding-top: 80px;
     }
 }
 
@@ -124,6 +125,7 @@
     .card-content {
         max-width: 90%;
         margin-left: 2rem;
+        padding-top: 70px;
     }
 
     .watch-now-button {
