@@ -18,11 +18,8 @@ const MovieDetails = () => {
   const [selectedSeason, setSelectedSeason] = useState(1);
   const [selectedEpisode] = useState(1);
 
-  const recommendationsRef = useRef(null);
-  const castRef = useRef(null);
-
-  useHorizontalScroll(recommendationsRef);
-  useHorizontalScroll(castRef);
+  const recommendationsRef = useHorizontalScroll();
+  const castRef = useHorizontalScroll();
 
   useEffect(() => {
     const fetchData = async () => {

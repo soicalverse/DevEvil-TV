@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import {
@@ -8,7 +8,7 @@ import {
   getTvTrailer
 } from "../services/tmdbService";
 import SeasonDetails from "./TV/SeasonDetails";
-import { useHorizontalScroll } from "../hooks/useHorizontalScroll";
+import useHorizontalScroll from "../hooks/useHorizontalScroll";
 import "../styles/TvShowDetails.css";
 
 
@@ -21,8 +21,11 @@ const TvShowDetails = () => {
   const [tvReviews, setTvReviews] = useState([]);
   const [trailerKey, setTrailerKey] = useState(null);
   
-  const recommendationsRef = useHorizontalScroll();
-  const castRef = useHorizontalScroll();
+  const recommendationsRef = useRef(null);
+  const castRef = useRef(null);
+
+  useHorizontalScroll(recommendationsRef);
+  useHorizontalScroll(castRef);
 
   useEffect(() => {
     const fetchTvShowDetails = async () => {

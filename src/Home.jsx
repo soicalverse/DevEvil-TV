@@ -9,7 +9,6 @@ import Categories from './components/Categories';
 import Anime from './components/Anime';
 import AnimeTv from './components/AnimeTv';
 import NowPlaying from './components/NowPlaying';
-import PopularPerformers from './components/PopularPerformers';
 import Footer from './components/Others/Footer';
 
 const Home = () => {
@@ -38,7 +37,6 @@ const Home = () => {
       <Anime />
       <AnimeTv />
       <NowPlaying />
-      <PopularPerformers />
       <Footer />
     </React.Fragment>
   );
