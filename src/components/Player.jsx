@@ -167,7 +167,7 @@ const Player = () => {
             <div className="source-selector-wrapper">
               <div className="server-info">
                 <i className="fa-solid fa-info-circle"></i>
-                <span>If the movie isn't working, try changing the server.</span>
+                <span>If the movie isn&apos;t working, try changing the server.</span>
               </div>
               <div className="source-selector">
                 {sources.slice(0, visibleSourcesCount).map((source, index) => (

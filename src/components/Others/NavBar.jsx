@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate, NavLink } from 'react-router-dom';
 import '../../styles/NavBar.css';
 
@@ -6,59 +6,61 @@ const Navbar = () => {
   const [query, setQuery] = useState('');
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileSearchActive, setIsMobileSearchActive] = useState(false);
-  const [isGenreSheetOpen, setIsGenreSheetOpen] = useState(false); // New state for genre sheet
+  const [isGenreSheetOpen, setIsGenreSheetOpen] = useState(false); // State for genre filter
+  const [isNavAtTop, setIsNavAtTop] = useState(false); // State for mobile scroll animation
+  const lastScrollY = useRef(0);
+
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Reset search on page change
   useEffect(() => {
     setIsMobileSearchActive(false);
     setQuery('');
   }, [location]);
 
-  // Handle scroll effect for desktop
   useEffect(() => {
+    // --- Main scroll handler ---
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+      const currentScrollY = window.scrollY;
+      setIsScrolled(currentScrollY > 20);
 
-  // --- THE FIX for genre sheet detection ---
-  // This effect watches for changes in the DOM to see if the genre sheet is open
-  useEffect(() => {
-    const targetNode = document.body;
-    
-    const checkGenreSheet = () => {
+      // --- Mobile scroll-to-top animation logic ---
+      if (window.innerWidth <= 768) {
+        const windowHeight = window.innerHeight;
+        const pageHeight = document.documentElement.scrollHeight;
+        const isScrollingDown = currentScrollY > lastScrollY.current;
+        const isNearPageBottom = currentScrollY + windowHeight >= pageHeight - 150;
+
+        if (isScrollingDown && isNearPageBottom) {
+          if (!isNavAtTop) setIsNavAtTop(true);
+        } else if (!isScrollingDown) {
+          if (isNavAtTop) setIsNavAtTop(false);
+        }
+      }
+      lastScrollY.current = currentScrollY < 0 ? 0 : currentScrollY;
+    };
+
+    // --- Observer for genre filter sheet ---
+    const observer = new MutationObserver(() => {
       const sheet = document.querySelector('.genre-filter-sheet');
       const sheetIsOpen = sheet ? sheet.classList.contains('open') : false;
-      // Update state only if it has changed to prevent unnecessary re-renders
       if (sheetIsOpen !== isGenreSheetOpen) {
         setIsGenreSheetOpen(sheetIsOpen);
       }
-    };
+    });
+    observer.observe(document.body, { attributes: true, childList: true, subtree: true });
 
-    // Check when the component mounts
-    checkGenreSheet();
-    
-    // Use a MutationObserver to efficiently detect class changes on the sheet
-    const observer = new MutationObserver(checkGenreSheet);
+    window.addEventListener('scroll', handleScroll, { passive: true });
 
-    // Start observing the entire document body for changes
-    observer.observe(targetNode, { attributes: true, childList: true, subtree: true });
-
-    // Clean up observer on component unmount
     return () => {
+      window.removeEventListener('scroll', handleScroll);
       observer.disconnect();
     };
-  }, [isGenreSheetOpen]); // Rerun check if state is changed from somewhere else
+  }, [isNavAtTop, isGenreSheetOpen]);
 
   const handleSearch = (e) => {
     e.preventDefault();
-    if (query.trim()) {
-      navigate(`/search?query=${query.trim()}`);
-    }
+    if (query.trim()) navigate(`/search?query=${query.trim()}`);
   };
 
   const openMobileSearch = (e) => {
@@ -66,34 +68,17 @@ const Navbar = () => {
     setIsMobileSearchActive(true);
   };
 
-  const closeMobileSearch = () => {
-    setIsMobileSearchActive(false);
-  };
+  const closeMobileSearch = () => setIsMobileSearchActive(false);
 
   const renderContent = () => {
     if (isMobileSearchActive) {
       return (
         <div className="mobile-search-view">
           <form onSubmit={handleSearch} className="search-form-mobile">
-            <button type="button" onClick={closeMobileSearch} className="back-button">
-                <i className="fas fa-arrow-left"></i>
-            </button>
-            <input 
-              type="text" 
-              placeholder="Search for movies, TV shows..." 
-              value={query} 
-              onChange={(e) => setQuery(e.target.value)} 
-              className="search-input-mobile" 
-              autoFocus 
-            />
-            {query && (
-              <button type="button" onClick={() => setQuery('')} className="clear-button">
-                <i className="fas fa-times"></i>
-              </button>
-            )}
-            <button type="submit" className="mobile-search-submit-button">
-               <i className="fas fa-magnifying-glass"></i>
-            </button>
+            <button type="button" onClick={closeMobileSearch} className="back-button"><i className="fas fa-arrow-left"></i></button>
+            <input type="text" placeholder="Search..." value={query} onChange={(e) => setQuery(e.target.value)} className="search-input-mobile" autoFocus />
+            {/* VISIBLE SEARCH SUBMIT BUTTON ADDED */}
+            <button type="submit" className="mobile-search-submit-button"><i className="fas fa-magnifying-glass"></i></button>
           </form>
         </div>
       );
@@ -101,45 +86,40 @@ const Navbar = () => {
 
     return (
       <div className="default-nav-view">
-         <div className="nav-left">
-          <a href="/" className="logo-link">
-            <img src="/assets/logo2.png" alt="Logo" className="logo" />
-          </a>
-          <div className="desktop-links">
-            <NavLink to="/" className="navbar-link">Home</NavLink>
-            <NavLink to="/#movies" className="navbar-link">Movies</NavLink>
-            <NavLink to="/#tvshows" className="navbar-link">TV Shows</NavLink>
-          </div>
+        {/* --- Desktop Content --- */}
+        <div className="nav-left desktop-only">
+          <NavLink to="/" className="logo-link"><img src="/assets/logo2.png" alt="Logo" className="logo" /></NavLink>
+          {/* HOME BUTTON ADDED */}
+          <NavLink to="/" className={({isActive}) => isActive ? "navbar-link active" : "navbar-link"}>Home</NavLink>
         </div>
-
-        <div className="nav-center">
+        <div className="nav-center desktop-only">
           <form onSubmit={handleSearch} className="search-form">
             <input type="text" placeholder="Search..." value={query} onChange={(e) => setQuery(e.target.value)} className="search-input" />
             <button type="submit" className="search-button"><i className="fas fa-magnifying-glass"></i></button>
           </form>
         </div>
+        <div className="nav-right desktop-only"></div>
 
-        <div className="nav-right">
-          <a href="/search" onClick={openMobileSearch} className="search-link-mobile">
-            <i className="fas fa-magnifying-glass"></i>
-          </a>
-          <div className="desktop-links">
-            <div className="dropdown">
-              <button className="dropbtn">Others <i className='fas fa-sort-down'></i></button>
-              <div className="dropdown-content">
-                <a href="#anime">Anime</a>
-                <a href="#nowplaying">Now Playing</a>
-                <a href="#trailers">Trailers</a>
-              </div>
-            </div>
-          </div>
+        {/* --- Mobile Content --- */}
+        <div className="mobile-nav-links mobile-only">
+          <NavLink to="/" className="logo-link mobile-logo-link"><img src="/assets/logo2.png" alt="Logo" className="mobile-logo" /></NavLink>
+          <NavLink to="/" className={({isActive}) => isActive ? "navbar-link active" : "navbar-link"}><i className="fas fa-home"></i><span className="nav-text">Home</span></NavLink>
+          <a href="/search" onClick={openMobileSearch} className="navbar-link"><i className="fas fa-magnifying-glass"></i><span className="nav-text">Search</span></a>
         </div>
       </div>
     );
-  }
+  };
+
+  const navClasses = [
+    'navbar',
+    isScrolled ? 'scrolled' : '',
+    isMobileSearchActive ? 'search-active' : '',
+    isGenreSheetOpen ? 'genre-sheet-open' : '', // Class for hiding
+    !isGenreSheetOpen && isNavAtTop ? 'navbar--at-top' : '' // Class for scroll animation
+  ].filter(Boolean).join(' ');
 
   return (
-    <div className={`navbar ${isScrolled ? 'scrolled' : ''} ${isGenreSheetOpen ? 'genre-sheet-open' : ''}`}>
+    <div className={navClasses}>
         {renderContent()}
     </div>
   );

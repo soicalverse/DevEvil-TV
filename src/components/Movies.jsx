@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { getTrendingMovies, getPopularMovies, getUpcomingMovies } from '../services/tmdbService';
 import Carousel from './Carousel';
 import '../styles/Movies.css';
@@ -43,6 +44,13 @@ const Movies = ({ movieType, page, setPage, onMovieTypeChange }) => {
       <Carousel items={movies} type="movie" handleSeeMore={handleSeeMore} showSeeMore={showSeeMore} />
     </div>
   );
+};
+
+Movies.propTypes = {
+  movieType: PropTypes.string.isRequired,
+  page: PropTypes.number.isRequired,
+  setPage: PropTypes.func.isRequired,
+  onMovieTypeChange: PropTypes.func.isRequired,
 };
 
 export default Movies;
