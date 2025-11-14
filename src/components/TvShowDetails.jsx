@@ -110,7 +110,7 @@ const TvShowDetails = () => {
               ))}{" "}
               <span className="date">{first_air_date}</span>{" "}
               <span className="dot">•</span>{" "}
-              <span className="date">{Math.round(vote_average * 10)}%</span>{" "}
+              <span className="date">{vote_average ? `${Math.round(vote_average * 10)}%` : 'N/A'}</span>{" "}
               <span className="dot">•</span>{" "}
               <span className="date">{number_of_seasons} Seasons</span>{" "}
               <span className="dot">•</span>{" "}

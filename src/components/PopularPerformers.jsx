@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { getPopularPerformers } from '../services/tmdbService';
 import Carousel from './Carousel';
 import '../styles/Movies.css';
 
@@ -10,9 +9,13 @@ const PopularPerformers = () => {
 
   useEffect(() => {
     const fetchPopularPerformers = async () => {
-      const response = await getPopularPerformers(page);
-      setPerformers(prev => page === 1 ? response : [...prev, ...response]);
-      setShowSeeMore(response.length > 0);
+        const API_KEY = process.env.REACT_APP_API_KEY;
+        const response = await fetch(`https://api.themoviedb.org/3/person/popular?api_key=${API_KEY}&page=${page}`);
+        const data = await response.json();
+      if (data && data.results) {
+        setPerformers(prev => page === 1 ? data.results : [...prev, ...data.results]);
+        setShowSeeMore(data.results.length > 0);
+      }
     };
     fetchPopularPerformers();
   }, [page]);

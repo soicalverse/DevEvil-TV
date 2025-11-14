@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import '../styles/GenreFilter.css';
 
 const GenreFilter = ({ genres, selectedGenre, onGenreChange, title, onToggle }) => {
@@ -61,6 +62,19 @@ const GenreFilter = ({ genres, selectedGenre, onGenreChange, title, onToggle }) 
       </div>
     </div>
   );
+};
+
+GenreFilter.propTypes = {
+  genres: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  selectedGenre: PropTypes.number,
+  onGenreChange: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
+  onToggle: PropTypes.func,
 };
 
 export default GenreFilter;

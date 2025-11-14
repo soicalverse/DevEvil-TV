@@ -1,21 +1,18 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
-export const useHorizontalScroll = () => {
-  const elRef = useRef();
+const useHorizontalScroll = (ref) => {
   useEffect(() => {
-    const el = elRef.current;
-    if (el) {
+    const element = ref.current;
+    if (element) {
       const onWheel = (e) => {
         if (e.deltaY === 0) return;
         e.preventDefault();
-        el.scrollTo({
-          left: el.scrollLeft + e.deltaY,
-          behavior: 'smooth',
-        });
+        element.scrollLeft += e.deltaY;
       };
-      el.addEventListener('wheel', onWheel);
-      return () => el.removeEventListener('wheel', onWheel);
+      element.addEventListener('wheel', onWheel);
+      return () => element.removeEventListener('wheel', onWheel);
     }
-  }, []);
-  return elRef;
+  }, [ref]);
 };
+
+export default useHorizontalScroll;
