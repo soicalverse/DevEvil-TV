@@ -1,10 +1,73 @@
 import React, { useState, useEffect, useRef } from "react";
+import PropTypes from 'prop-types';
+import MediaCard from './MediaCard';
 import { Link, useParams, useLocation } from "react-router-dom";
 import YouTube from "react-youtube";
 import "../../src/styles/MovieDetails.css";
 import SeasonDetails from './TV/SeasonDetails';
 import { getMovieDetails, getTvShowDetails } from "../services/tmdbService";
 import useHorizontalScroll from "../hooks/useHorizontalScroll";
+import '../styles/Carousel.css';
+
+const Carousel = ({ items, type, handleSeeMore, showSeeMore }) => {
+  const carouselRef = useHorizontalScroll();
+
+  return (
+    <div className="carousel-container" ref={carouselRef}>
+      <div className="carousel-wrapper">
+        {items.map((item) => (
+          <div className="carousel-item" key={item.id}>
+            <MediaCard item={item} type={type} />
+          </div>
+        ))}
+        {showSeeMore && (
+          <div className="see-more-card-container">
+            <div className="see-more-card" onClick={handleSeeMore}>
+              <i className="fas fa-arrow-right"></i>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+Carousel.propTypes = {
+  items: PropTypes.array.isRequired,
+  type: PropTypes.string.isRequired,
+  handleSeeMore: PropTypes.func.isRequired,
+  showSeeMore: PropTypes.bool.isRequired,
+};
+
+const CastCarousel = ({ items }) => {
+  const carouselRef = useHorizontalScroll();
+
+  return (
+    <div className="carousel-container" ref={carouselRef}>
+      <div className="carousel-wrapper">
+        {items.map((item) => (
+          <div className="carousel-item" key={item.id}>
+            <div className="cast-card">
+              <img
+                src={`https://image.tmdb.org/t/p/w200/${item.profile_path}`}
+                alt={item.name}
+                className="cast-image"
+              />
+              <div className="cast-info">
+                <p className="cast-name">{item.name}</p>
+                <p className="cast-character">{item.character}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+CastCarousel.propTypes = {
+  items: PropTypes.array.isRequired,
+};
 
 const MovieDetails = () => {
   const { id } = useParams();
@@ -17,9 +80,6 @@ const MovieDetails = () => {
   const [showTrailer, setShowTrailer] = useState(false);
   const [selectedSeason, setSelectedSeason] = useState(1);
   const [selectedEpisode] = useState(1);
-
-  const recommendationsRef = useHorizontalScroll();
-  const castRef = useHorizontalScroll();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,7 +97,7 @@ const MovieDetails = () => {
 
   const handleWatchTrailer = () => setShowTrailer(!!trailerKey);
   const handleCloseTrailer = () => setShowTrailer(false);
-    
+
   const handleShare = () => {
     navigator.clipboard.writeText(window.location.href)
       .then(() => alert("Link copied to clipboard!"))
@@ -63,7 +123,7 @@ const MovieDetails = () => {
       {showTrailer && (
         <div className="youtube-overlay" onClick={handleCloseTrailer}>
           <div className="youtube-container">
-            <YouTube videoId={trailerKey} opts={{ width: "100%", height: "100%" }} />
+            <YouTube videoId={trailerKey} opts={{ width: "100%", height: "100%" }} className="youtube-player-wrapper" />
             <button className="close-trailer-button" onClick={handleCloseTrailer}>&times;</button>
           </div>
         </div>
@@ -100,7 +160,7 @@ const MovieDetails = () => {
           <div className="tabs">
               {isMovie && (
                   <button className={`tab-button ${activeTab === "suggested" ? "active" : ""}`} onClick={() => setActiveTab("suggested")}>
-                      Recommendations
+                      Suggested
                   </button>
               )}
               {!isMovie && (
@@ -112,7 +172,7 @@ const MovieDetails = () => {
                   {isMovie ? "Cast" : "Series Cast"}
               </button>
               <button className={`tab-button ${activeTab === 'reviews' ? 'active' : ''}`} onClick={() => setActiveTab('reviews')}>
-                  User Reviews
+                  Reviews
               </button>
           </div>
 
@@ -120,42 +180,15 @@ const MovieDetails = () => {
               {activeTab === 'seasons' && !isMovie && (
                   <SeasonDetails tvShowId={id} seasons={media.seasons} onSeasonSelect={setSelectedSeason} />
               )}
-    
+
               {activeTab === "suggested" && (
-                <div className="recommendations-container" ref={recommendationsRef}>
-                  <ul className="recommendations-ul">
-                    {(recommendations?.results || []).map((rec) => (
-                      <li key={rec.id}>
-                        <Link to={`/${rec.media_type || 'movie'}/${rec.id}`}>
-                          <img
-                            className="cast-poster"
-                            src={`https://image.tmdb.org/t/p/w300/${rec.poster_path}`}
-                            alt={rec.title || rec.name}
-                          />
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                <Carousel items={recommendations.results} type={"movie"} />
               )}
-      
+
               {activeTab === "cast" && (
-                <div className="cast-container" ref={castRef}>
-                  <ul className="cast-ul">
-                    {(credits?.cast || []).map((member) => (
-                      <li key={member.id}>
-                        <img
-                          className="cast-poster"
-                          src={`https://image.tmdb.org/t/p/w200/${member.profile_path}`}
-                          alt={member.name}
-                          draggable="false"
-                        />
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                <CastCarousel items={credits.cast} />
               )}
-      
+
               {activeTab === 'reviews' && (
                 <div className="reviews-list">
                   {(reviews?.results || []).length > 0 ? (
@@ -174,5 +207,5 @@ const MovieDetails = () => {
     </div>
   );
 };
-    
+
 export default MovieDetails;

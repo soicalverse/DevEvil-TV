@@ -67,5 +67,5 @@
 
 /* === DESKTOP SEARCH === */
 .search-form { display: flex; width: 100%; }
-.search-input { width: 100%; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px 0 0 20px; color: #fff; padding: 8px 15px; outline: none; }
-.search-button { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-left: none; border-radius: 0 20px 20px 0; color: #fff; cursor: pointer; padding: 8px 15px; }
+.search-input { width: 100%; background: rgba(255, 255, 255, 0.221); border: 1px solid rgba(255, 255, 255, 0.672); border-radius: 20px 0 0 20px; color: #ffffff; padding: 8px 15px; outline: none; }
+.search-button { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.888); border-left: none; border-radius: 0 20px 20px 0; color: #ffffff; cursor: pointer; padding: 8px 15px; }

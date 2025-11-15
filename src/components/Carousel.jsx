@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import MediaCard from './MediaCard';
 import '../styles/Carousel.css';
+import '../styles/main.css';
 import useHorizontalScroll from '../hooks/useHorizontalScroll';
 
 const Carousel = ({ items, type, handleSeeMore, showSeeMore }) => {

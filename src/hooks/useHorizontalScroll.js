@@ -1,67 +1,68 @@
-
+// src/hooks/useHorizontalScroll.js
 import { useEffect, useRef } from "react";
 
 const useHorizontalScroll = () => {
-  const elRef = useRef();
+  const elRef = useRef(null);
 
   useEffect(() => {
     const el = elRef.current;
-    if (el) {
-      let isDown = false;
-      let startX;
-      let scrollLeft;
+    if (!el) return;
 
-      const onMouseDown = (e) => {
-        isDown = true;
-        el.classList.add("active");
-        startX = e.pageX - el.offsetLeft;
-        scrollLeft = el.scrollLeft;
-      };
+    let isDown = false;
+    let startX;
+    let scrollLeft;
 
-      const onMouseLeave = () => {
-        isDown = false;
-        el.classList.remove("active");
-      };
+    // DRAG
+    const onMouseDown = (e) => {
+      isDown = true;
+      el.classList.add("active");
+      startX = e.pageX - el.offsetLeft;
+      scrollLeft = el.scrollLeft;
+    };
 
-      const onMouseUp = () => {
-        isDown = false;
-        el.classList.remove("active");
-      };
+    const onMouseLeave = () => {
+      isDown = false;
+      el.classList.remove("active");
+    };
 
-      const onMouseMove = (e) => {
-        if (!isDown) return;
+    const onMouseUp = () => {
+      isDown = false;
+      el.classList.remove("active");
+    };
+
+    const onMouseMove = (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - el.offsetLeft;
+      const walk = (x - startX) * 2;
+      el.scrollLeft = scrollLeft - walk;
+    };
+
+    // WHEEL → HORIZONTAL (CRITICAL FIX)
+    const onWheel = (e) => {
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
         e.preventDefault();
-        const x = e.pageX - el.offsetLeft;
-        const walk = (x - startX) * 2; //scroll-fast
-        el.scrollLeft = scrollLeft - walk;
-      };
+        el.scrollLeft += e.deltaY;
+      }
+    };
 
-      const onWheel = (e) => {
-        if (e.deltaY === 0) return;
-        e.preventDefault();
-        el.scrollBy({
-          left: e.deltaY < 0 ? -300 : 300,
-          behavior: "smooth",
-        });
-      };
+    // Attach with { passive: false } for preventDefault
+    el.addEventListener("wheel", onWheel, { passive: false });
+    el.addEventListener("mousedown", onMouseDown);
+    el.addEventListener("mousemove", onMouseMove);
+    el.addEventListener("mouseup", onMouseUp);
+    el.addEventListener("mouseleave", onMouseLeave);
 
-      el.addEventListener("mousedown", onMouseDown);
-      el.addEventListener("mouseleave", onMouseLeave);
-      el.addEventListener("mouseup", onMouseUp);
-      el.addEventListener("mousemove", onMouseMove);
-      el.addEventListener("wheel", onWheel);
-
-      return () => {
-        el.removeEventListener("mousedown", onMouseDown);
-        el.removeEventListener("mouseleave", onMouseLeave);
-        el.removeEventListener("mouseup", onMouseUp);
-        el.removeEventListener("mousemove", onMouseMove);
-        el.removeEventListener("wheel", onWheel);
-      };
-    }
+    return () => {
+      el.removeEventListener("wheel", onWheel);
+      el.removeEventListener("mousedown", onMouseDown);
+      el.removeEventListener("mousemove", onMouseMove);
+      el.removeEventListener("mouseup", onMouseUp);
+      el.removeEventListener("mouseleave", onMouseLeave);
+    };
   }, []);
 
   return elRef;
-}
+};
 
 export default useHorizontalScroll;
