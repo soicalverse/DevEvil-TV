@@ -115,11 +115,6 @@ const MovieDetails = () => {
 
   return (
     <div className="movie-details-page">
-      <div
-        className="page-backdrop"
-        style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w1280/${backdrop_path})` }}
-      ></div>
-
       {showTrailer && (
         <div className="youtube-overlay" onClick={handleCloseTrailer}>
           <div className="youtube-container">
@@ -130,7 +125,11 @@ const MovieDetails = () => {
       )}
 
       <div className="movie-details-container">
-        <section className="movie-details-header-section">
+        <section
+          className="movie-details-header-section"
+          style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w1280/${backdrop_path})` }}
+        >
+          <div className="header-overlay"></div>
             <div className="movie-details-header">
               <div className="movie-details-info">
                 <h1 className="movie-title-details">{mediaTitle}</h1>
