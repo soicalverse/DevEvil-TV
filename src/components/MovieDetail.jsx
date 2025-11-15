@@ -106,7 +106,7 @@ const MovieDetails = () => {
 
   if (!media) return <div>Loading...</div>;
 
-  const { title, name, release_date, first_air_date, genres, runtime, number_of_seasons, number_of_episodes, vote_average, overview, backdrop_path, recommendations, credits, reviews } = media;
+  const { title, name, release_date, first_air_date, genres, runtime, number_of_seasons, vote_average, overview, backdrop_path, poster_path, recommendations, credits, reviews } = media;
 
   const mediaTitle = title || name;
   const releaseYear = release_date ? new Date(release_date).getFullYear() : (first_air_date ? new Date(first_air_date).getFullYear() : 'N/A');
@@ -131,6 +131,7 @@ const MovieDetails = () => {
         >
           <div className="header-overlay"></div>
             <div className="movie-details-header">
+              <img src={`https://image.tmdb.org/t/p/w500/${poster_path}`} alt={mediaTitle} className="movie-poster-mobile" />
               <div className="movie-details-info">
                 <h1 className="movie-title-details">{mediaTitle}</h1>
                 <div className="movie-meta">
@@ -156,7 +157,7 @@ const MovieDetails = () => {
         </section>
 
         <div className="movie-details-content">
-          <div className="tabs">
+          <div className="tab-buttons">
               {isMovie && (
                   <button className={`tab-button ${activeTab === "suggested" ? "active" : ""}`} onClick={() => setActiveTab("suggested")}>
                       Suggested

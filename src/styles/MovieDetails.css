@@ -4,17 +4,16 @@
 }
 
 .movie-details-container {
-  padding-bottom: 50px;
+  padding-bottom: 80px; /* Increased bottom padding for floating nav */
 }
 
 /* === Header Section with Background Image & Overlay === */
 .movie-details-header-section {
   position: relative;
-  height: auto; /* Auto-adjust height */
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Center content vertically */
-  padding: 80px 40px; /* Increased padding */
+  justify-content: flex-end; /* Pushes content to bottom of container */
+  padding: 80px 40px 40px;   /* Use a fixed padding instead of vh */
   background-size: cover;
   background-position: center;
   color: #fff;
@@ -26,7 +25,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(to top, rgba(26, 26, 26, 1) 10%, rgba(26, 26, 26, 0.4) 100%);
+  background: linear-gradient(to top, rgba(26, 26, 26, 1) 10%, transparent 70%); /* Softer gradient */
   z-index: 1;
 }
 
@@ -35,15 +34,30 @@
   z-index: 2;
   display: flex;
   flex-direction: column;
-  gap: 20px; /* Reduced gap */
+  gap: 15px; 
   width: 100%;
-  max-width: 1200px; /* Constrain width */
-  margin: 0 auto; /* Center horizontally */
+  max-width: 1200px; 
+  margin: 0 auto; 
+  background: rgba(15, 15, 15, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 20px;
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* === Mobile-Specific Poster === */
+.movie-poster-mobile {
+  display: none; /* Hidden by default */
+  width: 60%;
+  margin: 0 auto 20px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
 /* === Typography & Metadata === */
 .movie-title-details {
-  font-size: 3rem; /* Slightly smaller font size */
+  font-size: 2.8rem; 
   text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9);
 }
 
@@ -52,13 +66,20 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 15px;
-  color: #ccc;
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.9);
 }
 
+.movie-meta span {
+  background-color: #FC9732;
+  color: #111;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-weight: 600;
+}
+
 .movie-overview {
-  max-width: 700px; /* Increased max-width */
-  font-size: 1rem;
+  max-width: 700px;
+  font-size: 0.95rem;
   line-height: 1.6;
   color: #ddd;
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.9);
@@ -69,7 +90,7 @@
   display: flex;
   align-items: center;
   gap: 15px;
-  margin-top: 15px;
+  margin-top: 10px;
 }
 
 .play-button, .trailer-button, .share-button {
@@ -92,121 +113,66 @@
   color: #000;
 }
 
-.play-button:hover {
-  background-color: #ffed4a;
-  transform: scale(1.05);
-}
-
-.trailer-button:hover, .share-button:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
 /* === Tabs & Content Sections === */
 .movie-details-content {
   padding: 0 40px;
-  background-color: #1a1a1a; /* Consistent background */
-}
-
-.tabs {
-  margin-bottom: 30px;
-  border-bottom: 1px solid #333; /* Underline for the whole tab bar */
-  display: flex;
-  justify-content: flex-start; /* Align tabs to the left */
-  gap: 30px; /* Space between tabs */
-}
-
-.tab-button {
-  background: none;
-  border: none;
-  color: #888;
-  font-size: 1.1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  padding: 15px 0;
-  text-align: center;
-  border-bottom: 3px solid transparent; /* Indicator */
-  margin-bottom: -1px; /* Align with the container's border */
-}
-
-.tab-button.active {
-  color: #fff;
-  border-bottom: 3px solid #ffd700;
-}
-
-/* === Recommendations & Cast Carousels === */
-.carousel-container {
-  overflow-x: auto;
-  scrollbar-width: thin;
-  scrollbar-color: #ffd700 #1a1a1a;
-}
-
-/* === Reviews === */
-.reviews-list {
-  list-style: none;
-  padding: 0;
-}
-
-.review {
-  background: #222;
-  padding: 20px;
-  border-radius: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #333;
-}
-
-/* === YouTube Trailer Modal === */
-.youtube-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2000;
-  background: rgba(0, 0, 0, 0.8);
+  background-color: #1a1a1a;
 }
 
 /* === Responsive Styles === */
 @media (max-width: 768px) {
   .movie-details-header-section {
-    padding: 60px 20px;
+    padding: 60px 20px 20px;
   }
 
   .movie-title-details {
     font-size: 2.2rem;
   }
-
-  .tabs {
-    gap: 20px;
-  }
-
-  .tab-button {
-    font-size: 1rem;
+  
+  .movie-details-content {
+    padding: 0 20px;
   }
 }
 
 @media (max-width: 480px) {
   .movie-details-header-section {
-    padding: 40px 15px;
+    padding: 20px 15px 15px;
+    background-image: none !important; /* Remove background on mobile */
+  }
+
+  .movie-details-header {
+    text-align: center;
+    background: none;
+    backdrop-filter: none;
+    padding: 0;
+    border: none;
+  }
+
+  .movie-poster-mobile {
+    display: block; /* Show the poster */
   }
 
   .movie-title-details {
     font-size: 1.8rem;
   }
+  
+  .movie-overview {
+    font-size: 0.9rem;
+    max-height: none;
+    overflow-y: visible;
+  }
 
   .movie-details-actions {
     flex-direction: column;
     align-items: stretch;
+    gap: 10px;
   }
-
-  .tabs {
-    gap: 15px;
-    justify-content: space-around; /* Distribute tabs evenly */
+    
+  .play-button, .trailer-button, .share-button {
+    justify-content: center;
   }
-
-  .tab-button {
-    font-size: 0.9rem;
+  
+  .movie-details-content {
+    padding: 0 15px;
   }
 }
