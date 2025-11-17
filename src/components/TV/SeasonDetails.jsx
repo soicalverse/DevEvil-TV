@@ -3,7 +3,7 @@ import { getSeasonEpisodes } from '../../services/tmdbService';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-const SeasonDetails = ({ tvShowId, seasonNumber }) => {
+const SeasonDetails = ({ tvShowId, seasonNumber, tvShowBackdrop }) => {
   const [episodes, setEpisodes] = useState([]);
 
   useEffect(() => {
@@ -12,11 +12,11 @@ const SeasonDetails = ({ tvShowId, seasonNumber }) => {
         const seasonEpisodes = await getSeasonEpisodes(tvShowId, seasonNumber);
         setEpisodes(seasonEpisodes);
       } catch (error) {
-        // Handle error
+        console.error(`Error fetching episodes for tvShowId: ${tvShowId} and season: ${seasonNumber}`, error);
       }
     };
 
-    fetchSeasonEpisodes(); 
+    fetchSeasonEpisodes();
   }, [tvShowId, seasonNumber]);
 
   return (
@@ -25,13 +25,22 @@ const SeasonDetails = ({ tvShowId, seasonNumber }) => {
         {episodes.map((episode, index) => (
           <li className='episode-list' key={episode.id}>
             <Link to={`/player/${tvShowId}?e=${index + 1}&s=${seasonNumber}`}>
-            {episode.image && <img draggable={'false'} src={episode.image} alt={`Episode ${episode.name}`} />}
+              <div
+                className="episode-image-container"
+                style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w500${tvShowBackdrop})` }}
+              >
+                {episode.image && (
+                  <img
+                    src={episode.image}
+                    alt={episode.name}
+                    className="episode-image"
+                    draggable="false"
+                  />
+                )}
+              </div>
             </Link>
-            
             <div className='episode-details'>
-            <Link to={`/player/${tvShowId}?e=${index + 1}&s=${seasonNumber}`}>
-            <p>{index + 1}. {episode.name}</p>
-            </Link>
+              <p>{index + 1}. {episode.name}</p>
             </div>
           </li>
         ))}
@@ -41,8 +50,13 @@ const SeasonDetails = ({ tvShowId, seasonNumber }) => {
 };
 
 SeasonDetails.propTypes = {
-  tvShowId: PropTypes.number.isRequired,
-  seasonNumber: PropTypes.number.isRequired,
+  tvShowId: PropTypes.string.isRequired,
+  seasonNumber: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  tvShowBackdrop: PropTypes.string,
+};
+
+SeasonDetails.defaultProps = {
+    tvShowBackdrop: '',
 };
 
 export default SeasonDetails;

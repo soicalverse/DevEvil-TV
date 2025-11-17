@@ -85,14 +85,12 @@ const TvShowDetails = () => {
     setActiveTab(tab);
   };
 
-  const toggleSeasonTab = (seasonNumber) => {
+  const handleSeasonChange = (seasonNumber) => {
     setSeasonTab(`season${seasonNumber}`);
   };
 
   return (
     <div>
-
-
       <div
         className="banner-details"
         style={{
@@ -197,21 +195,14 @@ const TvShowDetails = () => {
         {activeTab === "seasons" && (
           <div>
 
-            <div className="season-tab-buttons">
-              {seasons &&
-                seasons.map((season) => (
-                  <button
-                    key={season.season_number}
-                    className={`season-tab-button ${
-                      seasonTab === `season${season.season_number}`
-                        ? "active"
-                        : ""
-                    }`}
-                    onClick={() => toggleSeasonTab(season.season_number)}
-                  >
-                    Season {season.season_number}
-                  </button>
-                ))}
+            <div className="season-dropdown-container">
+                <select className='season-dropdown' onChange={(e) => handleSeasonChange(e.target.value)} value={seasonTab.replace('season', '')}>
+                    {seasons && seasons.map((season) => (
+                        <option key={season.season_number} value={season.season_number}>
+                        Season {season.season_number}
+                        </option>
+                    ))}
+                </select>
             </div>
 
             {seasons &&

@@ -39,7 +39,7 @@ const SearchPage = () => {
       ) : (
         <div className="search-results">
           {searchResults.map((media) => (
-            <MediaCard key={media.id} item={media} type={media.media_type} />
+            <MediaCard key={media.id} item={media} type={media.media_type} fromSearchPage={true} />
           ))}
         </div>
       )}

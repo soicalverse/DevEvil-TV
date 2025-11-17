@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import '../styles/main.css';
 
-const MediaCard = ({ item, type }) => {
+const MediaCard = ({ item, type, fromSearchPage }) => {
   if (!item) {
     return null;
   }
@@ -28,23 +28,34 @@ const MediaCard = ({ item, type }) => {
     </>
   );
 
-  if (type === 'person') {
-    return (
-      <div className="movie-card">
-        <a href={`https://en.wikipedia.org/wiki/${name}`} target='_blank' rel='noreferrer noopener'>
-          <CardContent />
+  const CardComponent = ({ children }) => {
+    const commonProps = {
+      className: "movie-card-link",
+    };
+
+    if (type === 'person') {
+      return (
+        <a href={`https://en.wikipedia.org/wiki/${name}`} target='_blank' rel='noreferrer noopener' {...commonProps}>
+          {children}
         </a>
-      </div>
-    );
-  } else {
-    return (
-      <div className="movie-card">
-        <a href={`/${type}/${id}`}>
-          <CardContent />
+      );
+    } else {
+      return (
+        <a href={`/${type}/${id}`} {...commonProps}>
+          {children}
         </a>
-      </div>
-    );
-  }
+      );
+    }
+  };
+
+  return (
+    <div className="movie-card">
+      <CardComponent>
+        <CardContent />
+      </CardComponent>
+      {fromSearchPage && <p className="movie-card-title" style={{margin: 0, textAlign: 'center', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{cardTitle}</p>}
+    </div>
+  );
 };
 
 MediaCard.propTypes = {
@@ -56,6 +67,11 @@ MediaCard.propTypes = {
     name: PropTypes.string,
   }).isRequired,
   type: PropTypes.string.isRequired,
+  fromSearchPage: PropTypes.bool,
+};
+
+MediaCard.defaultProps = {
+  fromSearchPage: false,
 };
 
 export default MediaCard;
