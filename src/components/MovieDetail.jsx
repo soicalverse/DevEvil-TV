@@ -9,9 +9,9 @@ import { getMovieDetails, getTvShowDetails } from "../services/tmdbService";
 import useHorizontalScroll from "../hooks/useHorizontalScroll";
 import '../styles/Carousel.css';
 
+// Carousel Components
 const Carousel = ({ items, type, handleSeeMore, showSeeMore }) => {
   const carouselRef = useHorizontalScroll();
-
   return (
     <div className="carousel-container" ref={carouselRef}>
       <div className="carousel-wrapper">
@@ -31,28 +31,17 @@ const Carousel = ({ items, type, handleSeeMore, showSeeMore }) => {
     </div>
   );
 };
-
-Carousel.propTypes = {
-  items: PropTypes.array.isRequired,
-  type: PropTypes.string.isRequired,
-  handleSeeMore: PropTypes.func.isRequired,
-  showSeeMore: PropTypes.bool.isRequired,
-};
+Carousel.propTypes = { items: PropTypes.array.isRequired, type: PropTypes.string.isRequired, handleSeeMore: PropTypes.func, showSeeMore: PropTypes.bool };
 
 const CastCarousel = ({ items }) => {
   const carouselRef = useHorizontalScroll();
-
   return (
     <div className="carousel-container" ref={carouselRef}>
       <div className="carousel-wrapper">
         {items.map((item) => (
           <div className="carousel-item" key={item.id}>
             <div className="cast-card">
-              <img
-                src={`https://image.tmdb.org/t/p/w200/${item.profile_path}`}
-                alt={item.name}
-                className="cast-image"
-              />
+              <img src={`https://image.tmdb.org/t/p/w200/${item.profile_path}`} alt={item.name} className="cast-image" />
               <div className="cast-info">
                 <p className="cast-name">{item.name}</p>
                 <p className="cast-character">{item.character}</p>
@@ -64,10 +53,7 @@ const CastCarousel = ({ items }) => {
     </div>
   );
 };
-
-CastCarousel.propTypes = {
-  items: PropTypes.array.isRequired,
-};
+CastCarousel.propTypes = { items: PropTypes.array.isRequired };
 
 const MovieDetails = () => {
   const { id } = useParams();
@@ -78,8 +64,8 @@ const MovieDetails = () => {
   const [media, setMedia] = useState(null);
   const [trailerKey, setTrailerKey] = useState(null);
   const [showTrailer, setShowTrailer] = useState(false);
+  const [showPoster, setShowPoster] = useState(false);
   const [selectedSeason, setSelectedSeason] = useState(1);
-  const [selectedEpisode] = useState(1);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -88,6 +74,10 @@ const MovieDetails = () => {
         setMedia(data);
         const trailer = data.videos?.results?.find(vid => vid.type === "Trailer");
         setTrailerKey(trailer?.key);
+        if (!isMovie && data.seasons && data.seasons.length > 0) {
+          const firstSeason = data.seasons.find(s => s.season_number > 0) || data.seasons[0];
+          setSelectedSeason(firstSeason.season_number);
+        }
       } catch (error) {
         console.error("Error fetching media details:", error);
       }
@@ -97,7 +87,8 @@ const MovieDetails = () => {
 
   const handleWatchTrailer = () => setShowTrailer(!!trailerKey);
   const handleCloseTrailer = () => setShowTrailer(false);
-
+  const handlePosterClick = () => setShowPoster(true);
+  const handleClosePoster = () => setShowPoster(false);
   const handleShare = () => {
     navigator.clipboard.writeText(window.location.href)
       .then(() => alert("Link copied to clipboard!"))
@@ -106,15 +97,18 @@ const MovieDetails = () => {
 
   if (!media) return <div>Loading...</div>;
 
-  const { title, name, release_date, first_air_date, genres, runtime, number_of_seasons, vote_average, overview, backdrop_path, poster_path, recommendations, credits, reviews } = media;
-
+  const { title, name, release_date, first_air_date, genres, runtime, number_of_seasons, vote_average, overview, backdrop_path, poster_path, recommendations, credits, reviews, seasons } = media;
   const mediaTitle = title || name;
   const releaseYear = release_date ? new Date(release_date).getFullYear() : (first_air_date ? new Date(first_air_date).getFullYear() : 'N/A');
   const genreNames = (genres || []).map((g) => g.name).join(" ");
   const duration = isMovie ? (runtime ? `${Math.floor(runtime / 60)}h ${runtime % 60}m` : 'N/A') : (`${number_of_seasons} Seasons`);
 
+  const selectedSeasonData = !isMovie && seasons ? seasons.find(s => s.season_number === selectedSeason) : null;
+  const episodesForSeason = selectedSeasonData ? selectedSeasonData.episodes : [];
+
   return (
-    <div className="movie-details-page">
+    <div className="movie-details-page" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w1280/${backdrop_path})` }}>
+      <div className="page-overlay"></div>
       {showTrailer && (
         <div className="youtube-overlay" onClick={handleCloseTrailer}>
           <div className="youtube-container">
@@ -123,72 +117,70 @@ const MovieDetails = () => {
           </div>
         </div>
       )}
+      {showPoster && (
+        <div className="poster-lightbox-overlay" onClick={handleClosePoster}>
+          <div className="poster-lightbox-content">
+            <img src={`https://image.tmdb.org/t/p/w780/${poster_path}`} alt={mediaTitle} />
+          </div>
+          <button className="close-poster-button" onClick={handleClosePoster}>&times;</button>
+        </div>
+      )}
 
       <div className="movie-details-container">
-        <section
-          className="movie-details-header-section"
-          style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w1280/${backdrop_path})` }}
-        >
-          <div className="header-overlay"></div>
-            <div className="movie-details-header">
-              <img src={`https://image.tmdb.org/t/p/w500/${poster_path}`} alt={mediaTitle} className="movie-poster-mobile" />
-              <div className="movie-details-info">
-                <h1 className="movie-title-details">{mediaTitle}</h1>
-                <div className="movie-meta">
-                  <span>{genreNames}</span>
-                  <span>{releaseYear}</span>
-                  <span>{`${vote_average?.toFixed(1) || 'N/A'}% liked`}</span>
-                  <span>{duration}</span>
-                </div>
-                <p className="movie-overview">{overview}</p>
-              </div>
-              <div className="movie-details-actions">
-                  <Link to={`/player/${id}${!isMovie ? `/${selectedSeason}/${selectedEpisode}` : ''}`} className="play-button">
-                      <i className="fas fa-play"></i> Play
-                  </Link>
-                <button className="trailer-button" onClick={handleWatchTrailer}>
-                  <i className="fas fa-film"></i> Watch Trailer
-                </button>
-                <button className="share-button" onClick={handleShare}>
-                  <i className="fas fa-share-nodes"></i> Share
-                </button>
-              </div>
+        <section className="movie-details-header-section">
+          <div className="movie-details-header">
+            <div className="movie-poster-mobile-wrapper" onClick={handlePosterClick}>
+                <img src={`https://image.tmdb.org/t/p/w500/${poster_path}`} alt={mediaTitle} className="movie-poster-mobile" />
             </div>
+            <div className="movie-details-info">
+              <h1 className="movie-title-details">{mediaTitle}</h1>
+              <div className="movie-meta">
+                <span>{genreNames}</span>
+                <span>{releaseYear}</span>
+                <span>{`${vote_average?.toFixed(1) || 'N/A'}% liked`}</span>
+                <span>{duration}</span>
+              </div>
+              <p className="movie-overview">{overview}</p>
+            </div>
+            <div className="movie-details-actions">
+                <Link to={`/player/${id}${!isMovie ? `/${selectedSeason}/1` : ''}`} className="play-button">
+                    <i className="fas fa-play"></i> Play
+                </Link>
+              <button className="trailer-button" onClick={handleWatchTrailer}><i className="fas fa-film"></i> Watch Trailer</button>
+              <button className="share-button" onClick={handleShare}><i className="fas fa-share-nodes"></i> Share</button>
+            </div>
+          </div>
         </section>
 
         <div className="movie-details-content">
           <div className="tab-buttons">
-              {isMovie && (
-                  <button className={`tab-button ${activeTab === "suggested" ? "active" : ""}`} onClick={() => setActiveTab("suggested")}>
-                      Suggested
-                  </button>
+              {isMovie ? (
+                  <button className={`tab-button ${activeTab === "suggested" ? "active" : ""}`} onClick={() => setActiveTab("suggested")}>Suggested</button>
+              ) : (
+                <>
+                  <button className={`tab-button ${activeTab === "seasons" ? "active" : ""}`} onClick={() => setActiveTab("seasons")}>Seasons</button>
+                  <button className={`tab-button ${activeTab === "recommendations" ? "active" : ""}`} onClick={() => setActiveTab("recommendations")}>Recommendations</button>
+                </>
               )}
-              {!isMovie && (
-                  <button className={`tab-button ${activeTab === "seasons" ? "active" : ""}`} onClick={() => setActiveTab("seasons")}>
-                      Seasons
-                  </button>
-              )}
-              <button className={`tab-button ${activeTab === "cast" ? "active" : ""}`} onClick={() => setActiveTab("cast")}>
-                  {isMovie ? "Cast" : "Series Cast"}
-              </button>
-              <button className={`tab-button ${activeTab === 'reviews' ? 'active' : ''}`} onClick={() => setActiveTab('reviews')}>
-                  Reviews
-              </button>
+              <button className={`tab-button ${activeTab === "cast" ? "active" : ""}`} onClick={() => setActiveTab("cast")}>{isMovie ? "Cast" : "Series Cast"}</button>
+              <button className={`tab-button ${activeTab === 'reviews' ? 'active' : ''}`} onClick={() => setActiveTab('reviews')}>Reviews</button>
           </div>
 
           <div className="tab-content">
-              {activeTab === 'seasons' && !isMovie && (
-                  <SeasonDetails tvShowId={id} seasons={media.seasons} onSeasonSelect={setSelectedSeason} />
+              {!isMovie && activeTab === 'seasons' && (
+                  <div className="seasons-content">
+                      <div className="season-buttons-container">
+                          {(seasons || []).map(season => (
+                              <button key={season.id} className={`season-button ${selectedSeason === season.season_number ? 'active' : ''}`} onClick={() => setSelectedSeason(season.season_number)}>
+                                  {season.name}
+                              </button>
+                          ))}
+                      </div>
+                      <SeasonDetails tvShowId={id} seasonNumber={selectedSeason} episodes={episodesForSeason} />
+                  </div>
               )}
-
-              {activeTab === "suggested" && (
-                <Carousel items={recommendations.results} type={"movie"} />
-              )}
-
-              {activeTab === "cast" && (
-                <CastCarousel items={credits.cast} />
-              )}
-
+              {activeTab === (isMovie ? "suggested" : "recommendations") && <Carousel items={recommendations.results} type={isMovie ? 'movie' : 'tv'} />}
+              {activeTab === "cast" && <CastCarousel items={credits.cast} />}
               {activeTab === 'reviews' && (
                 <div className="reviews-list">
                   {(reviews?.results || []).length > 0 ? (

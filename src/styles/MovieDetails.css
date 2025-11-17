@@ -1,59 +1,172 @@
-/* === Page & Content Containers === */
+/* === Page Container === */
 .movie-details-page {
-  background-color: #1a1a1a; /* Dark background for the page */
-}
-
-.movie-details-container {
-  padding-bottom: 80px; /* Increased bottom padding for floating nav */
-}
-
-/* === Header Section with Background Image & Overlay === */
-.movie-details-header-section {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end; /* Pushes content to bottom of container */
-  padding: 80px 40px 40px;   /* Use a fixed padding instead of vh */
   background-size: cover;
   background-position: center;
+  background-attachment: fixed; /* Keep the background fixed */
   color: #fff;
+  position: relative;
 }
 
-.header-overlay {
+.page-overlay {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(to top, rgba(26, 26, 26, 1) 10%, transparent 70%); /* Softer gradient */
+  background: rgba(26, 26, 26, 0.7); /* Dark semi-transparent overlay */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   z-index: 1;
+  pointer-events: none; /* Allow clicks to pass through */
+}
+
+.movie-details-container {
+  position: relative;
+  z-index: 2; /* Content on top of the overlay */
+  padding: 80px 0; /* Add vertical padding */
+}
+
+/* === YouTube Player Modal (iOS Style) === */
+.youtube-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.youtube-container {
+  position: relative;
+  background: #000;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  overflow: hidden;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  max-width: 1200px; /* Max width for desktop */
+  max-height: 80vh;   /* Max height for desktop */
+}
+
+.youtube-player-wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+.close-trailer-button {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 24px;
+  line-height: 36px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 1001;
+}
+
+.close-trailer-button:hover {
+  background: rgba(0, 0, 0, 0.8);
+  transform: scale(1.1);
+}
+
+/* === Poster Lightbox (iOS Style) === */
+.poster-lightbox-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+  padding: 20px;
+}
+
+.poster-lightbox-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+}
+
+.poster-lightbox-content img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 85vh;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.close-poster-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 24px;
+  line-height: 36px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 1101;
+}
+
+.close-poster-button:hover {
+  background: rgba(0, 0, 0, 0.8);
+  transform: scale(1.1);
+}
+
+
+/* === Header Section === */
+.movie-details-header-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
 }
 
 .movie-details-header {
-  position: relative;
-  z-index: 2;
   display: flex;
   flex-direction: column;
   gap: 15px; 
-  width: 100%;
-  max-width: 1200px; 
-  margin: 0 auto; 
-  background: rgba(15, 15, 15, 0.65);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  padding: 20px;
-  border-radius: 15px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 /* === Mobile-Specific Poster === */
-.movie-poster-mobile {
+.movie-poster-mobile-wrapper {
   display: none; /* Hidden by default */
-  width: 60%;
-  margin: 0 auto 20px;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  position: relative;
+  z-index: 5; /* Ensure this wrapper is on top */
 }
+
+.movie-poster-mobile {
+  width: 100%;
+  display: block;
+  border-radius: 15px;
+}
+
 
 /* === Typography & Metadata === */
 .movie-title-details {
@@ -115,14 +228,19 @@
 
 /* === Tabs & Content Sections === */
 .movie-details-content {
+  max-width: 1200px;
+  margin: 40px auto 0;
   padding: 0 40px;
-  background-color: #1a1a1a;
 }
 
 /* === Responsive Styles === */
 @media (max-width: 768px) {
+  .movie-details-container {
+    padding: 60px 0;
+  }
+
   .movie-details-header-section {
-    padding: 60px 20px 20px;
+    padding: 0 20px;
   }
 
   .movie-title-details {
@@ -131,25 +249,38 @@
   
   .movie-details-content {
     padding: 0 20px;
+    margin-top: 30px;
   }
 }
 
 @media (max-width: 480px) {
-  .movie-details-header-section {
-    padding: 20px 15px 15px;
+  .movie-details-page {
     background-image: none !important; /* Remove background on mobile */
+    background-color: #1a1a1a;
+  }
+
+  .page-overlay {
+    display: none; /* No overlay on mobile */
+  }
+
+  .movie-details-container {
+    padding: 20px 0 80px;
+  }
+
+  .movie-details-header-section {
+    padding: 0 15px;
   }
 
   .movie-details-header {
     text-align: center;
-    background: none;
-    backdrop-filter: none;
-    padding: 0;
-    border: none;
   }
 
-  .movie-poster-mobile {
-    display: block; /* Show the poster */
+  .movie-poster-mobile-wrapper {
+    display: block; /* Show the poster wrapper on mobile */
+    width: 60%;
+    margin: 0 auto 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    border-radius: 15px; /* Apply radius to the wrapper */
   }
 
   .movie-title-details {
@@ -158,8 +289,6 @@
   
   .movie-overview {
     font-size: 0.9rem;
-    max-height: none;
-    overflow-y: visible;
   }
 
   .movie-details-actions {
@@ -174,5 +303,6 @@
   
   .movie-details-content {
     padding: 0 15px;
+    margin-top: 20px;
   }
 }
