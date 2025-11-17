@@ -2,7 +2,7 @@
   position: relative;
   width: 100%;
   height: 100vh;
-  background-color: #000;
+  overflow: hidden;
 }
 
 .player iframe {
@@ -13,99 +13,78 @@
 
 .player-overlay-nav {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 20px;
+  left: 20px;
+  right: 20px;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start; 
-  padding: 10px;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+  align-items: flex-start;
   z-index: 10;
-  color: white;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%);
+  padding: 15px;
+  border-radius: 10px;
 }
 
-.player-overlay-nav a, .player-overlay-nav button {
+.player-overlay-nav a {
   color: white;
-  background: rgba(0, 0, 0, 0.5);
-  padding: 8px 12px;
-  border-radius: 20px;
   text-decoration: none;
-  font-size: 0.9rem;
-  border: none;
-  cursor: pointer;
-  transition: background 0.3s ease;
-  flex-shrink: 0;
+  font-size: 1.5rem;
+  transition: color 0.3s ease;
 }
 
-.player-overlay-nav a:hover, .player-overlay-nav button:hover {
-  background: rgba(0, 0, 0, 0.8);
+.player-overlay-nav a:hover {
+  color: #ffdd57;
 }
 
 .selectors-container {
   display: flex;
-  flex-direction: column; 
-  align-items: flex-end; 
-  gap: 10px; 
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
 }
 
 .source-selector-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  width: 100%;
 }
 
 .server-info {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.8rem;
   color: #ccc;
+  font-size: 0.9rem;
   background: rgba(0, 0, 0, 0.5);
-  padding: 5px 10px;
-  border-radius: 15px;
-}
-
-.server-info i {
-  font-size: 1rem;
+  padding: 8px 12px;
+  border-radius: 20px;
 }
 
 .source-selector {
   display: flex;
-  gap: 8px;
-  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
 }
 
 .source-btn {
-  background-color: transparent;
-  border: 1px solid white;
+  background-color: rgba(255, 255, 255, 0.1);
   color: white;
-  padding: 8px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 8px 16px;
   border-radius: 20px;
   cursor: pointer;
-  font-size: 0.8rem;
-  font-weight: 500;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
 }
 
 .source-btn.active {
-  background-color: white;
-  color: black;
-  font-weight: bold;
-}
-
-.episode-selector {
-  display: flex;
-  gap: 8px;
-}
-
-.episode-selector select {
-  background: rgba(0, 0, 0, 0.5);
-  color: white;
-  border: 1px solid white;
-  padding: 8px 12px;
-  border-radius: 20px;
-  font-size: 0.8rem;
+  background-color: #ffdd57;
+  color: #1a1a1a;
+  border-color: #ffdd57;
 }
 
 .dropdown {
@@ -113,54 +92,66 @@
 }
 
 .dropdown-toggle {
-  background: transparent;
-  border: none;
+  background-color: rgba(255, 255, 255, 0.1);
   color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 8px 12px;
+  border-radius: 50%;
   cursor: pointer;
-  padding: 8px;
-  font-size: 0.9rem;
 }
 
 .dropdown-menu {
   position: absolute;
   top: 100%;
   right: 0;
-  background: rgba(0, 0, 0, 0.8);
-  border-radius: 5px;
-  padding: 8px;
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 5px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  z-index: 20;
+  gap: 5px;
+}
+
+.episode-selector {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.episode-selector select {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 0.8em;
+  padding-right: 2.5rem;
 }
 
 @media (max-width: 768px) {
   .player-overlay-nav {
-    align-items: flex-start;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
   }
 
   .selectors-container {
-    align-items: flex-end;
+    order: 2;
   }
 
-  .player-overlay-nav a, .player-overlay-nav button {
-    padding: 6px 10px;
-    font-size: 0.8rem;
+  .player-overlay-nav a {
+    order: 1;
   }
 
-  .source-btn {
-    padding: 6px 10px;
-    font-size: 0.7rem;
-  }
-
-  .episode-selector select {
-    padding: 6px 10px;
-    font-size: 0.7rem;
-  }
-
-  .server-info {
-    font-size: 0.7rem;
-    padding: 4px 8px;
-    text-align: right; 
+  .player-overlay-nav a:last-child {
+    order: 3;
   }
 }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useLocation, Link, useNavigate } from 'react-router-dom';
 import '../styles/Player.css';
-import { getTvShowDetails } from '../services/tmdbService';
+import { getTvShowDetails, getSeasonEpisodes } from '../services/tmdbService';
 
 const sources = [
   {
@@ -104,11 +104,9 @@ const Player = () => {
           const details = await getTvShowDetails(params.id);
           if (details && details.seasons) {
             setSeasons(details.seasons);
-            const currentSeasonData = details.seasons.find(s => s.season_number === parseInt(params.season, 10));
-            if (currentSeasonData) {
-              setEpisodes(currentSeasonData.episodes || []);
-            }
           }
+          const seasonEpisodes = await getSeasonEpisodes(params.id, params.season);
+          setEpisodes(seasonEpisodes);
         } catch (error) {
           console.error("Failed to fetch TV show details:", error);
         }
@@ -132,11 +130,7 @@ const Player = () => {
 
   const handleSeasonChange = (e) => {
     const newSeason = e.target.value;
-    const seasonData = seasons.find(s => s.season_number === parseInt(newSeason, 10));
-    if (seasonData && seasonData.episodes && seasonData.episodes.length > 0) {
-      const firstEpisode = seasonData.episodes[0].episode_number;
-      navigate(`/player/${params.id}?s=${newSeason}&e=${firstEpisode}`);
-    }
+    navigate(`/player/${params.id}?s=${newSeason}&e=1`);
   };
 
   const handleEpisodeChange = (e) => {
@@ -215,9 +209,9 @@ const Player = () => {
                   ))}
                 </select>
                 <select value={params.episode} onChange={handleEpisodeChange}>
-                  {episodes.map(ep => (
-                    <option key={ep.id} value={ep.episode_number}>
-                      {isMobile ? `E${ep.episode_number}` : `Episode ${ep.episode_number}: ${ep.name}`}
+                  {episodes.map((ep, index) => (
+                    <option key={index} value={index + 1}>
+                      {isMobile ? `E${index + 1}` : `Episode ${index + 1}: ${ep.name}`}
                     </option>
                   ))}
                 </select>

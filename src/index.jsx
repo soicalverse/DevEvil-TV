@@ -4,7 +4,6 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './Home'; // Import the new Home component
 import MovieDetail from './components/MovieDetail';
-import TvShowDetails from './components/TvShowDetails';
 import Player from './components/Player';
 import SearchPage from './components/SearchPage';
 import NavBar from './components/Others/NavBar';
@@ -25,7 +24,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <Routes>
         <Route path="/" element={<Home />} /> {/* Use the Home component for the root path */}
         <Route path="/movie/:id" element={<React.Fragment><NavBar /><MovieDetail /></React.Fragment>} />
-        <Route path="/tv/:id" element={<React.Fragment><NavBar /><TvShowDetails /></React.Fragment>} />
+        <Route path="/tv/:id" element={<React.Fragment><NavBar /><MovieDetail /></React.Fragment>} />
         <Route path="/player/:id" element={<Player/>} />
         <Route path="/player/:id?e=:episode&s=:season" element={<Player/>} />
         <Route path="/search" element={<React.Fragment><NavBar /><SearchPage /></React.Fragment>} />
