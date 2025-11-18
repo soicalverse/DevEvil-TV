@@ -2,7 +2,6 @@
     position: relative;
     height: 100vh;
     width: 100%;
-    /* padding-top: 100px; */ /* Removed to fix black bar issue */
 }
 
 .banner-card {
@@ -103,10 +102,6 @@
 }
 
 @media (max-width: 768px) {
-    .banner {
-        height: 70vh;
-    }
-
     .banner-title {
         font-size: 50px;
     }

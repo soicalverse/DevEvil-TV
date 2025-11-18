@@ -71,3 +71,9 @@
 .search-bar-button:hover {
     background-color: #f6121d;
 }
+
+@media (max-width: 768px) {
+    .navbar-fixed {
+        display: none;
+    }
+}

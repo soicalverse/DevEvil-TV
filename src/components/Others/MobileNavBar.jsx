@@ -26,39 +26,42 @@ const MobileNavBar = () => {
         <div className={`mobile-nav-bar-container ${isSearchActive ? 'search-active' : ''}`}>
             <div className="mobile-nav-bar">
                 <div className="nav-bar-content">
-                    {/* Default Tab View */}
-                    <div className="tabs-view">
-                        <div className="nav-items">
-                            <a href="/" className="nav-item logo-item">
-                                <img src="/assets/logo2.png" alt="Logo" />
-                            </a>
-                            <a href="/" className="nav-item active">
-                                <FontAwesomeIcon icon={faHome} />
-                                <span>Home</span>
-                            </a>
+                    {isSearchActive ? (
+                        <form className="search-view" onSubmit={handleSearchSubmit}>
+                            <button type="button" className="back-btn" onClick={handleSearchToggle}>
+                                <FontAwesomeIcon icon={faArrowLeft} />
+                            </button>
+                            <input 
+                                type="text" 
+                                placeholder="Search movies, actors..." 
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                autoFocus
+                            />
+                            <button type="submit" className="search-action-btn">
+                                <FontAwesomeIcon icon={faSearch} />
+                            </button>
+                        </form>
+                    ) : (
+                        <div className="tabs-view">
+                            <div className="nav-items">
+                                <a href="/" className="nav-item logo-item">
+                                    <img src="/assets/logo2.png" alt="Logo" />
+                                </a>
+                                <a href="/" className="nav-item active">
+                                    <FontAwesomeIcon icon={faHome} />
+                                    <span>Home</span>
+                                </a>
+                            </div>
                         </div>
-                    </div>
-
-                    {/* Search View */}
-                    <form className="search-view" onSubmit={handleSearchSubmit}>
-                        <button type="button" className="back-btn" onClick={handleSearchToggle}>
-                            <FontAwesomeIcon icon={faArrowLeft} />
-                        </button>
-                        <input 
-                            type="text" 
-                            placeholder="Search movies, actors..." 
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
-                        <button type="submit" className="search-action-btn">
-                            <FontAwesomeIcon icon={faSearch} />
-                        </button>
-                    </form>
+                    )}
                 </div>
                 
-                <button className="floating-search-btn" onClick={handleSearchToggle}>
-                    <FontAwesomeIcon icon={faSearch} />
-                </button>
+                {!isSearchActive && (
+                    <button className="floating-search-btn" onClick={handleSearchToggle}>
+                        <FontAwesomeIcon icon={faSearch} />
+                    </button>
+                )}
             </div>
         </div>
     );
