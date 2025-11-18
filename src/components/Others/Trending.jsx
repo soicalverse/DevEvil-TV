@@ -1,39 +1,52 @@
 import React, { useState, useEffect } from 'react';
-import '../../styles/SideBar.css';
-import { Link } from 'react-router-dom';
-import { getNowPlayingMovies } from '../../services/tmdbService';
+import PropTypes from 'prop-types';
+import { getTrendingMovies, getTrendingTvShows } from '../../services/tmdbService';
+import MediaCard from '../MediaCard';
+import SeeMoreCard from '../SeeMoreCard';
+import '../../styles/Carousel.css';
+import useHorizontalScroll from '../../hooks/useHorizontalScroll';
 
-const Trending = () => {
-  const [trendingMovies, setTrendingMovies] = useState([]);
+const Carousel = ({ items, type }) => {
+    const carouselRef = useHorizontalScroll();
 
-  useEffect(() => {
-    const fetchTrendingMovies = async () => {
-      try {
-        const movies = await getNowPlayingMovies();
-        setTrendingMovies(movies.slice(0, 3)); 
-      } catch (error) {
-        // Handle error
-        console.error('Error fetching trending movies:', error);
-      }
-    };
+    return (
+        <div className="carousel-container" ref={carouselRef}>
+            <div className="carousel-wrapper">
+                {items.map(item => (
+                    <div className="carousel-item" key={item.id}>
+                        <MediaCard item={item} type={type} />
+                    </div>
+                ))}
+                <div className="carousel-item">
+                    <SeeMoreCard type={type} />
+                </div>
+            </div>
+        </div>
+    );
+};
 
-    fetchTrendingMovies();
-  }, []);
+Carousel.propTypes = {
+    items: PropTypes.array.isRequired,
+    type: PropTypes.string.isRequired,
+};
 
-  return (
-    <div className="sidebar-trending">
-      <h1>Now Playing</h1>
-      <ul className='menu-list'>
-        {trendingMovies.map((movie) => (
-          <li key={movie.id}>
-            <Link to={`/movie/${movie.id}`}>
-			<img draggable='false' className='poster' src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title} />
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+const Trending = ({ mediaType }) => {
+    const [trending, setTrending] = useState([]);
+
+    useEffect(() => {
+        const fetchTrending = async () => {
+            const trendingData = mediaType === 'movie' ? await getTrendingMovies() : await getTrendingTvShows();
+            setTrending(trendingData.results || []);
+        };
+
+        fetchTrending();
+    }, [mediaType]);
+
+    return <Carousel items={trending} type={mediaType} />;
+};
+
+Trending.propTypes = {
+    mediaType: PropTypes.string.isRequired,
 };
 
 export default Trending;

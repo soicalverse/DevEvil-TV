@@ -29,13 +29,15 @@ const SeasonDetails = ({ tvShowId, seasonNumber, tvShowBackdrop }) => {
                 className="episode-image-container"
                 style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w500${tvShowBackdrop})` }}
               >
-                {episode.image && (
+                {episode.still_path ? (
                   <img
-                    src={episode.image}
+                    src={`https://image.tmdb.org/t/p/w500${episode.still_path}`}
                     alt={episode.name}
                     className="episode-image"
                     draggable="false"
                   />
+                ) : (
+                    <div className="no-image-overlay"></div>
                 )}
               </div>
             </Link>

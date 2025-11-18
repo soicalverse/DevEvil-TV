@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useLocation, Link, useNavigate } from 'react-router-dom';
 import '../styles/Player.css';
 import { getTvShowDetails, getSeasonEpisodes } from '../services/tmdbService';
+import CustomDropdown from './CustomDropdown';
 
 const sources = [
   {
@@ -128,15 +129,16 @@ const Player = () => {
     };
   }, []);
 
-  const handleSeasonChange = (e) => {
-    const newSeason = e.target.value;
+  const handleSeasonChange = (newSeason) => {
     navigate(`/player/${params.id}?s=${newSeason}&e=1`);
   };
 
-  const handleEpisodeChange = (e) => {
-    const newEpisode = e.target.value;
+  const handleEpisodeChange = (newEpisode) => {
     navigate(`/player/${params.id}?s=${params.season}&e=${newEpisode}`);
   };
+
+  const seasonOptions = seasons.map(s => ({ value: s.season_number, label: isMobile ? `S${s.season_number}` : `Season ${s.season_number}`}));
+  const episodeOptions = episodes.map((ep, index) => ({ value: index + 1, label: isMobile ? `E${index + 1}` : `Episode ${index + 1}: ${ep.name}`}));
 
   const visibleSourcesCount = isMobile ? 3 : 4;
 
@@ -201,20 +203,8 @@ const Player = () => {
 
             {params.season && (
               <div className="episode-selector">
-                <select value={params.season} onChange={handleSeasonChange}>
-                  {seasons.map(s => (
-                    <option key={s.season_number} value={s.season_number}>
-                      {isMobile ? `S${s.season_number}` : `Season ${s.season_number}`}
-                    </option>
-                  ))}
-                </select>
-                <select value={params.episode} onChange={handleEpisodeChange}>
-                  {episodes.map((ep, index) => (
-                    <option key={index} value={index + 1}>
-                      {isMobile ? `E${index + 1}` : `Episode ${index + 1}: ${ep.name}`}
-                    </option>
-                  ))}
-                </select>
+                <CustomDropdown options={seasonOptions} selected={Number(params.season)} onSelect={handleSeasonChange} />
+                <CustomDropdown options={episodeOptions} selected={Number(params.episode)} onSelect={handleEpisodeChange} />
               </div>
             )}
         </div>

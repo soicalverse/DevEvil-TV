@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import '../styles/main.css';
+import '../styles/Carousel.css'; // Changed from main.css to Carousel.css
 
 const MediaCard = ({ item, type, fromSearchPage }) => {
   if (!item) {

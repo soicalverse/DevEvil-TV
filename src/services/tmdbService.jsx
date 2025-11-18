@@ -33,12 +33,12 @@ export const getTrendingMovies = async (page = 1) => {
 
 
 
-export const getNowPlayingMovies = async () => {
+export const getNowPlayingMovies = async (page = 1) => {
   try {
-    const response = await tmdbService.get(`/movie/now_playing?include_adult=false&api_key=${TMDB_API_KEY}&append_to_response=videos,images`);
+    const response = await tmdbService.get(`/movie/now_playing?include_adult=false&api_key=${TMDB_API_KEY}&page=${page}&append_to_response=videos,images`);
     return response.data.results;
   } catch (error) {
-    console.error('Error fetching trending movies:', error);
+    console.error('Error fetching now playing movies:', error);
     throw error;
   }
 };
@@ -104,7 +104,7 @@ export const getTvShowDetails = async (id) => {
     const seasonPromises = data.seasons.map(async (season) => {
       const episodes = await getSeasonEpisodes(id, season.season_number);
       return {
-        season_number: season.season_number,
+        ...season,
         episodes,
       };
     });
@@ -114,18 +114,21 @@ export const getTvShowDetails = async (id) => {
     const tvShowDetails = {
       name: data.name,
       first_air_date: data.first_air_date,
-      episode_run_time: data.episode_run_time,
+      episode__run_time: data.episode_run_time,
       genres: data.genres,
       overview: data.overview,
       vote_average: data.vote_average,
       created_by: data.created_by,
       backdrop_path: data.backdrop_path,
+      poster_path: data.poster_path,
       tagline: data.tagline,
       number_of_seasons: data.number_of_seasons,
       number_of_episodes: data.number_of_episodes,
       seasons,
       credits: data.credits,
-      images: data.images
+      images: data.images,
+      videos: data.videos,
+      recommendations: data.recommendations
     };
 
     return tvShowDetails;

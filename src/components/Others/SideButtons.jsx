@@ -1,44 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import '../../styles/Btn.css';
+import { getNowPlayingMovies } from '../../services/tmdbService';
+import MediaCard from '../MediaCard';
+import '../../styles/SideButtons.css';
 
 const SideButtons = () => {
-  const [showScroll, setShowScroll] = useState(false);
-  const location = useLocation();
+    const [nowPlaying, setNowPlaying] = useState([]);
 
-  const checkScrollTop = () => {
-    if (!showScroll && window.pageYOffset > 400){ 
-      setShowScroll(true);
-    } else if (showScroll && window.pageYOffset <= 400){ 
-      setShowScroll(false);
-    }
-  };
+    useEffect(() => {
+        const fetchNowPlaying = async () => {
+            const nowPlayingMovies = await getNowPlayingMovies();
+            setNowPlaying(nowPlayingMovies.results.slice(0, 5)); // show first 5
+        };
 
-  const scrollTop = () => {
-    window.scrollTo({top: 0, behavior: 'smooth'});
-  };
+        fetchNowPlaying();
+    }, []);
 
-  useEffect(() => {
-    window.addEventListener('scroll', checkScrollTop)
-    return () => window.removeEventListener('scroll', checkScrollTop)
-  }, [showScroll]);
-
-  const isHomePage = location.pathname === '/' || location.pathname === '/home';
-
-  return (
-    <div className="floating-buttons-container">
-       {showScroll && isHomePage && (
-        <a onClick={scrollTop} className="floating-btn" title="Go to top">
-            <i className='fas fa-arrow-up'></i>
-        </a>
-      )}
-      {location.pathname === '/search' && (
-        <a href="/" className="floating-btn" title="Home">
-          <i className='fas fa-home'></i>
-        </a>
-      )}
-    </div>
-  );
+    return (
+        <div className="side-buttons-container">
+            <h3 className="side-buttons-title">Now Playing</h3>
+            <div className="side-buttons-list">
+                {nowPlaying.map(movie => (
+                    <MediaCard key={movie.id} item={movie} type="movie" />
+                ))}
+            </div>
+        </div>
+    );
 };
 
 export default SideButtons;

@@ -126,7 +126,7 @@
   background: rgba(0, 0, 0, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: #fff;
-  font-size: 24px;
+  font-s`ize: 24px;
   line-height: 36px;
   text-align: center;
   cursor: pointer;
@@ -233,6 +233,72 @@
   padding: 0 40px;
 }
 
+/* === Season Dropdown Styling === */
+.season-dropdown-container {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+/* === Episode List Styling === */
+.episode-ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.episode-list {
+  background-color: #222;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.episode-list:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.episode-image-container {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+  background-size: cover;
+  background-position: center;
+}
+
+.episode-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.no-image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.episode-details {
+  padding: 15px;
+}
+
+.episode-details p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+
 /* === Responsive Styles === */
 @media (max-width: 768px) {
   .movie-details-container {
@@ -288,7 +354,7 @@
   }
   
   .movie-overview {
-    font-size: 0.9rem;
+    font-s`ize: 0.9rem;
   }
 
   .movie-details-actions {
@@ -304,5 +370,13 @@
   .movie-details-content {
     padding: 0 15px;
     margin-top: 20px;
+  }
+
+  .season-dropdown {
+    width: 100%;
+  }
+
+  .episode-ul {
+    grid-template-columns: 1fr;
   }
 }
