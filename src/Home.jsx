@@ -1,8 +1,6 @@
-
 import React, { useState } from 'react';
 import NavBar from './components/Others/NavBar';
 import Banner from './components/Banner';
-import SideBtn from './components/Others/SideButtons';
 import Movies from './components/Movies';
 import TvShows from './components/TvShows';
 import Categories from './components/Categories';
@@ -29,7 +27,6 @@ const Home = () => {
     <React.Fragment>
       <NavBar />
       <Banner />
-      <SideBtn />
       <Movies movieType={movieType} page={page} setPage={setPage} onMovieTypeChange={handleMovieTypeChange} />
       <TvShows showType={tvShowType} page={page} setPage={setPage} onShowTypeChange={handleTvShowTypeChange} />
       <Categories />

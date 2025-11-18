@@ -1,60 +1,55 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import '../styles/Carousel.css'; // Changed from main.css to Carousel.css
+import { Link, useNavigate } from 'react-router-dom';
+import '../styles/Movies.css';
 
-const MediaCard = ({ item, type, fromSearchPage }) => {
+const MediaCard = ({ item, type }) => {
   if (!item) {
     return null;
   }
 
+  const navigate = useNavigate();
   const { id, poster_path, profile_path, title, name } = item;
   const cardTitle = title || name;
   const imagePath = type === 'person' ? profile_path : poster_path;
 
-  const CardContent = () => (
-    <>
-      <img src={`https://image.tmdb.org/t/p/w500${imagePath}`} alt={cardTitle} className="card-img" />
-      <div className="card-overlay">
-        <div className="card-bottom-content">
-          <h3 className="card-title">{cardTitle}</h3>
-          {type !== 'person' && (
-            <div className="play-button-hover">
-              <i className="fa-solid fa-play"></i>
-              <span>Play</span>
-            </div>
-          )}
-        </div>
-      </div>
-    </>
-  );
-
-  const CardComponent = ({ children }) => {
-    const commonProps = {
-      className: "movie-card-link",
-    };
-
-    if (type === 'person') {
-      return (
-        <a href={`https://en.wikipedia.org/wiki/${name}`} target='_blank' rel='noreferrer noopener' {...commonProps}>
-          {children}
-        </a>
-      );
-    } else {
-      return (
-        <a href={`/${type}/${id}`} {...commonProps}>
-          {children}
-        </a>
-      );
-    }
+  const handlePlayClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigate(`/player/${id}`);
   };
 
-  return (
+  const linkDestination = type === 'person'
+    ? `https://en.wikipedia.org/wiki/${name}`
+    : `/${type}/${id}`;
+
+  const cardContent = (
     <div className="movie-card">
-      <CardComponent>
-        <CardContent />
-      </CardComponent>
-      {fromSearchPage && <p className="movie-card-title" style={{margin: 0, textAlign: 'center', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>{cardTitle}</p>}
+      <img src={`https://image.tmdb.org/t/p/w500${imagePath}`} alt={cardTitle} className="movie-image" />
+      <div className="movie-info">
+        <h3>{cardTitle}</h3>
+        {type !== 'person' && (
+          <div className="play-button" onClick={handlePlayClick}>
+            <i className="fa-solid fa-play"></i>
+            <span>Play</span>
+          </div>
+        )}
+      </div>
     </div>
+  );
+
+  if (type === 'person') {
+    return (
+      <a href={linkDestination} target="_blank" rel="noopener noreferrer" className="movie-card-link">
+        {cardContent}
+      </a>
+    );
+  }
+
+  return (
+    <Link to={linkDestination} className="movie-card-link">
+      {cardContent}
+    </Link>
   );
 };
 
@@ -67,11 +62,6 @@ MediaCard.propTypes = {
     name: PropTypes.string,
   }).isRequired,
   type: PropTypes.string.isRequired,
-  fromSearchPage: PropTypes.bool,
-};
-
-MediaCard.defaultProps = {
-  fromSearchPage: false,
 };
 
 export default MediaCard;

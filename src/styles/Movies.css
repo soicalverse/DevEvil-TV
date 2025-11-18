@@ -1,43 +1,88 @@
 
-.movies-section {
-    padding: 16px 30px 0;
-    margin: 0 40px;
+.movies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.movie-card {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.movie-card:hover {
+  transform: scale(1.05);
+}
+
+.movie-card:hover .movie-image {
+  filter: blur(5px);
+}
+
+.movie-card .movie-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: filter 0.3s ease;
+}
+
+.movie-card .movie-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.movie-card:hover .movie-info {
+  opacity: 1;
+}
+
+.movie-card .movie-info h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.movie-card .play-button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
 }
 
 .section-header {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    margin-bottom: 1rem;
-}
-
-.section-header h2 {
-   color: #fff;
-}
-
-.movie-type-buttons {
-    display: flex;
-    gap: 0.5rem;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
 .movie-type-buttons button {
-    background-color: #000;
+    background-color: #1a1a1a;
+    color: white;
     border: none;
-    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
     cursor: pointer;
-    font-size: 1rem;
-    padding: 0.5rem 1rem;
-    border-radius: 0;
-    transition: background-color 0.3s, color 0.3s;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin-left: 10px;
 }
 
 .movie-type-buttons button:hover {
-    background-color: #fff;
-    color: #000;
+    background-color: white;
+    color: black;
 }
 
 .movie-type-buttons button.active {
-    background-color: #fff;
-    color: #000;
-    font-weight: bold;
+    background-color: white;
+    color: black;
 }
