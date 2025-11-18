@@ -8,6 +8,7 @@ import MovieDetail from './components/MovieDetail';
 import Player from './components/Player';
 import SearchPage from './components/SearchPage';
 import NavBar from './components/Others/NavBar';
+import MobileNavBar from './components/Others/MobileNavBar';
 import UpcomingPage from './components/UpcomingPage';
 import Privacy from './components/Others/NavSideFiles/Privacy';
 import Terms from './components/Others/NavSideFiles/Terms';
@@ -19,17 +20,19 @@ import './styles/Carousel.css';
 import './styles/Movies.css';
 import './styles/mobile.css';
 
+const isMobile = window.innerWidth < 768;
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <HelmetProvider>
       <Router>
         <Routes>
           <Route path="/" element={<Home />} /> {/* Use the Home component for the root path */}
-          <Route path="/movie/:id" element={<React.Fragment><NavBar /><MovieDetail /></React.Fragment>} />
-          <Route path="/tv/:id" element={<React.Fragment><NavBar /><MovieDetail /></React.Fragment>} />
+          <Route path="/movie/:id" element={<React.Fragment><NavBar /><MovieDetail />{isMobile && <MobileNavBar />}</React.Fragment>} />
+          <Route path="/tv/:id" element={<React.Fragment><NavBar /><MovieDetail />{isMobile && <MobileNavBar />}</React.Fragment>} />
           <Route path="/player/:id" element={<Player/>} />
           <Route path="/player/:id?e=:episode&s=:season" element={<Player/>} />
-          <Route path="/search" element={<React.Fragment><NavBar /><SearchPage /></React.Fragment>} />
+          <Route path="/search" element={<React.Fragment><NavBar /><SearchPage />{isMobile && <MobileNavBar />}</React.Fragment>} />
           <Route path="/upcoming" element={<React.Fragment><NavBar /><UpcomingPage /></React.Fragment>} />
           <Route path="/privacy" element={<React.Fragment><NavBar /><Privacy /></React.Fragment>} />
           <Route path="/terms" element={<React.Fragment><NavBar /><Terms /></React.Fragment>} />

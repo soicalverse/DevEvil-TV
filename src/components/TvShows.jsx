@@ -40,7 +40,7 @@ const TvShows = () => {
   return (
     <div className="movies-section with-buttons">
       <div className="section-header">
-          <h2>TV Shows <i className="fa-solid fa-tv"></i></h2>
+          <h2>TV Shows <i className="fa-solid fa-tv tv-icon"></i></h2>
           <div className="movie-type-buttons">
             <button onClick={() => handleShowTypeChange('trending')} className={showType === 'trending' ? 'active' : ''}>Trending</button>
             <button onClick={() => handleShowTypeChange('popular')} className={showType === 'popular' ? 'active' : ''}>Popular</button>
