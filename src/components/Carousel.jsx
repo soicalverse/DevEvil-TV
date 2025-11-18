@@ -19,7 +19,7 @@ const Carousel = ({ items, type, handleSeeMore, showSeeMore }) => {
         {showSeeMore && (
           <div className="see-more-card-container">
             <div className="see-more-card" onClick={handleSeeMore}>
-              <i className="fas fa-arrow-right"></i>
+              <div className="see-more-text">See more</div>
             </div>
           </div>
         )}

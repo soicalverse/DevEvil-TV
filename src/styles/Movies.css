@@ -68,10 +68,23 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    gap: 20px;
 }
 
-.tv-icon {
-    margin-left: 10px;
+.section-header h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-icon {
+    font-size: 1.5rem;
 }
 
 .movie-type-buttons {
@@ -109,8 +122,8 @@
         font-size: 1.2rem; /* Reduced font size for mobile */
     }
 
-    .tv-icon {
-        display: none; /* Hides the TV icon on mobile */
+    .section-icon {
+        font-size: 1.2rem;
     }
 
     .movies-grid {
@@ -126,6 +139,10 @@
 @media (max-width: 320px) {
     .section-header h2 {
         font-size: 1rem; /* Further reduced font size for very small screens */
+    }
+
+    .section-icon {
+        font-size: 1rem;
     }
     
     .movies-grid {

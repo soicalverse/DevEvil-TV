@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { getTrendingTvShows, getPopularTvShows, getUpcomingTvShows } from '../services/tmdbService';
 import Carousel from './Carousel';
 import '../styles/Movies.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTv } from '@fortawesome/free-solid-svg-icons';
 
 const TvShows = () => {
   const [tvShows, setTvShows] = useState([]);
@@ -40,12 +42,15 @@ const TvShows = () => {
   return (
     <div className="movies-section with-buttons">
       <div className="section-header">
-          <h2>TV Shows <i className="fa-solid fa-tv tv-icon"></i></h2>
-          <div className="movie-type-buttons">
+        <div className="section-title">
+            <FontAwesomeIcon icon={faTv} className="section-icon" />
+            <h2>TV Shows</h2>
+        </div>
+        <div className="movie-type-buttons">
             <button onClick={() => handleShowTypeChange('trending')} className={showType === 'trending' ? 'active' : ''}>Trending</button>
             <button onClick={() => handleShowTypeChange('popular')} className={showType === 'popular' ? 'active' : ''}>Popular</button>
             <button onClick={() => handleShowTypeChange('upcoming')} className={showType === 'upcoming' ? 'active' : ''}>Upcoming</button>
-          </div>
+        </div>
       </div>
       <Carousel items={tvShows} type="tv" handleSeeMore={handleSeeMore} showSeeMore={showSeeMore} />
     </div>

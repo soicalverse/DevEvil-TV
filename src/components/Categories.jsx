@@ -3,6 +3,8 @@ import { getMoviesByGenre, getGenres, getTvGenres, getTvByGenre } from '../servi
 import Carousel from './Carousel';
 import GenreFilter from './GenreFilter';
 import '../styles/Movies.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFilm, faTv } from '@fortawesome/free-solid-svg-icons';
 
 const Categories = () => {
   const [moviesByCategory, setMoviesByCategory] = useState([]);
@@ -103,7 +105,7 @@ const Categories = () => {
     <div>
       <section className="movies-section" id='categories'>
         <div className="section-header">
-          <h2>Movie Categories</h2>
+          <h2><FontAwesomeIcon icon={faFilm} /> Movie Categories</h2>
           <GenreFilter genres={movieGenres} selectedGenre={selectedMovieGenre} onGenreChange={handleMovieGenreChange} title={buttonText} />
         </div>
         <Carousel items={moviesByCategory} type="movie" handleSeeMore={handleSeeMoreMovies} showSeeMore={showSeeMoreMovies} />
@@ -111,7 +113,7 @@ const Categories = () => {
 
       <section className="movies-section">
         <div className="section-header">
-          <h2>TV Show Categories</h2>
+          <h2><FontAwesomeIcon icon={faTv} /> TV Show Categories</h2>
           <GenreFilter genres={tvGenres} selectedGenre={selectedTvGenre} onGenreChange={handleTvGenreChange} title={buttonText} />
         </div>
         <Carousel items={tvByCategory} type="tv" handleSeeMore={handleSeeMoreTv} showSeeMore={showSeeMoreTv} />
