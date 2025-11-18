@@ -33,16 +33,6 @@ export const getTrendingMovies = async (page = 1) => {
 
 
 
-export const getNowPlayingMovies = async (page = 1) => {
-  try {
-    const response = await tmdbService.get(`/movie/now_playing?include_adult=false&api_key=${TMDB_API_KEY}&page=${page}&append_to_response=videos,images`);
-    return response.data.results;
-  } catch (error) {
-    console.error('Error fetching now playing movies:', error);
-    throw error;
-  }
-};
-
 export const getPopularMovies = async (page = 1) => {
   try {
     const response = await tmdbService.get(
@@ -414,7 +404,7 @@ export const getAnimeTv = async (page = 1) => {
 
 export const getTrendingMovieTrailers = async () => {
   try {
-    const trendingMovies = await getNowPlayingMovies();
+    const trendingMovies = await getTrendingMovies();
 
     const trailerPromises = trendingMovies.map(async (movie) => {
       const trailerKey = await getMovieTrailer(movie.id);

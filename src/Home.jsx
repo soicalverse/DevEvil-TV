@@ -8,7 +8,6 @@ import TvShows from './components/TvShows';
 import Categories from './components/Categories';
 import Anime from './components/Anime';
 import AnimeTv from './components/AnimeTv';
-import NowPlaying from './components/NowPlaying';
 import Footer from './components/Others/Footer';
 
 const Home = () => {
@@ -36,7 +35,6 @@ const Home = () => {
       <Categories />
       <Anime />
       <AnimeTv />
-      <NowPlaying />
       <Footer />
     </React.Fragment>
   );
