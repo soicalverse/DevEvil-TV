@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/MobileNavBar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,8 +8,6 @@ const MobileNavBar = () => {
     const [isSearchActive, setIsSearchActive] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
-    const [isVisible, setIsVisible] = useState(true);
-    const lastScrollY = useRef(0);
 
     const handleSearchToggle = () => {
         setIsSearchActive(!isSearchActive);
@@ -24,26 +22,8 @@ const MobileNavBar = () => {
         }
     };
 
-    useEffect(() => {
-        const handleScroll = () => {
-            const currentScrollY = window.scrollY;
-            if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
-                setIsVisible(false);
-            } else {
-                setIsVisible(true);
-            }
-            lastScrollY.current = currentScrollY;
-        };
-
-        window.addEventListener('scroll', handleScroll, { passive: true });
-
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, []);
-
     return (
-        <div className={`mobile-nav-bar-container ${isSearchActive ? 'search-active' : ''} ${isVisible ? 'visible' : 'hidden'}`}>
+        <div className={`mobile-nav-bar-container ${isSearchActive ? 'search-active' : ''}`}>
             <div className="mobile-nav-bar">
                 <div className="nav-bar-content">
                     {isSearchActive ? (

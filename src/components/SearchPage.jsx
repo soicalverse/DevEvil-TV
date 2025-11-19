@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { searchMedia, getTrendingMedia } from '../services/tmdbService';
 import MediaCard from './MediaCard';
+import Footer from './Others/Footer';
 import '../styles/Search.css';
 
 const SearchPage = () => {
@@ -43,6 +44,7 @@ const SearchPage = () => {
           ))}
         </div>
       )}
+      <Footer />
     </div>
   );
 };

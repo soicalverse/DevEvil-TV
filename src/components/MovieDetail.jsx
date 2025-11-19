@@ -12,6 +12,7 @@ import ShareModal from "./Share/ShareModal";
 import { Helmet } from 'react-helmet-async';
 import '../styles/Carousel.css';
 import Trending from "./Others/Trending";
+import Footer from "./Others/Footer";
 
 // Carousel Components
 const Carousel = ({ items, type, handleSeeMore, showSeeMore }) => {
@@ -228,6 +229,7 @@ const MovieDetails = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 };

@@ -20,17 +20,7 @@
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
-
-.mobile-nav-bar-container.hidden {
-    transform: translateY(calc(100% + var(--bottom-offset)));
-}
-
-.mobile-nav-bar-container.visible {
-    transform: translateY(0);
-}
-
 
 .mobile-nav-bar {
     display: flex;
