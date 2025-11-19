@@ -6,7 +6,7 @@ const SeeMoreCard = ({ type }) => {
   return (
     <div className="see-more-card-container">
       <Link to={`/upcoming?type=${type}`} className="see-more-card">
-        <i className="fas fa-arrow-right"></i>
+        See more
       </Link>
     </div>
   );
