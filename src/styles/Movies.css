@@ -134,6 +134,11 @@
     .movie-type-buttons {
         transform: scale(0.85);
     }
+
+    .movie-card {
+        width: 120px;
+        height: 180px;
+    }
 }
 
 @media (max-width: 320px) {

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import MediaCard from './MediaCard';
 import '../styles/Carousel.css';
 import '../styles/main.css';
+import '../styles/SeeMoreButton.css';
 import useHorizontalScroll from '../hooks/useHorizontalScroll';
 
 const Carousel = ({ items, type, handleSeeMore, showSeeMore }) => {
@@ -17,9 +18,9 @@ const Carousel = ({ items, type, handleSeeMore, showSeeMore }) => {
           </div>
         ))}
         {showSeeMore && (
-          <div className="see-more-card-container">
-            <div className="see-more-card" onClick={handleSeeMore}>
-              <div className="see-more-text">See more</div>
+          <div className="carousel-item">
+            <div className="see-more-container" onClick={handleSeeMore}>
+              <button className="see-more-button">See more</button>
             </div>
           </div>
         )}

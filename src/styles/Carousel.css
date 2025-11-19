@@ -78,3 +78,13 @@
 .cast-character {
     color: #aaa;
 }
+
+@media (max-width: 768px) {
+    .carousel-item {
+        width: 120px;
+    }
+
+    .carousel-wrapper {
+        gap: 10px;
+    }
+}

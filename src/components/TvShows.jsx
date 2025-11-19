@@ -3,8 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { getTrendingTvShows, getPopularTvShows, getUpcomingTvShows } from '../services/tmdbService';
 import Carousel from './Carousel';
 import '../styles/Movies.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTv } from '@fortawesome/free-solid-svg-icons';
 
 const TvShows = () => {
   const [tvShows, setTvShows] = useState([]);
@@ -43,7 +41,6 @@ const TvShows = () => {
     <div className="movies-section with-buttons">
       <div className="section-header">
         <div className="section-title">
-            <FontAwesomeIcon icon={faTv} className="section-icon" />
             <h2>TV Shows</h2>
         </div>
         <div className="movie-type-buttons">

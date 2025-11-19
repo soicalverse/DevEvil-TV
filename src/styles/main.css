@@ -234,3 +234,9 @@ input ~ .checked-radio-bg {
   border-color: #ffd700;
   box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
 }
+
+@media (max-width: 768px) {
+  body {
+    background: linear-gradient(to bottom, #4a0e97 45%, #c800c8 100%);
+  }
+}

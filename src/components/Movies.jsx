@@ -4,8 +4,6 @@ import PropTypes from 'prop-types';
 import { getTrendingMovies, getPopularMovies, getUpcomingMovies } from '../services/tmdbService';
 import Carousel from './Carousel';
 import '../styles/Movies.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilm } from '@fortawesome/free-solid-svg-icons';
 
 const Movies = ({ movieType, page, setPage, onMovieTypeChange }) => {
   const [movies, setMovies] = useState([]);
@@ -36,7 +34,7 @@ const Movies = ({ movieType, page, setPage, onMovieTypeChange }) => {
   return (
     <div className="movies-section with-buttons">
       <div className="section-header">
-          <h2><FontAwesomeIcon icon={faFilm} /> Movies</h2>
+          <h2>Movies</h2>
           <div className="movie-type-buttons">
             <button onClick={() => onMovieTypeChange('trending')} className={movieType === 'trending' ? 'active' : ''}>Trending</button>
             <button onClick={() => onMovieTypeChange('popular')} className={movieType === 'popular' ? 'active' : ''}>Popular</button>
