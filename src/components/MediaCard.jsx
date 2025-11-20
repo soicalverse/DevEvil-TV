@@ -13,25 +13,28 @@ const MediaCard = ({ item, type }) => {
   const cardTitle = title || name;
   const imagePath = type === 'person' ? profile_path : poster_path;
 
-  const handlePlayClick = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    navigate(`/player/${id}`);
-  };
-
   const linkDestination = type === 'person'
     ? `https://en.wikipedia.org/wiki/${name}`
     : `/${type}/${id}`;
 
+  const handlePlayClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigate(linkDestination);
+  };
+
   const cardContent = (
     <div className="movie-card">
       <img src={`https://image.tmdb.org/t/p/w500${imagePath}`} alt={cardTitle} className="movie-image" />
-      <div className="movie-info">
-        <h3>{cardTitle}</h3>
+      <div className="movie-info-overlay">
+        <div className="movie-title-container">
+          <h3 className="movie-title">{`${cardTitle} - ${cardTitle}`}</h3>
+        </div>
         {type !== 'person' && (
-          <div className="play-button" onClick={handlePlayClick}>
-            <i className="fa-solid fa-play"></i>
-            <span>Play</span>
+          <div className="play-button-container">
+            <button className="play-button" onClick={handlePlayClick}>
+              <i className="fas fa-play"></i>
+            </button>
           </div>
         )}
       </div>

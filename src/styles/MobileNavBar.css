@@ -162,3 +162,9 @@
 .search-view input::placeholder {
     color: #bbb; /* Lighter placeholder */
 }
+
+@media (min-width: 769px) {
+  .mobile-nav-bar-container {
+    display: none;
+  }
+}

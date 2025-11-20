@@ -5,58 +5,107 @@
   gap: 20px;
 }
 
+.search-results-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+}
+
 .movie-card {
   position: relative;
   border-radius: 10px;
   overflow: hidden;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
 }
 
 .movie-card:hover {
   transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
-.movie-card:hover .movie-image {
-  filter: blur(5px);
-}
-
-.movie-card .movie-image {
+.movie-image {
   width: 100%;
   height: auto;
   display: block;
   transition: filter 0.3s ease;
 }
 
-.movie-card .movie-info {
+.movie-card:hover .movie-image {
+  filter: blur(5px);
+}
+
+.movie-info-overlay {
   position: absolute;
-  bottom: 0;
+  top: 0;
   left: 0;
   right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   padding: 10px;
-  background: rgba(0, 0, 0, 0.7);
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.8) 100%);
   color: white;
   opacity: 0;
   transition: opacity 0.3s ease;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(2px);
 }
 
-.movie-card:hover .movie-info {
+.movie-card:hover .movie-info-overlay {
   opacity: 1;
 }
 
-.movie-card .movie-info h3 {
-  margin: 0;
-  font-size: 1rem;
+.movie-title-container {
+  overflow: hidden;
+  white-space: nowrap;
 }
 
-.movie-card .play-button {
+.movie-title {
+  display: inline-block;
+  margin: 0;
+  font-size: 1rem;
+  animation: scroll-text 10s linear infinite;
+  transform: translateX(0%);
+}
+
+@keyframes scroll-text {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.play-button-container {
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 5px;
-  text-decoration: none;
+  flex-grow: 1;
+}
+
+.play-button {
+  background: transparent;
+  border: 2px solid white;
+  border-radius: 50%;
   color: white;
-  font-weight: bold;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.play-button i {
+  font-size: 1.5rem;
+}
+
+.play-button:hover {
+  background-color: white;
+  color: black;
 }
 
 .movies-section {
@@ -138,6 +187,24 @@
     .movie-card {
         width: 120px;
         height: 180px;
+    }
+
+    .movie-card:hover {
+      transform: none;
+      box-shadow: none;
+    }
+    
+    .movie-info-overlay {
+      background: rgba(0, 0, 0, 0.5);
+    }
+    
+    .play-button {
+      width: 40px;
+      height: 40px;
+    }
+
+    .play-button i {
+      font-size: 1rem;
     }
 }
 

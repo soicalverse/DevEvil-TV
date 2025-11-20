@@ -74,7 +74,8 @@ const CustomCursor: React.FC = () => {
           y: mousePosition.y - 16,
           scale: isHovering ? 1.5 : 1,
           backgroundColor: isHovering ? 'rgba(168, 251, 211, 0.1)' : 'transparent',
-          borderColor: isHovering ? 'rgba(168, 251, 211, 0.8)' : 'rgba(168, 251, 211, 0.3)'
+          borderColor: isHovering ? 'rgba(168, 251, 211, 0.8)' : 'rgba(168, 251, 211, 0.5)',
+          boxShadow: isHovering ? '0 0 15px rgba(168, 251, 211, 0.8)' : 'none'
         }}
         transition={{ type: "tween", ease: "backOut", duration: 0.2 }}
       />

@@ -2,23 +2,24 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 0.5rem;
-  height: 0.5rem;
+  width: 8px;
+  height: 8px;
   background-color: #a8fbd3;
-  border-radius: 9999px;
+  border-radius: 50%;
   pointer-events: none;
   z-index: 9999;
   mix-blend-mode: difference;
+  box-shadow: 0 0 10px rgba(168, 251, 211, 0.7), 0 0 20px rgba(168, 251, 211, 0.5);
 }
 
 .custom-cursor-ring {
   position: fixed;
   top: 0;
   left: 0;
-  width: 2rem;
-  height: 2rem;
-  border: 1px solid #a8fbd3;
-  border-radius: 9999px;
+  width: 32px;
+  height: 32px;
+  border: 2px solid rgba(168, 251, 211, 0.5);
+  border-radius: 50%;
   pointer-events: none;
   z-index: 9998;
   mix-blend-mode: difference;

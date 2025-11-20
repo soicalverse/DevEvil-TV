@@ -16,7 +16,7 @@ const MobileNavBar = () => {
     const handleSearchSubmit = (e) => {
         e.preventDefault();
         if (searchTerm.trim()) {
-            navigate(`/search?query=${searchTerm}`);
+            navigate(`/search?q=${searchTerm}`);
             setSearchTerm('');
             setIsSearchActive(false);
         }

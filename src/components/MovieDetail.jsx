@@ -13,6 +13,7 @@ import { Helmet } from 'react-helmet-async';
 import '../styles/Carousel.css';
 import Trending from "./Others/Trending";
 import Footer from "./Others/Footer";
+import Loader from "./Loader";
 
 // Carousel Components
 const Carousel = ({ items, type, handleSeeMore, showSeeMore }) => {
@@ -73,9 +74,12 @@ const MovieDetails = () => {
   const [selectedSeason, setSelectedSeason] = useState(1);
   const [showShareModal, setShowShareModal] = useState(false);
   const [trending, setTrending] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
     const fetchData = async () => {
+      const startTime = Date.now();
       try {
         const data = isMovie ? await getMovieDetails(id) : await getTvShowDetails(id);
         setMedia(data);
@@ -91,6 +95,14 @@ const MovieDetails = () => {
         }
       } catch (error) {
         console.error("Error fetching media details:", error);
+      } finally {
+        const elapsedTime = Date.now() - startTime;
+        const remainingTime = 1000 - elapsedTime;
+        if (remainingTime > 0) {
+          setTimeout(() => setLoading(false), remainingTime);
+        } else {
+          setLoading(false);
+        }
       }
     };
     fetchData();
@@ -101,7 +113,7 @@ const MovieDetails = () => {
   const handlePosterClick = () => setShowPoster(true);
   const handleClosePoster = () => setShowPoster(false);
 
-  if (!media) return <div>Loading...</div>;
+  if (loading) return <div className="loading-container"><Loader /></div>;
 
   const { title, name, release_date, first_air_date, genres, runtime, number_of_seasons, vote_average, overview, backdrop_path, poster_path, recommendations, credits, reviews, seasons } = media;
   const mediaTitle = title || name;
@@ -130,7 +142,7 @@ const MovieDetails = () => {
         <meta name="twitter:description" content={overview} />
         <meta name="twitter:image" content={posterUrl} />
       </Helmet>
-      <div className="movie-details-page" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w1280/${backdrop_path})` }}>
+      <div className="movie-details-page">
         <div className="page-overlay"></div>
         {showTrailer && (
           <div className="youtube-overlay" onClick={handleCloseTrailer}>
@@ -175,10 +187,10 @@ const MovieDetails = () => {
                 <p className="movie-overview">{overview}</p>
               </div>
               <div className="movie-details-actions">
-                  <Link to={`/player/${id}${!isMovie ? '?s=1&e=1' : ''}`} className="play-button">
+                  <Link to={`/player/${id}${!isMovie ? '?s=1&e=1' : ''}`} className="share-button">
                       <i className="fas fa-play"></i> Play
                   </Link>
-                <button className="trailer-button" onClick={handleWatchTrailer}><i className="fas fa-film"></i> Watch Trailer</button>
+                <button className="trailer-button" onClick={handleWatchTrailer}><i className="fas fa-film"></i> Trailer</button>
                 <button className="share-button" onClick={() => setShowShareModal(true)}><i className="fas fa-share-nodes"></i> Share</button>
               </div>
             </div>
