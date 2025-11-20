@@ -1,0 +1,25 @@
+.custom-cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: #a8fbd3;
+  border-radius: 9999px;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
+}
+
+.custom-cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid #a8fbd3;
+  border-radius: 9999px;
+  pointer-events: none;
+  z-index: 9998;
+  mix-blend-mode: difference;
+}

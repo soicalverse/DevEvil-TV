@@ -19,6 +19,8 @@ import './styles/root.css';
 import './styles/Carousel.css';
 import './styles/Movies.css';
 import './styles/mobile.css';
+import './styles/CustomCursor.css';
+import CustomCursor from './components/CustomCursor.tsx';
 
 const isMobile = window.innerWidth < 768;
 
@@ -26,6 +28,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <HelmetProvider>
       <Router>
+        <CustomCursor />
         <Routes>
           <Route path="/" element={<Home />} /> {/* Use the Home component for the root path */}
           <Route path="/movie/:id" element={<React.Fragment><NavBar /><MovieDetail />{isMobile && <MobileNavBar />}</React.Fragment>} />
