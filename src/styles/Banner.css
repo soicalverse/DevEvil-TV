@@ -2,6 +2,7 @@
     position: relative;
     height: 100vh;
     width: 100%;
+    overflow: hidden; /* Ensures the corner radius is applied correctly */
 }
 
 .banner-card {
@@ -19,6 +20,7 @@
     left: 0;
     width: 100%;
     height: 100%;
+    animation: zoom-in 1.2s ease-out;
 }
 
 .banner-img {
@@ -26,6 +28,8 @@
     height: 100%;
     object-fit: cover;
     object-position: top;
+    border-bottom-left-radius: 60px;
+    border-bottom-right-radius: 60px;
 }
 
 .card-content {
@@ -34,7 +38,8 @@
     color: #fff;
     margin-left: 5%;
     max-width: 45%;
-    padding-top: 100px; /* Added padding here to position content correctly behind transparent navbar */
+    padding-top: 100px;
+    animation: slide-up-fade-in 1s ease-out;
 }
 
 .card-info {
@@ -62,19 +67,52 @@
     font-size: 80px;
     margin: 0;
     line-height: 1.1;
+    overflow: hidden;
+    white-space: nowrap;
+    animation: typing 2.5s steps(40, end), blink-caret .75s step-end infinite;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .title-wrapper {
-   
+    display: inline-block;
     padding: 1rem;
     border-radius: 5px;
 }
 
-.banner-nav {
-    margin-top: 2rem;
+/* Animations */
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
 }
 
-.watch-now-button {
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: orange; }
+}
+
+@keyframes zoom-in {
+    from { transform: scale(1.1) }
+    to { transform: scale(1) }
+}
+
+@keyframes slide-up-fade-in {
+    from { opacity: 0; transform: translateY(20px) }
+    to { opacity: 1; transform: translateY(0) }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1) }
+    50% { transform: scale(1.05) }
+    100% { transform: scale(1) }
+}
+
+.banner-nav {
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.watch-now-button, .insights-button {
     background-color: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -89,6 +127,12 @@
     align-items: center;
     gap: 0.5rem;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    animation: pulse 2s infinite;
+    transition: transform 0.3s ease;
+}
+
+.watch-now-button:hover, .insights-button:hover {
+    transform: scale(1.05);
 }
 
 .movies-section {
@@ -101,34 +145,58 @@
     transition: border 0.2s;
 }
 
-@media (max-width: 768px) {
-    .banner-title {
-        font-size: 50px;
-    }
+.card-info span {
+    background-color: #FFA500;
+    color: #000;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+}
 
+@media (max-width: 768px) {
     .card-content {
         max-width: 80%;
+        margin-left: 5%;
         padding-top: 80px;
+    }
+
+    .card-info {
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .banner-nav {
+        justify-content: flex-start;
+    }
+
+    .banner-title {
+        font-size: 50px;
     }
 }
 
 @media (max-width: 480px) {
+    .card-content {
+        max-width: 90%;
+        padding-top: 70px;
+    }
+
     .banner-title {
         font-size: 30px;
     }
 
-    .card-content {
-        max-width: 90%;
-        margin-left: 2rem;
-        padding-top: 70px;
-    }
-
-    .watch-now-button {
+    .watch-now-button, .insights-button {
         padding: 0.6rem 1.2rem;
         font-size: 0.9rem;
     }
 
     .card-info {
         font-size: 14px;
+    }
+}
+
+@media (max-width: 365px) {
+    .watch-now-button, .insights-button {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.7rem;
     }
 }

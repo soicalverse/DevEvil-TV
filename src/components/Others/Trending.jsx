@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { getTrendingMovies, getTrendingTvShows } from '../../services/tmdbService';
@@ -36,7 +37,7 @@ const Trending = ({ mediaType }) => {
     useEffect(() => {
         const fetchTrending = async () => {
             const trendingData = mediaType === 'movie' ? await getTrendingMovies() : await getTrendingTvShows();
-            setTrending(trendingData.results || []);
+            setTrending(trendingData || []);
         };
 
         fetchTrending();
