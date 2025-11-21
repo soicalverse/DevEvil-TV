@@ -143,6 +143,7 @@ const MovieDetails = () => {
         <meta name="twitter:image" content={posterUrl} />
       </Helmet>
       <div className="movie-details-page">
+        <div className="movie-details-background" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${backdrop_path})` }}></div>
         <div className="page-overlay"></div>
         {showTrailer && (
           <div className="youtube-overlay" onClick={handleCloseTrailer}>

@@ -3,7 +3,7 @@
     overflow-x: auto;
     overflow-y: hidden;
     white-space: nowrap;
-    padding: 20px 0;
+    padding: 15px 20;
     scrollbar-width: none; /* For Firefox */
     -ms-overflow-style: none;  /* For Internet Explorer and Edge */
 }

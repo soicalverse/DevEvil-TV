@@ -1,4 +1,4 @@
- import React from 'react';
+import React from 'react';
 import '../../styles/Footer.css';
 
 const Footer = () => {
@@ -16,14 +16,14 @@ const Footer = () => {
         </div>
         
         {/* Description */}
-        <p className="footer-description">
-          Inspiring users to discover their next favorite film.
+        <p className="footer-description text-glow">
+        Beyond the screen, lies a universe of stories. Discover yours.
           <br />
-          <span className="footer-tagline">Your personal movie companion.</span>
+          <span className="footer-tagline">Your cinematic journey begins here.</span>
         </p>
         
         {/* CTA Button */}
-        <a className="footer-cta" href="/signup">
+        <a className="footer-cta pulse" href="/signup">
           Get Started Free
         </a>
       </div>
@@ -37,17 +37,17 @@ const Footer = () => {
             <nav className="footer-nav">
               <ul className="footer-nav-list">
                 <li>
-                  <a className="footer-link" href="/about">
+                  <a className="footer-link pulse" href="/about">
                     About
                   </a>
                 </li>
                 <li>
-                  <a className="footer-link" href="/contact">
+                  <a className="footer-link pulse" href="/contact">
                     Contact
                   </a>
                 </li>
                 <li>
-                  <a className="footer-link" href="/privacy">
+                  <a className="footer-link pulse" href="/privacy">
                     Privacy Policy
                   </a>
                 </li>
@@ -61,7 +61,7 @@ const Footer = () => {
                 <a
                   target="_blank"
                   rel="noreferrer"
-                  className="footer-social-link"
+                  className="footer-social-link pulse"
                   href="https://x.com/filmfind.online"
                 >
                   <span className="sr-only">X / Twitter</span>
@@ -77,7 +77,7 @@ const Footer = () => {
                 <a
                   target="_blank"
                   rel="noreferrer"
-                  className="footer-social-link"
+                  className="footer-social-link pulse"
                   href="https://github.com/filmfind.online"
                 >
                   <span className="sr-only">Github</span>
@@ -90,7 +90,7 @@ const Footer = () => {
                 <a
                   target="_blank"
                   rel="noreferrer"
-                  className="footer-social-link"
+                  className="footer-social-link pulse"
                   href="https://www.instagram.com/filmfind.online"
                 >
                   <span className="sr-only">Instagram</span>
@@ -105,7 +105,7 @@ const Footer = () => {
               </div>
               
               {/* Copyright */}
-              <span className="footer-copyright">
+              <span className="footer-copyright text-glow">
                 © 2024 Your Company, Inc. All rights reserved.
               </span>
             </div>

@@ -1,10 +1,11 @@
 /* === Page Container === */
 .movie-details-page {
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed; /* Keep the background fixed */
   color: #fff;
   position: relative;
+}
+
+.movie-details-background {
+    display: none; /* Hidden by default */
 }
 
 .page-overlay {
@@ -13,20 +14,20 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(26, 26, 26, 0.7); /* Dark semi-transparent overlay */
+  background: rgba(26, 26, 26, 0.7);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   z-index: 1;
-  pointer-events: none; /* Allow clicks to pass through */
+  pointer-events: none;
 }
 
 .movie-details-container {
   position: relative;
-  z-index: 2; /* Content on top of the overlay */
-  padding: 80px 0; /* Add vertical padding */
+  z-index: 2;
+  padding: 80px 0;
 }
 
-/* === YouTube Player Modal (iOS Style) === */
+/* === YouTube Player Modal === */
 .youtube-overlay {
   position: fixed;
   top: 0;
@@ -52,8 +53,8 @@
   width: 100%;
   height: auto;
   aspect-ratio: 16 / 9;
-  max-width: 1200px; /* Max width for desktop */
-  max-height: 80vh;   /* Max height for desktop */
+  max-width: 1200px;
+  max-height: 80vh;
 }
 
 .youtube-player-wrapper {
@@ -84,7 +85,7 @@
   transform: scale(1.1);
 }
 
-/* === Poster Lightbox (iOS Style) === */
+/* === Poster Lightbox === */
 .poster-lightbox-overlay {
   position: fixed;
   top: 0;
@@ -126,7 +127,7 @@
   background: rgba(0, 0, 0, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: #fff;
-  font-s`ize: 24px;
+  font-size: 24px;
   line-height: 36px;
   text-align: center;
   cursor: pointer;
@@ -139,7 +140,6 @@
   transform: scale(1.1);
 }
 
-
 /* === Header Section === */
 .movie-details-header-section {
   max-width: 1200px;
@@ -150,15 +150,14 @@
 .movie-details-header {
   display: flex;
   flex-direction: column;
-  gap: 15px; 
+  gap: 15px;
 }
 
-/* === Mobile-Specific Poster === */
 .movie-poster-mobile-wrapper {
-  display: none; /* Hidden by default */
+  display: none;
   cursor: pointer;
   position: relative;
-  z-index: 5; /* Ensure this wrapper is on top */
+  z-index: 5;
 }
 
 .movie-poster-mobile {
@@ -167,10 +166,9 @@
   border-radius: 15px;
 }
 
-
 /* === Typography & Metadata === */
 .movie-title-details {
-  font-size: 2.8rem; 
+  font-size: 2.8rem;
   text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9);
 }
 
@@ -215,7 +213,7 @@
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
-  justify-content: center; /* Center content */
+  justify-content: center;
   gap: 10px;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -240,67 +238,21 @@
     position: relative;
 }
 
-/* === Episode List Styling === */
-.episode-ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
-}
-
-.episode-list {
-  background-color: #222;
-  border-radius: 12px;
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.episode-list:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-}
-
-.episode-image-container {
-  position: relative;
-  width: 100%;
-  padding-top: 56.25%; /* 16:9 Aspect Ratio */
-  background-size: cover;
-  background-position: center;
-}
-
-.episode-image {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.no-image-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.3);
-}
-
-.episode-details {
-  padding: 15px;
-}
-
-.episode-details p {
-  margin: 0;
-  font-size: 0.9rem;
-  color: #ccc;
-}
-
-
 /* === Responsive Styles === */
+@media (min-width: 481px) {
+    .movie-details-background {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        z-index: 0;
+    }
+}
+
 @media (max-width: 768px) {
   .movie-details-container {
     padding: 60px 0;
@@ -313,7 +265,7 @@
   .movie-title-details {
     font-size: 2.2rem;
   }
-  
+
   .movie-details-content {
     padding: 0 20px;
     margin-top: 30px;
@@ -322,7 +274,7 @@
 
 @media (max-width: 480px) {
   .page-overlay {
-    display: none; /* No overlay on mobile */
+    display: none;
   }
 
   .movie-details-container {
@@ -338,17 +290,17 @@
   }
 
   .movie-poster-mobile-wrapper {
-    display: block; /* Show the poster wrapper on mobile */
+    display: block;
     width: 60%;
     margin: 0 auto 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-    border-radius: 15px; /* Apply radius to the wrapper */
+    border-radius: 15px;
   }
 
   .movie-title-details {
     font-size: 1.8rem;
   }
-  
+
   .movie-overview {
     font-size: 0.9rem;
   }
@@ -358,23 +310,15 @@
     justify-content: center;
     gap: 10px;
   }
-    
+
   .play-button, .trailer-button, .share-button {
     justify-content: center;
     padding: 10px 15px;
     font-size: 0.9rem;
   }
-  
+
   .movie-details-content {
     padding: 0 15px;
     margin-top: 20px;
-  }
-
-  .season-dropdown {
-    width: 100%;
-  }
-
-  .episode-ul {
-    grid-template-columns: 1fr;
   }
 }
