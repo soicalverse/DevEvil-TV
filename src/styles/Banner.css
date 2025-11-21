@@ -1,3 +1,4 @@
+
 .banner {
     position: relative;
     height: 100vh;
@@ -198,5 +199,24 @@
     .watch-now-button, .insights-button {
         padding: 0.4rem 0.8rem;
         font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 350px) {
+    .card-content {
+        text-align: center;
+        padding-top: 20px;
+    }
+
+    .banner-title {
+        font-size: 24px;
+    }
+
+    .watch-now-button, .insights-button {
+        padding: 0.5rem 1rem;
+    }
+
+    .card-info {
+        padding: 0 1rem;
     }
 }

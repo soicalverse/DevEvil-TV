@@ -38,3 +38,22 @@
         height: 50vh;
     }
 }
+
+@media (max-width: 350px) {
+    .banner-card .card-content {
+        padding-top: 20px;
+        text-align: center;
+    }
+
+    .banner-title {
+        font-size: 24px;
+    }
+
+    .watch-now-button, .insights-button {
+        padding: 0.5rem 1rem;
+    }
+
+    .card-info {
+        padding: 0 1rem;
+    }
+}

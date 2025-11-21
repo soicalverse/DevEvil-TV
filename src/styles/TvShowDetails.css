@@ -30,31 +30,32 @@
 /* === Episode Grid Styling === */
 .episode-ul {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 15px;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
   list-style: none;
   padding: 0;
 }
 
 .episode-list {
-    background: transparent;
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 12px;
     color: #fff;
     text-decoration: none;
     transition: all 0.3s ease;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 .episode-list:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .episode-image-container {
     width: 100%;
     padding-top: 56.25%; /* 16:9 Aspect Ratio */
-    background-size: cover;
-    background-position: center;
-    border-radius: 12px;
     position: relative;
     overflow: hidden;
 }
@@ -66,24 +67,44 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.episode-list:hover .episode-image {
+    transform: scale(1.05);
 }
 
 .episode-details {
-    padding-top: 10px;
+    padding: 15px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .episode-details p {
     margin: 0;
-    white-space: nowrap;
+    white-space: normal;
     overflow: hidden;
     text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Limit to 2 lines */
+    -webkit-box-orient: vertical;
+    line-height: 1.4;
 }
 
 
 /* === Responsive Design for Smaller Screens === */
 @media (max-width: 768px) {
   .episode-ul {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .episode-ul {
+    grid-template-columns: 1fr;
+    gap: 15px;
   }
 }
