@@ -1,5 +1,7 @@
 /* Footer Container */
 .footer {
+  border-top-left-radius: 50px;
+  border-top-right-radius: 50px;
   position: relative;
   background: linear-gradient(to bottom, #19191a, #181817, #131313);
   padding-top: 0;

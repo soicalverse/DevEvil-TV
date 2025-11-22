@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../../styles/NavBar.css';
+import { blockedWords } from '../../blockedWords'; // Import the blocked words
 
 const NavBar = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -9,8 +10,18 @@ const NavBar = () => {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    if (searchTerm.trim()) {
-      navigate(`/search?q=${encodeURIComponent(searchTerm.trim())}`);
+    const trimmedSearchTerm = searchTerm.trim();
+
+    if (trimmedSearchTerm) {
+      const isQueryBlocked = blockedWords.some(word =>
+        trimmedSearchTerm.toLowerCase().includes(word.toLowerCase())
+      );
+
+      if (isQueryBlocked) {
+        navigate(`/search?q=${encodeURIComponent(trimmedSearchTerm)}`);
+      } else {
+        navigate(`/search?q=${encodeURIComponent(trimmedSearchTerm)}`);
+      }
       setSearchTerm('');
     }
   };

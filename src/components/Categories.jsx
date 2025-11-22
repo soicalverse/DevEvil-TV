@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { getMoviesByGenre, getGenres, getTvGenres, getTvByGenre } from '../services/tmdbService';
 import Carousel from './Carousel';
@@ -33,10 +34,10 @@ const Categories = () => {
     const fetchGenres = async () => {
       try {
         const fetchedMovieGenres = await getGenres();
-        setMovieGenres(fetchedMovieGenres);
+        setMovieGenres(fetchedMovieGenres.filter(genre => genre.name !== 'Horror'));
 
         const fetchedTvGenres = await getTvGenres();
-        setTvGenres(fetchedTvGenres);
+        setTvGenres(fetchedTvGenres.filter(genre => genre.name !== 'Horror'));
       } catch (error) {
         // Handle error
       }

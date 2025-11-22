@@ -4,12 +4,15 @@ import { searchMedia, getTrendingMedia } from '../services/tmdbService';
 import MediaCard from './MediaCard';
 import Footer from './Others/Footer';
 import Loader from './Loader';
+import { blockedWords } from '../blockedWords';
+import BlockedContent from './BlockedContent'; // Import the new component
 import '../styles/Search.css';
 import '../styles/Movies.css';
 
 const SearchPage = () => {
   const [searchResults, setSearchResults] = useState([]);
-  const [loading, setLoading] = useState(true); // Set initial loading to true
+  const [loading, setLoading] = useState(true);
+  const [isBlocked, setIsBlocked] = useState(false);
   const location = useLocation();
 
   const fetchMedia = useCallback(async (searchQuery) => {
@@ -37,8 +40,22 @@ const SearchPage = () => {
   }, []);
 
   useEffect(() => {
-    setLoading(true); // Ensure loading is true on new search
+    setLoading(true);
+    setIsBlocked(false);
     const searchParam = new URLSearchParams(location.search).get('q');
+
+    if (searchParam) {
+      const isQueryBlocked = blockedWords.some(word =>
+        searchParam.toLowerCase().includes(word.toLowerCase())
+      );
+
+      if (isQueryBlocked) {
+        setIsBlocked(true);
+        setLoading(false);
+        return;
+      }
+    }
+
     fetchMedia(searchParam);
   }, [location.search, fetchMedia]);
 
@@ -48,6 +65,11 @@ const SearchPage = () => {
         <div className="loading-container">
           <Loader />
         </div>
+      ) : isBlocked ? (
+        <BlockedContent 
+          title="Sorry, searches containing 18+ or explicit words are not allowed."
+          message="This is a family-friendly movie site. Please use appropriate search terms."
+        />
       ) : (
         <div className="search-results-grid">
           {searchResults.map((media) => (

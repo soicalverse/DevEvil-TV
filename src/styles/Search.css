@@ -57,6 +57,41 @@
     transform: scale(1.05);
 }
 
+.blocked-search-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  text-align: center;
+  padding: 2rem;
+}
+
+.blocked-content {
+  background-color: rgba(255, 0, 0, 0.1);
+  border: 1px solid rgba(255, 0, 0, 0.3);
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 600px;
+}
+
+.blocked-content .fa-exclamation-triangle {
+  color: #ffcc00;
+  margin-bottom: 1rem;
+}
+
+.blocked-content h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #fff;
+}
+
+.blocked-content p {
+  font-size: 1rem;
+  color: #ccc;
+  margin: 0.5rem 0;
+}
+
+
 @media (min-width: 768px) {
     .search-results {
         grid-template-columns: repeat(4, 1fr);

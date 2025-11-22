@@ -13,7 +13,7 @@ export const getTrendingMovies = async (page = 1) => {
       `/movie/popular?include_adult=false&api_key=${TMDB_API_KEY}&page=${page}`
     );
 
-    const trendingMovies = response.data.results;
+    const trendingMovies = response.data.results.filter(movie => !movie.genre_ids.includes(27));
 
     const moviesWithImagesAndVideos = await Promise.all(
       trendingMovies.map(async (movie) => {
@@ -38,7 +38,7 @@ export const getPopularMovies = async (page = 1) => {
     const response = await tmdbService.get(
       `/movie/top_rated?include_adult=false&api_key=${TMDB_API_KEY}&page=${page}&append_to_response=videos,images`
     );
-    return response.data.results;
+    return response.data.results.filter(movie => !movie.genre_ids.includes(27));
   } catch (error) {
     console.error('Error fetching popular movies:', error);
     throw error;
@@ -50,7 +50,7 @@ export const getTrendingTvShows = async (page = 1) => {
     const response = await tmdbService.get(
       `/trending/tv/day?include_adult=false&api_key=${TMDB_API_KEY}&page=${page}&append_to_response=videos,images`
     );
-    return response.data.results;
+    return response.data.results.filter(show => !show.genre_ids.includes(10764));
   } catch (error) {
     console.error('Error fetching trending TV shows:', error);
     throw error;
@@ -62,7 +62,7 @@ export const getPopularTvShows = async (page = 1) => {
     const response = await tmdbService.get(
       `/tv/top_rated?include_adult=false&api_key=${TMDB_API_KEY}&page=${page}&append_to_response=videos,images`
     );
-    return response.data.results;
+    return response.data.results.filter(show => !show.genre_ids.includes(10764));
   } catch (error) {
     console.error('Error fetching popular TV shows:', error);
     throw error;
@@ -165,10 +165,11 @@ export const searchMedia = async (query) => {
     }
 
     const data = await response.json();
+    const filteredResults = data.results.filter(result => !result.genre_ids.includes(27) && !result.genre_ids.includes(10764));
 
     console.log('Search API Response:', data);
 
-    const results = data.results.map((result) => ({
+    const results = filteredResults.map((result) => ({
       id: result.id,
       title: result.title || result.name,
       poster_path: result.poster_path ? `${result.poster_path}` : null,
@@ -188,7 +189,7 @@ export const getUpcomingMovies = async (page = 1) => {
     const response = await tmdbService.get(
       `/movie/upcoming?include_adult=false&api_key=${TMDB_API_KEY}&page=${page}`
     );
-    return response.data.results;
+    return response.data.results.filter(movie => !movie.genre_ids.includes(27));
   } catch (error) {
     console.error('Error fetching upcoming movies:', error);
     throw error;
@@ -199,7 +200,8 @@ export const getUpcomingMovies = async (page = 1) => {
 export const getUpcomingTvShows = async (page = 1) => {
   try {
     const response = await axios.get(`${BASE_URL}/tv/on_the_air?include_adult=false&api_key=${TMDB_API_KEY}&page=${page}`);
-    const showsWithImages = response.data.results.map((show) => ({
+    const filteredShows = response.data.results.filter(show => !show.genre_ids.includes(10764));
+    const showsWithImages = filteredShows.map((show) => ({
       ...show,
       image: `https://image.tmdb.org/t/p/w300/${show.poster_path}`,
     }));
@@ -381,7 +383,7 @@ export const getAnimeMovies = async (page = 1) => {
       `/discover/movie?include_adult=false&api_key=${TMDB_API_KEY}&with_keywords=210024&page=${page}`
     );
 
-    return response.data.results;
+    return response.data.results.filter(movie => !movie.genre_ids.includes(27));
   } catch (error) {
     console.error('Error fetching anime movies:', error);
     throw error;
@@ -394,7 +396,7 @@ export const getAnimeTv = async (page = 1) => {
       `/discover/tv?include_adult=false&api_key=${TMDB_API_KEY}&with_keywords=210024&page=${page}`
     );
 
-    return response.data.results;
+    return response.data.results.filter(show => !show.genre_ids.includes(10764));
   } catch (error) {
     console.error('Error fetching anime tv:', error);
     throw error;

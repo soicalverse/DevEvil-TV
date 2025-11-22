@@ -14,6 +14,9 @@ import '../styles/Carousel.css';
 import Trending from "./Others/Trending";
 import Footer from "./Others/Footer";
 import Loader from "./Loader";
+import { blockedMedia } from '../blockedMedia';
+import BlockedContent from './BlockedContent';
+
 
 // Carousel Components
 const Carousel = ({ items, type, handleSeeMore, showSeeMore }) => {
@@ -41,13 +44,25 @@ Carousel.propTypes = { items: PropTypes.array, type: PropTypes.string.isRequired
 
 const CastCarousel = ({ items }) => {
   const carouselRef = useHorizontalScroll();
+  const placeholderImg = '/assets/user.png';
+
+  const handleImageError = (e) => {
+    e.target.onerror = null; 
+    e.target.src = placeholderImg;
+  };
+
   return (
     <div className="carousel-container" ref={carouselRef}>
       <div className="carousel-wrapper">
         {(items || []).map((item) => (
           <div className="carousel-item" key={item.id}>
             <div className="cast-card">
-              <img src={`https://image.tmdb.org/t/p/w200/${item.profile_path}`} alt={item.name} className="cast-image" />
+              <img 
+                src={item.profile_path ? `https://image.tmdb.org/t/p/w200/${item.profile_path}` : placeholderImg}
+                alt={item.name} 
+                className="cast-image" 
+                onError={handleImageError} 
+              />
               <div className="cast-info">
                 <p className="cast-name">{item.name}</p>
                 <p className="cast-character">{item.character}</p>
@@ -75,9 +90,22 @@ const MovieDetails = () => {
   const [showShareModal, setShowShareModal] = useState(false);
   const [trending, setTrending] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isBlocked, setIsBlocked] = useState(false);
 
   useEffect(() => {
     setLoading(true);
+
+    const mediaType = isMovie ? 'movie' : 'tv';
+    const isMediaBlocked = blockedMedia.some(item => item.id.toString() === id && item.type === mediaType);
+
+    if (isMediaBlocked) {
+      setIsBlocked(true);
+      setLoading(false);
+      return;
+    }
+
+    setIsBlocked(false);
+
     const fetchData = async () => {
       const startTime = Date.now();
       try {
@@ -108,12 +136,17 @@ const MovieDetails = () => {
     fetchData();
   }, [id, isMovie]);
 
-  const handleWatchTrailer = () => setShowTrailer(!!trailerKey);
+  const handleWatchTrailer = () => setShowTrailer(true);
   const handleCloseTrailer = () => setShowTrailer(false);
   const handlePosterClick = () => setShowPoster(true);
   const handleClosePoster = () => setShowPoster(false);
 
+  if (isBlocked) {
+    return <BlockedContent title="Sorry, this 18+ content is not available." message="This is a family-friendly movie site." />;
+  }
+
   if (loading) return <div className="loading-container"><Loader /></div>;
+  if (!media) return <div></div>; // Or some other placeholder/error
 
   const { title, name, release_date, first_air_date, genres, runtime, number_of_seasons, vote_average, overview, backdrop_path, poster_path, recommendations, credits, reviews, seasons } = media;
   const mediaTitle = title || name;
