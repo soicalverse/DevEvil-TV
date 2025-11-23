@@ -21,6 +21,7 @@ import './styles/CustomCursor.css';
 import CustomCursor from './components/CustomCursor.tsx';
 import Layout from './components/Others/Layout';
 import WelcomeLoader from './components/WelcomeLoader';
+import './adblocker.js';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
