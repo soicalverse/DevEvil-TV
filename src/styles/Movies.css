@@ -169,8 +169,7 @@
 
 @media (max-width: 767px) {
     .section-header {
-        flex-direction: column;
-        align-items: stretch;
+        align-items: center;
     }
 
     .section-header h2 {
@@ -217,6 +216,13 @@
 
     .play-button i {
       font-size: 1rem;
+    }
+}
+
+@media (max-width: 370px) {
+    .movie-type-buttons button {
+        padding: 6px 10px;
+        font-size: 0.7rem;
     }
 }
 
