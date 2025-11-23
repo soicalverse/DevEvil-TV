@@ -1,9 +1,11 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/MobileNavBar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faSearch, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { blockedWords } from '../../blockedWords'; // Import the blocked words
+import AuthNavbar from '../AuthNavbar.tsx';
 
 const MobileNavBar = () => {
     const [isSearchActive, setIsSearchActive] = useState(false);
@@ -59,6 +61,9 @@ const MobileNavBar = () => {
                                     <FontAwesomeIcon icon={faHome} />
                                     <span>Home</span>
                                 </a>
+                                <div className='nav-item'>
+                                  <AuthNavbar />
+                                </div>
                             </div>
                         </div>
                     )}

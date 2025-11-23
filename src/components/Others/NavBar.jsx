@@ -1,7 +1,9 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../../styles/NavBar.css';
 import { blockedWords } from '../../blockedWords'; // Import the blocked words
+import AuthNavbar from '../AuthNavbar.tsx';
 
 const NavBar = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -62,7 +64,9 @@ const NavBar = () => {
             </button>
           </form>
         </div>
-        <div className="navbar-right"></div>
+        <div className="navbar-right">
+          <AuthNavbar />
+        </div>
       </div>
     </div>
   );

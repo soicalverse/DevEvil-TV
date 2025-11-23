@@ -21,7 +21,6 @@ export const blockedMedia = [
   { id: 40814, type: 'movie' },
   { id: 592695, type: 'movie' },
   { id: 688302, type: 'movie'},
-
   { id: 85621, type: 'movie' },
   { id: 619433, type: 'movie' },
   { id: 288577, type: 'tv' },

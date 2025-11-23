@@ -154,6 +154,7 @@
     transition: all 0.3s ease-in-out;
     font-weight: 500;
     position: relative;
+    white-space: nowrap;
 }
 
 .movie-type-buttons button:hover {
@@ -167,21 +168,32 @@
 }
 
 @media (max-width: 767px) {
+    .section-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
     .section-header h2 {
         font-size: 1.2rem; /* Reduced font size for mobile */
+        text-align: center;
     }
 
     .section-icon {
         font-size: 1.2rem;
     }
-
+    
     .movies-grid {
         grid-template-columns: repeat(3, 1fr);
         gap: 15px;
     }
 
     .movie-type-buttons {
-        transform: scale(0.85);
+        justify-content: center;
+    }
+
+    .movie-type-buttons button {
+        padding: 8px 12px;
+        font-size: 0.8rem;
     }
 
     .movie-card {

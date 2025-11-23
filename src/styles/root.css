@@ -55,6 +55,7 @@ body {
   background-size: 55px 55px;
   color: var(--text);
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
 .movies,
