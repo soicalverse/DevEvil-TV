@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/MobileNavBar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faSearch, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faCompass, faSearch, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { blockedWords } from '../../blockedWords'; // Import the blocked words
 import AuthNavbar from '../AuthNavbar.tsx';
 
@@ -58,8 +58,8 @@ const MobileNavBar = () => {
                                     <img src="/assets/logo2.png" alt="Logo" />
                                 </a>
                                 <a href="/" className="nav-item active">
-                                    <FontAwesomeIcon icon={faHome} />
-                                    <span>Home</span>
+                                    <FontAwesomeIcon icon={faCompass} />
+                                    <span>Discover</span>
                                 </a>
                                 <div className='nav-item'>
                                   <AuthNavbar />
