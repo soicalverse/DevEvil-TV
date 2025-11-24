@@ -1,10 +1,9 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/MobileNavBar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCompass, faSearch, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import AuthNavbar from '../AuthNavbar.tsx';
+import AuthNavbar from '../AuthNavbar';
 
 const MobileNavBar = () => {
     const [isSearchActive, setIsSearchActive] = useState(false);

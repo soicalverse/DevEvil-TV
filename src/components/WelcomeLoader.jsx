@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import PyramidLoader from './PyramidLoader';
 
 const WelcomeLoader = ({ children }) => {
@@ -21,6 +22,10 @@ const WelcomeLoader = ({ children }) => {
   }, []);
 
   return loading ? <div className="loading-container"><PyramidLoader /></div> : children;
+};
+
+WelcomeLoader.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
 export default WelcomeLoader;

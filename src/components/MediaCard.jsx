@@ -4,11 +4,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import '../styles/Movies.css';
 
 const MediaCard = ({ item, type }) => {
+  const navigate = useNavigate();
+
   if (!item) {
     return null;
   }
 
-  const navigate = useNavigate();
   const { id, poster_path, profile_path, title, name } = item;
   const cardTitle = title || name;
   const imagePath = type === 'person' ? profile_path : poster_path;

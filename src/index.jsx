@@ -1,6 +1,5 @@
-
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { ClerkProvider } from '@clerk/clerk-react';
@@ -20,7 +19,7 @@ import './styles/Carousel.css';
 import './styles/Movies.css';
 import './styles/mobile.css';
 import './styles/CustomCursor.css';
-import CustomCursor from './components/CustomCursor.tsx';
+import CustomCursor from './components/CustomCursor.jsx';
 import Layout from './components/Others/Layout';
 import WelcomeLoader from './components/WelcomeLoader';
 import './adblocker.js';
@@ -31,7 +30,9 @@ if (!PUBLISHABLE_KEY) {
   throw new Error("Missing Clerk Publishable Key");
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+const root = createRoot(document.getElementById('root'));
+
+root.render(
   <React.StrictMode>
     <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
       <HelmetProvider>
@@ -57,7 +58,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         </Router>
       </HelmetProvider>
     </ClerkProvider>
-  </React.StrictMode>,
+  </React.StrictMode>
 );
 
 reportWebVitals();

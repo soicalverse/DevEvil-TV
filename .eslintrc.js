@@ -1,20 +1,14 @@
 module.exports = {
-	env: {
-		browser: true,
-		es6: true,
-		node: true, 
-	},
-  
-  extends: ['eslint:recommended', 'plugin:react/recommended'],
-  parserOptions: {
-    ecmaFeatures: {
-      jsx: true,
+  extends: [
+    'react-app',
+    'react-app/jest',
+  ],
+  overrides: [
+    {
+      files: ['**/*.ts', '**/*.tsx'],
+      rules: {
+        'react/jsx-filename-extension': 'off',
+      },
     },
-    ecmaVersion: 2018,
-    sourceType: 'module',
-  },
-  plugins: ['react'],
-  rules: {
-    'react/jsx-filename-extension': ['error', { extensions: ['.jsx'] }],
-  },
+  ],
 };

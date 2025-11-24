@@ -15,10 +15,10 @@ const AuthNavbar: React.FC = () => {
             <div className="card_box" onClick={(e) => e.stopPropagation()}>
                 <button className="modal-close-btn" onClick={closeModal}>X</button>
                 <span></span>
-                <SignUpButton mode="modal" redirectUrl='/'>
+                <SignUpButton mode="modal">
                     <button className="modal-btn get-started-btn">Get Started</button>
                 </SignUpButton>
-                <SignInButton mode="modal" redirectUrl='/'>
+                <SignInButton mode="modal">
                     <button className="modal-btn sign-in-btn">Sign In</button>
                 </SignInButton>
             </div>

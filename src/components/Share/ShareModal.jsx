@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import '../../styles/ShareModal.css';
 
-const ShareModal = ({ show, onClose, title, url, overview, posterPath }) => {
+const ShareModal = ({ show, onClose, title, url, overview }) => {
   if (!show) {
     return null;
   }
@@ -22,7 +22,7 @@ const ShareModal = ({ show, onClose, title, url, overview, posterPath }) => {
   const handleCopy = () => {
     navigator.clipboard.writeText(url)
       .then(() => alert('Link copied to clipboard!'))
-      .catch(err => alert('Failed to copy link.'));
+      .catch(() => alert('Failed to copy link.'));
   };
 
   const handleMore = async () => {
@@ -76,7 +76,6 @@ ShareModal.propTypes = {
   title: PropTypes.string.isRequired,
   url: PropTypes.string.isRequired,
   overview: PropTypes.string.isRequired,
-  posterPath: PropTypes.string.isRequired,
 };
 
 export default ShareModal;

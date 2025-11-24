@@ -7,7 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import '../styles/CustomCursor.css';
 
-const CustomCursor = () => {
+function CustomCursor() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
@@ -81,6 +81,6 @@ const CustomCursor = () => {
       />
     </>
   );
-};
+}
 
 export default CustomCursor;
