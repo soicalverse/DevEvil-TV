@@ -22,10 +22,6 @@ const Footer = () => {
           <span className="footer-tagline">Your cinematic journey begins here.</span>
         </p>
         
-        {/* CTA Button */}
-        <a className="footer-cta pulse" href="/signup">
-          Get Started Free
-        </a>
       </div>
       
       {/* Bottom Section */}
