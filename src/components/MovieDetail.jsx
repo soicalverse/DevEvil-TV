@@ -5,7 +5,7 @@ import { Link, useParams, useLocation } from "react-router-dom";
 import YouTube from "react-youtube";
 import "../../src/styles/MovieDetails.css";
 import SeasonDetails from './TV/SeasonDetails';
-import { getMovieDetails, getTvShowDetails, getTrendingMovies, getTrendingTvShows } from "../services/tmdbService";
+import { getMovieDetails, getTvShowDetails } from "../services/tmdbService";
 import useHorizontalScroll from "../hooks/useHorizontalScroll";
 import CustomDropdown from './CustomDropdown';
 import ShareModal from "./Share/ShareModal";
@@ -88,7 +88,6 @@ const MovieDetails = () => {
   const [showPoster, setShowPoster] = useState(false);
   const [selectedSeason, setSelectedSeason] = useState(1);
   const [showShareModal, setShowShareModal] = useState(false);
-  const [trending, setTrending] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isBlocked, setIsBlocked] = useState(false);
 
@@ -116,10 +115,6 @@ const MovieDetails = () => {
         if (!isMovie && data.seasons && data.seasons.length > 0) {
           const firstSeason = data.seasons.find(s => s.season_number > 0) || data.seasons[0];
           setSelectedSeason(firstSeason.season_number);
-        }
-        if (!data.recommendations || data.recommendations.results.length === 0) {
-          const trendingData = isMovie ? await getTrendingMovies() : await getTrendingTvShows();
-          setTrending(trendingData);
         }
       } catch (error) {
         console.error("Error fetching media details:", error);

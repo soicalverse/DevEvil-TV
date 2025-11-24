@@ -7,6 +7,19 @@ const tmdbService = axios.create({
   baseURL: BASE_URL,
 });
 
+export const getTrendingMedia = async (mediaType, page = 1) => {
+  try {
+    const response = await tmdbService.get(
+      `/trending/${mediaType}/day?include_adult=false&api_key=${TMDB_API_KEY}&page=${page}`
+    );
+    return response.data.results;
+  } catch (error) {
+    console.error(`Error fetching trending ${mediaType}:`, error);
+    throw error;
+  }
+};
+
+
 export const getTrendingMovies = async (page = 1) => {
   try {
     const response = await tmdbService.get(

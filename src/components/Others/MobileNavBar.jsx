@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import '../../styles/MobileNavBar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCompass, faSearch, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import { blockedWords } from '../../blockedWords'; // Import the blocked words
 import AuthNavbar from '../AuthNavbar.tsx';
 
 const MobileNavBar = () => {
@@ -21,10 +20,6 @@ const MobileNavBar = () => {
         const trimmedSearchTerm = searchTerm.trim();
 
         if (trimmedSearchTerm) {
-            const isQueryBlocked = blockedWords.some(word =>
-                trimmedSearchTerm.toLowerCase().includes(word.toLowerCase())
-            );
-
             navigate(`/search?q=${encodeURIComponent(trimmedSearchTerm)}`);
             setSearchTerm('');
             setIsSearchActive(false);

@@ -3,21 +3,23 @@ import { getSeasonEpisodes } from '../../services/tmdbService';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-const SeasonDetails = ({ tvShowId, seasonNumber, tvShowBackdrop }) => {
-  const [episodes, setEpisodes] = useState([]);
+const SeasonDetails = ({ tvShowId, seasonNumber, tvShowBackdrop, episodes: initialEpisodes }) => {
+  const [episodes, setEpisodes] = useState(initialEpisodes);
 
   useEffect(() => {
-    const fetchSeasonEpisodes = async () => {
-      try {
-        const seasonEpisodes = await getSeasonEpisodes(tvShowId, seasonNumber);
-        setEpisodes(seasonEpisodes);
-      } catch (error) {
-        console.error(`Error fetching episodes for tvShowId: ${tvShowId} and season: ${seasonNumber}`, error);
-      }
-    };
+    if (!initialEpisodes || initialEpisodes.length === 0) {
+        const fetchSeasonEpisodes = async () => {
+            try {
+                const seasonEpisodes = await getSeasonEpisodes(tvShowId, seasonNumber);
+                setEpisodes(seasonEpisodes);
+            } catch (error) {
+                console.error(`Error fetching episodes for tvShowId: ${tvShowId} and season: ${seasonNumber}`, error);
+            }
+        };
 
-    fetchSeasonEpisodes();
-  }, [tvShowId, seasonNumber]);
+        fetchSeasonEpisodes();
+    }
+  }, [tvShowId, seasonNumber, initialEpisodes]);
 
   return (
     <div>
@@ -55,6 +57,7 @@ SeasonDetails.propTypes = {
   tvShowId: PropTypes.string.isRequired,
   seasonNumber: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   tvShowBackdrop: PropTypes.string,
+  episodes: PropTypes.array.isRequired,
 };
 
 SeasonDetails.defaultProps = {

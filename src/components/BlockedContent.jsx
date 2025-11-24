@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import '../styles/BlockedContent.css';
 
 const BlockedContent = ({ title, message }) => {
@@ -18,6 +19,11 @@ const BlockedContent = ({ title, message }) => {
       </div>
     </div>
   );
+};
+
+BlockedContent.propTypes = {
+  title: PropTypes.string.isRequired,
+  message: PropTypes.string.isRequired,
 };
 
 export default BlockedContent;
