@@ -1,160 +1,83 @@
-<div align="center" dir="auto">
-<h1 align="center">Movie Streaming Website</h1>
-<p align="center">This is a free and open-source movie and tv show streaming site. It offers users the chance to watch their favorite movies and series completely free of charge, without any annoying ads or the need to create an account.</p>
-</div>
-<br>
+6# FilmFind
 
-![tv](https://github.com/user-attachments/assets/ba066a76-ad6b-40ba-8657-12ff56a80587)
+FilmFind is a web application for discovering and tracking movies and TV shows.
 
+## Prerequisites
 
-## 📖 Table of Contents
+Before you begin, ensure you have the following installed:
 
-1. [Features](#-features)  
-2. [Prerequisites](#-prerequisites)  
-3. [Getting a TMDB API Key](#-getting-a-tmdb-api-key)  
-4. [Installation](#-installation)  
-5. [Configuration](#-configuration)  
-6. [Customizing Styles and Pages](#-customizing-styles-and-pages)  
-7. [Enabling Adult & NSFW Content](#-enabling-adult--nsfw-content)
-8. [Run & Build](#-run--build)  
-9. [Publishing](#-publishing)    
-10. [Support](#-support)  
-11. [License](#-license)
+*   [Node.js](https://nodejs.org/) (v14 or later)
+*   [npm](https://www.npmjs.com/) (usually comes with Node.js)
+*   A [Supabase](https://supabase.com/) account
+*   A [Clerk](https://clerk.com/) account
 
----
+## Installation
 
-## 🚀 Features
+1.  **Clone the repository:**
 
-- Movie and TV show listings and streaming
-- Easy to customize styles and components  
-- Fully responsive and modern UI  
-- Lightweight, clean, and developer-friendly codebase  
-- Open-source and free to use
+    ```bash
+    git clone <repository-url>
+    cd FilmFind
+    ```
 
----
+2.  **Install dependencies:**
 
-## 🔧 Prerequisites
+    ```bash
+    npm install
+    ```
 
-Before you begin, make sure you have the following installed:
+## Configuration
 
-- **Node.js** (v14 or higher)
-- **git**
-- **npm** (comes with Node.js)
-- **TMDB API Key** (Required)
+1.  **Set up environment variables:**
 
----
+    Create a `.env` file in the root of the project and add the following variables:
 
-## 🔑 Getting a TMDB API Key
+    ```
+    REACT_APP_SUPABASE_URL=your-supabase-url
+    REACT_APP_SUPABASE_ANON_KEY=your-supabase-anon-key
+    CLERK_PUBLISHABLE_KEY=your-clerk-publishable-key
+    CLERK_SECRET_KEY=your-clerk-secret-key
+    ```
 
-To use TMDB's API, you'll need a free API key.
+    You can find your Supabase URL and anon key in your Supabase project settings. You can find your Clerk publishable and secret keys in your Clerk dashboard.
 
-👉 Follow the official guide here:  
-[TMDB API Getting Started](https://developer.themoviedb.org/docs/getting-started)
+2.  **Set up the Supabase database:**
 
-Once you have your key, you’ll use it in the configuration step.
+    Log in to your Supabase account and run the SQL from the `supabase_setup.sql` file in the SQL editor.
 
----
+3.  **Set up Prisma:**
 
-## 📦 Installation
+    Run the following commands to generate the Prisma client and push the schema to the database:
 
-1. **Clone the repository:**
-   ```bash
-   git clone <repository-url>
-   cd <repository-directory>
-   ```
+    ```bash
+    npx prisma generate
+    npx prisma db push
+    ```
 
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
+## Running the Application
 
----
+*   **Development mode:**
 
-## ⚙️ Configuration
+    ```bash
+    npm run dev
+    ```
 
-1. **Rename** the `.env.example` file to `.env`:
-   ```bash
-   mv .env.example .env
-   ```
+    This will start the React development server.
 
-2. **Fill in your API key:**
-   Open `.env` and set your TMDB API key:
-   ```env
-   REACT_APP_TMDB_API_KEY=your_tmdb_api_key_here
-   ```
+*   **Production mode:**
 
----
+    ```bash
+    npm run serve
+    ```
 
-## 🎨 Customizing Styles and Pages
+    This will build the React application and start the Node.js server.
 
-By default, styles are defined using CSS `:root` selectors in each style file. This approach was required in an earlier version, and although not ideal, it's currently necessary to manually update each one.
+## Deployment
 
-To update colors and themes:
+To deploy the application to Firebase Hosting, run the following command:
 
-1. **Edit every CSS file** and modify the `:root` variables.
-2. **Also update colors** in:
-   ```bash
-   src/components/Others/SideButtons.jsx
-   ```
-
----
-
-## 🔞 Enabling Adult & NSFW Content
-
-If you want to allow adult and NSFW movies or TV shows to be displayed:
-
-1. Open the following file:
-   ```bash
-   src/services/tmdbService.jsx
-   ```
-
-2. Replace **all instances** of:
-   ```js
-   include_adult=false
-   ```
-   with:
-   ```js
-   include_adult=true
-   ```
-
-> ⚠️ **Note:** This enables the listing of adult content. However, **many embedded streaming players do not support NSFW content**, so availability for streaming is **not guaranteed**.
-
----
-
-## 🧪 Run & Build
-
-### Start the app in development mode:
 ```bash
-npm run start
+firebase deploy
 ```
 
-### Build the app for production:
-```bash
-npm run build
-```
-
----
-
-## 🌐 Publishing
-
-After building the app:
-
-1. Locate the generated `build/` folder.
-2. Upload the contents of this folder to your hosting provider (e.g., Netlify, Vercel, Firebase, or your own server).
-
-That's it — your site is live!
-
----
-
-## 💖 Support
-
-If you like this project, consider supporting it!
-
----
-
-## 📜 License
-
-This project is licensed under the **MIT License** — feel free to use, modify, and share it.
-
----
-# movies
+This will deploy the contents of the `build` directory to Firebase Hosting.

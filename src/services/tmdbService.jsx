@@ -10,7 +10,7 @@ const tmdbService = axios.create({
 export const getTrendingMedia = async (mediaType, page = 1) => {
   try {
     const response = await tmdbService.get(
-      `/trending/${mediaType}/day?include_adult=false&api_key=${TMDB_API_KEY}&page=${page}`
+      `/trending/${mediaType}/day?include_adult=true&api_key=${TMDB_API_KEY}&page=${page}`
     );
     return response.data.results;
   } catch (error) {
@@ -23,7 +23,7 @@ export const getTrendingMedia = async (mediaType, page = 1) => {
 export const getTrendingMovies = async (page = 1) => {
   try {
     const response = await tmdbService.get(
-      `/movie/popular?include_adult=false&api_key=${TMDB_API_KEY}&page=${page}`
+      `/movie/popular?include_adult=true&api_key=${TMDB_API_KEY}&page=${page}`
     );
 
     const trendingMovies = response.data.results.filter(movie => !movie.genre_ids.includes(27));
@@ -31,7 +31,7 @@ export const getTrendingMovies = async (page = 1) => {
     const moviesWithImagesAndVideos = await Promise.all(
       trendingMovies.map(async (movie) => {
         const movieDetails = await tmdbService.get(
-          `/movie/${movie.id}?include_adult=false&api_key=${TMDB_API_KEY}&append_to_response=images,videos`
+          `/movie/${movie.id}?include_adult=true&api_key=${TMDB_API_KEY}&append_to_response=images,videos`
         );
         return movieDetails.data;
       })
@@ -49,7 +49,7 @@ export const getTrendingMovies = async (page = 1) => {
 export const getPopularMovies = async (page = 1) => {
   try {
     const response = await tmdbService.get(
-      `/movie/top_rated?include_adult=false&api_key=${TMDB_API_KEY}&page=${page}&append_to_response=videos,images`
+      `/movie/top_rated?include_adult=true&api_key=${TMDB_API_KEY}&page=${page}&append_to_response=videos,images`
     );
     return response.data.results.filter(movie => !movie.genre_ids.includes(27));
   } catch (error) {
@@ -61,7 +61,7 @@ export const getPopularMovies = async (page = 1) => {
 export const getTrendingTvShows = async (page = 1) => {
   try {
     const response = await tmdbService.get(
-      `/trending/tv/day?include_adult=false&api_key=${TMDB_API_KEY}&page=${page}&append_to_response=videos,images`
+      `/trending/tv/day?include_adult=true&api_key=${TMDB_API_KEY}&page=${page}&append_to_response=videos,images`
     );
     return response.data.results.filter(show => !show.genre_ids.includes(10764));
   } catch (error) {
@@ -73,7 +73,7 @@ export const getTrendingTvShows = async (page = 1) => {
 export const getPopularTvShows = async (page = 1) => {
   try {
     const response = await tmdbService.get(
-      `/tv/top_rated?include_adult=false&api_key=${TMDB_API_KEY}&page=${page}&append_to_response=videos,images`
+      `/tv/top_rated?include_adult=true&api_key=${TMDB_API_KEY}&page=${page}&append_to_response=videos,images`
     );
     return response.data.results.filter(show => !show.genre_ids.includes(10764));
   } catch (error) {
@@ -84,7 +84,7 @@ export const getPopularTvShows = async (page = 1) => {
 
 export const getMovieDetails = async (movieId) => {
   try {
-    const response = await tmdbService.get(`/movie/${movieId}?include_adult=false&api_key=${TMDB_API_KEY}&append_to_response=credits,videos,images,recommendations`);
+    const response = await tmdbService.get(`/movie/${movieId}?include_adult=true&api_key=${TMDB_API_KEY}&append_to_response=credits,videos,images,recommendations`);
     return response.data;
   } catch (error) {
     console.error('Error fetching movie details:', error);
@@ -94,7 +94,7 @@ export const getMovieDetails = async (movieId) => {
 
 export const getTvShowDetails = async (id) => {
   try {
-    const response = await axios.get(`${BASE_URL}/tv/${id}?include_adult=false&api_key=${TMDB_API_KEY}&append_to_response=credits,seasons,videos,images,recommendations`);
+    const response = await axios.get(`${BASE_URL}/tv/${id}?include_adult=true&api_key=${TMDB_API_KEY}&append_to_response=credits,seasons,videos,images,recommendations`);
 
     if (!response.data || !response.data.seasons) {
       throw new Error('Failed to fetch TV show details');
@@ -170,7 +170,7 @@ export const getSeasonEpisodes = async (tvShowId, seasonNumber) => {
 export const searchMedia = async (query) => {
   try {
     const response = await fetch(
-      `${BASE_URL}/search/multi?include_adult=false&api_key=${TMDB_API_KEY}&query=${query}`
+      `${BASE_URL}/search/multi?include_adult=true&api_key=${TMDB_API_KEY}&query=${query}`
     );
 
     if (!response.ok) {
@@ -200,7 +200,7 @@ export const searchMedia = async (query) => {
 export const getUpcomingMovies = async (page = 1) => {
   try {
     const response = await tmdbService.get(
-      `/movie/upcoming?include_adult=false&api_key=${TMDB_API_KEY}&page=${page}`
+      `/movie/upcoming?include_adult=true&api_key=${TMDB_API_KEY}&page=${page}`
     );
     return response.data.results.filter(movie => !movie.genre_ids.includes(27));
   } catch (error) {
@@ -212,7 +212,7 @@ export const getUpcomingMovies = async (page = 1) => {
 
 export const getUpcomingTvShows = async (page = 1) => {
   try {
-    const response = await axios.get(`${BASE_URL}/tv/on_the_air?include_adult=false&api_key=${TMDB_API_KEY}&page=${page}`);
+    const response = await axios.get(`${BASE_URL}/tv/on_the_air?include_adult=true&api_key=${TMDB_API_KEY}&page=${page}`);
     const filteredShows = response.data.results.filter(show => !show.genre_ids.includes(10764));
     const showsWithImages = filteredShows.map((show) => ({
       ...show,
@@ -393,7 +393,7 @@ export const getTopActors = async (page = 1) => {
 export const getAnimeMovies = async (page = 1) => {
   try {
     const response = await tmdbService.get(
-      `/discover/movie?include_adult=false&api_key=${TMDB_API_KEY}&with_keywords=210024&page=${page}`
+      `/discover/movie?include_adult=true&api_key=${TMDB_API_KEY}&with_keywords=210024&page=${page}`
     );
 
     return response.data.results.filter(movie => !movie.genre_ids.includes(27));
@@ -406,7 +406,7 @@ export const getAnimeMovies = async (page = 1) => {
 export const getAnimeTv = async (page = 1) => {
   try {
     const response = await tmdbService.get(
-      `/discover/tv?include_adult=false&api_key=${TMDB_API_KEY}&with_keywords=210024&page=${page}`
+      `/discover/tv?include_adult=true&api_key=${TMDB_API_KEY}&with_keywords=210024&page=${page}`
     );
 
     return response.data.results.filter(show => !show.genre_ids.includes(10764));
