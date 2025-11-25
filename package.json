@@ -8,6 +8,7 @@
     "@fortawesome/fontawesome-svg-core": "^7.1.0",
     "@fortawesome/free-solid-svg-icons": "^7.1.0",
     "@fortawesome/react-fontawesome": "^3.1.0",
+    "@prisma/client": "^6.19.0",
     "@supabase/supabase-js": "^2.84.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -21,6 +22,7 @@
     "font-awesome": "^4.7.0",
     "framer-motion": "^12.23.24",
     "mysql": "^2.18.1",
+    "prisma": "^6.19.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.9.1",
     "react-dom": "^18.2.0",
@@ -34,7 +36,7 @@
     "slick-carousel": "^1.8.1",
     "styled-components": "^6.1.1",
     "svix": "^1.81.0",
-    "typescript": "4.9.5",
+    "typescript": "^5.9.3",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -44,7 +46,8 @@
     "serve": "npm run build && node server.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "start:webhook": "node webhook-server.js"
   },
   "browserslist": {
     "production": [
