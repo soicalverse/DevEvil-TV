@@ -1,26 +1,30 @@
 // server.js (loyihaning ildizida)
 require('dotenv').config();
 const express = require('express');
-const bodyParser = require('body-parser');
 const { Webhook } = require('svix');
 const { createClient } = require('@supabase/supabase-js');
 
 const app = express();
-app.use(bodyParser.raw({ type: 'application/json' }));
 
 // Supabase (service_role key bilan – RLS ni chetlab o‘tadi)
 const supabase = createClient(
   process.env.REACT_APP_SUPABASE_URL,
-  process.env.REACT_APP_SUPABASE_SERVICE_ROLE_KEY // ← Bu muhim!
+  process.env.SUPABASE_SERVICE_ROLE_KEY // ← CORRECTED AND SECURE
 );
 
-const webhookSecret = process.env.REACT_APP_CLERK_WEBHOOK_SECRET;
+const webhookSecret = process.env.CLERK_WEBHOOK_SECRET; // ← CORRECTED AND SECURE
 
-app.post('/webhook', async (req, res) => {
+// IMPORTANT: Use express.raw to get the raw body as a buffer for the webhook route
+app.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
   const headers = req.headers;
+  // Use the raw buffer directly. This is the most reliable method.
   const payload = req.body;
 
   try {
+    if (!webhookSecret) {
+        throw new Error('CLERK_WEBHOOK_SECRET is not set in .env file');
+    }
+
     const wh = new Webhook(webhookSecret);
     const evt = wh.verify(payload, {
       'svix-id': headers['svix-id'],
@@ -50,7 +54,7 @@ app.post('/webhook', async (req, res) => {
 
     res.status(200).json({ success: true });
   } catch (err) {
-    console.error('Webhook error:', err.message);
+    console.error('Webhook signature verification failed:', err.message);
     res.status(400).json({ error: 'Webhook verification failed' });
   }
 });
