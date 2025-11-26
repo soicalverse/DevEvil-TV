@@ -2,7 +2,9 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
-import { ClerkProvider } from '@clerk/clerk-react';
+import { ClerkProvider, useAuth } from '@clerk/clerk-react';
+import { ConvexProviderWithClerk } from 'convex/react-clerk';
+import { ConvexReactClient } from 'convex/react';
 
 import Home from './Home';
 import MovieDetail from './components/MovieDetail';
@@ -25,6 +27,7 @@ import WelcomeLoader from './components/WelcomeLoader';
 import './adblocker.js';
 
 const PUBLISHABLE_KEY = 'pk_test_YnJpZWYtc2FpbGZpc2gtNDkuY2xlcmsuYWNjb3VudHMuZGV2JA';
+const convex = new ConvexReactClient(process.env.REACT_APP_CONVEX_URL);
 
 if (!PUBLISHABLE_KEY) {
   throw new Error("Missing Clerk Publishable Key");
@@ -35,28 +38,30 @@ const root = createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
-      <HelmetProvider>
-        <Router>
-          <CustomCursor />
-          <WelcomeLoader>
-            <Layout>
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/movie/:id" element={<MovieDetail />} />
-                <Route path="/tv/:id" element={<MovieDetail />} />
-                <Route path="/player/:id" element={<Player />} />
-                <Route path="/player/:id?e=:episode&s=:season" element={<Player />} />
-                <Route path="/search" element={<SearchPage />} />
-                <Route path="/upcoming" element={<UpcomingPage />} />
-                <Route path="/privacy" element={<Privacy />} />
-                <Route path="/terms" element={<Terms />} />
-                <Route path="/dmca" element={<DMCA />} />
-                <Route path="/about" element={<About />} />
-              </Routes>
-            </Layout>
-          </WelcomeLoader>
-        </Router>
-      </HelmetProvider>
+      <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
+        <HelmetProvider>
+          <Router>
+            <CustomCursor />
+            <WelcomeLoader>
+              <Layout>
+                <Routes>
+                  <Route path='/' element={<Home />} />
+                  <Route path='/movie/:id' element={<MovieDetail />} />
+                  <Route path='/tv/:id' element={<MovieDetail />} />
+                  <Route path='/player/:id' element={<Player />} />
+                  <Route path='/player/:id?e=:episode&s=:season' element={<Player />} />
+                  <Route path='/search' element={<SearchPage />} />
+                  <Route path='/upcoming' element={<UpcomingPage />} />
+                  <Route path='/privacy' element={<Privacy />} />
+                  <Route path='/terms' element={<Terms />} />
+                  <Route path='/dmca' element={<DMCA />} />
+                  <Route path='/about' element={<About />} />
+                </Routes>
+              </Layout>
+            </WelcomeLoader>
+          </Router>
+        </HelmetProvider>
+      </ConvexProviderWithClerk>
     </ClerkProvider>
   </React.StrictMode>
 );
