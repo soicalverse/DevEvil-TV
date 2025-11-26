@@ -1,19 +1,22 @@
+'''use node''';
 
-import { httpEndpoint } from "convex/server";
-import { Webhook } from "svix";
+import { v } from 'convex/values';
+import { Webhook } from 'svix';
+import { internalAction } from './_generated/server';
 
-export const clerk = httpEndpoint(async (req) => {
-  console.log("CLERK WEBHOOK FINALLY HIT – SUCCESS!");
+const webhookSecret = process.env.CLERK_WEBHOOK_SECRET;
 
-  const payload = await req.text();
-  const headers = Object.fromEntries(req.headers.entries());
-
-  try {
-    new Webhook(process.env.CLERK_WEBHOOK_SECRET!).verify(payload, headers);
-    console.log("Signature OK");
-    return new Response("OK", { status: 200 });
-  } catch (err) {
-    console.error("Bad signature");
-    return new Response("Unauthorized", { status: 401 });
-  }
+export const fulfill = internalAction({
+  args: {
+    headers: v.any(),
+    payload: v.string(),
+  },
+  handler: async (ctx, { headers, payload }) => {
+    if (!webhookSecret) {
+      throw new Error('CLERK_WEBHOOK_SECRET is not set in environment variables');
+    }
+    const wh = new Webhook(webhookSecret);
+    const payloadObject = wh.verify(payload, headers);
+    return payloadObject;
+  },
 });

@@ -1,7 +1,7 @@
 
-import { mutation } from "./_generated/server";
+import { internalMutation } from "./_generated/server";
 
-export const updateOrCreateUser = mutation(
+export const updateOrCreateUser = internalMutation(
   async (ctx, { clerkUser }: { clerkUser: any }) => {
     const userRecord = await ctx.db
       .query("users")
@@ -29,7 +29,7 @@ export const updateOrCreateUser = mutation(
   }
 );
 
-export const deleteUser = mutation(
+export const deleteUser = internalMutation(
   async (ctx, { clerkId }: { clerkId: string }) => {
     const userRecord = await ctx.db
       .query("users")
