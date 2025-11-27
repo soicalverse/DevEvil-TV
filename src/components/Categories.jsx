@@ -34,10 +34,10 @@ const Categories = () => {
     const fetchGenres = async () => {
       try {
         const fetchedMovieGenres = await getGenres();
-        setMovieGenres(fetchedMovieGenres.filter(genre => genre.name !== 'Horror'));
+        setMovieGenres(fetchedMovieGenres.filter(genre => genre.name !== 'Horror' && genre.name !== 'Drama' && genre.name !== 'Romance'));
 
         const fetchedTvGenres = await getTvGenres();
-        setTvGenres(fetchedTvGenres.filter(genre => genre.name !== 'Horror'));
+        setTvGenres(fetchedTvGenres.filter(genre => genre.name !== 'Horror' && genre.name !== 'Drama' && genre.name !== 'Romance'));
       } catch (error) {
         // Handle error
       }

@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import { query, mutation, action } from "./_generated/server";
+import { query, mutation, action, internalMutation } from "./_generated/server";
 import { api } from "./_generated/api";
 
 // Write your Convex functions in any file inside this directory (`convex`).
@@ -72,3 +72,45 @@ export const listNumbers = query({
                                                                                                                                                                       });
                                                                                                                                                                         },
                                                                                                                                                                         });
+
+export const createUser = internalMutation({
+  args: { clerkId: v.string(), name: v.string() },
+  handler: async (ctx, { clerkId, name }) => {
+    await ctx.db.insert("users", {
+      tokenIdentifier: clerkId,
+      name: name,
+    });
+  },
+});
+
+export const updateUser = internalMutation({
+  args: { clerkId: v.string(), name: v.string() },
+  handler: async (ctx, { clerkId, name }) => {
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_token", (q) => q.eq("tokenIdentifier", clerkId))
+      .unique();
+
+    if (!user) {
+      return;
+    }
+
+    await ctx.db.patch(user._id, { name });
+  },
+});
+
+export const deleteUser = internalMutation({
+  args: { clerkId: v.string() },
+  handler: async (ctx, { clerkId }) => {
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_token", (q) => q.eq("tokenIdentifier", clerkId))
+      .unique();
+
+    if (!user) {
+      return;
+    }
+
+    await ctx.db.delete(user._id);
+  },
+});

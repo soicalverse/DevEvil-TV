@@ -8,7 +8,6 @@ Before you begin, ensure you have the following installed:
 
 *   [Node.js](https://nodejs.org/) (v14 or later)
 *   [npm](https://www.npmjs.com/) (usually comes with Node.js)
-*   A [Supabase](https://supabase.com/) account
 *   A [Clerk](https://clerk.com/) account
 
 ## Installation
