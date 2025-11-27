@@ -3,6 +3,7 @@ import { useParams, useLocation, Link, useNavigate } from 'react-router-dom';
 import '../styles/Player.css';
 import { getTvShowDetails, getSeasonEpisodes } from '../services/tmdbService';
 import CustomDropdown from './CustomDropdown';
+import DonationModal from './DonationModal';
 
 const sources = [
   {
@@ -56,6 +57,7 @@ const Player = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [showDonationModal, setShowDonationModal] = useState(false);
 
   const getParams = (search) => {
     const queryParams = new URLSearchParams(search);
@@ -151,21 +153,24 @@ const Player = () => {
           src={embedUrl}
           frameBorder="0"
           allowFullScreen
-         
         ></iframe>
       )}
 
+      <DonationModal show={showDonationModal} onClose={() => setShowDonationModal(false)} />
+
       <div className="player-overlay-nav">
-        {/* The new top bar container */}
         <div className="player-nav-top">
-          <Link to="/">
-            <i className="fa-solid fa-home"></i>
-          </Link>
-          {detailsUrl && (
-            <Link to={detailsUrl}>
-              <i className="fa-solid fa-xmark"></i>
+            <Link to="/">
+                <i className="fa-solid fa-home"></i>
             </Link>
-          )}
+            <button className="donation-button-player" onClick={() => setShowDonationModal(true)}>
+                <i className="fa-solid fa-gift"></i>
+            </button>
+            {detailsUrl && (
+                <Link to={detailsUrl}>
+                    <i className="fa-solid fa-xmark"></i>
+                </Link>
+            )}
         </div>
 
         <div className="selectors-container">

@@ -1,0 +1,27 @@
+.donation-banner {
+  display: none; /* Hidden by default */
+  margin: 20px 0;
+  padding: 20px;
+  background-color: #1a1a1a;
+  border-radius: 12px;
+  text-align: center;
+  border: 1px solid #444;
+}
+
+.donation-banner a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.donation-banner p {
+  margin-top: 10px;
+  font-weight: bold;
+  color: #ffdd57;
+  font-size: 1.2em;
+}
+
+@media (min-width: 1024px) { /* For large screens */
+  .donation-banner {
+    display: block;
+  }
+}

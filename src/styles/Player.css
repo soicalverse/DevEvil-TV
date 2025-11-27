@@ -1,3 +1,6 @@
+/*
+  Player.css - Final Correction
+*/
 .player {
   position: relative;
   width: 100%;
@@ -17,23 +20,50 @@
   left: 20px;
   right: 20px;
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  flex-direction: column; /* Lays out the top-bar and selectors-container vertically */
+  align-items: center; /* Centers the items horizontally */
   z-index: 10;
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%);
   padding: 15px;
   border-radius: 10px;
 }
 
-.player-overlay-nav a {
+/* This is the new container for the top buttons */
+.player-nav-top {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px; /* Adds space between buttons and selectors */
+}
+
+.player-overlay-nav a, .player-nav-top a {
   color: white;
   text-decoration: none;
   font-size: 1.5rem;
   transition: color 0.3s ease;
 }
 
-.player-overlay-nav a:hover {
+.player-overlay-nav a:hover, .player-nav-top a:hover {
   color: #ffdd57;
+}
+
+.donation-button-player {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.donation-button-player:hover {
+    transform: scale(1.1);
+    border-color: #ffdd57;
 }
 
 .selectors-container {
@@ -111,47 +141,19 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
+  z-index: 20;
 }
 
 .episode-selector {
   display: flex;
   gap: 10px;
   justify-content: center;
-}
-
-.episode-selector select {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #fff;
-  padding: 8px 16px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  -webkit-appearance: none;
-  appearance: none;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-position: right 1rem center;
-  background-size: 0.8em;
-  padding-right: 2.5rem;
+  flex-wrap: wrap;
 }
 
 @media (max-width: 768px) {
-  .player-overlay-nav {
+  .episode-selector {
     flex-direction: column;
     align-items: center;
-    gap: 15px;
-  }
-
-  .selectors-container {
-    order: 2;
-  }
-
-  .player-overlay-nav a {
-    order: 1;
-  }
-
-  .player-overlay-nav a:last-child {
-    order: 3;
   }
 }
