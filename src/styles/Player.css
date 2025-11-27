@@ -1,159 +1,305 @@
 /*
-  Player.css - Final Correction
+  Player.css - Enhanced Glassmorphism UI (Grid Layout Fix)
 */
+
 .player {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background: #000;
 }
 
 .player iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
+    width: 100%;
+    height: 100%;
+    border: none;
 }
 
+/* Main Overlay Container */
 .player-overlay-nav {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  right: 20px;
-  display: flex;
-  flex-direction: column; /* Lays out the top-bar and selectors-container vertically */
-  align-items: center; /* Centers the items horizontally */
-  z-index: 10;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%);
-  padding: 15px;
-  border-radius: 10px;
-}
-
-/* This is the new container for the top buttons */
-.player-nav-top {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px; /* Adds space between buttons and selectors */
-}
-
-.player-overlay-nav a, .player-nav-top a {
-  color: white;
-  text-decoration: none;
-  font-size: 1.5rem;
-  transition: color 0.3s ease;
-}
-
-.player-overlay-nav a:hover, .player-nav-top a:hover {
-  color: #ffdd57;
-}
-
-.donation-button-player {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align to the left */
+    z-index: 10;
+    padding: 20px;
+    pointer-events: none; /* Allow clicks to go through overlay */
+}
+
+/* Top navigation bar (Home, Donate, Close) - NOW A GRID */
+.player-nav-top {
+    position: fixed; /* Fixed at the top */
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 95%;
+    max-width: 500px;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-    cursor: pointer;
+    padding: 8px 15px;
+    border-radius: 50px; /* Pill shape */
+
+    /* Glassmorphism */
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2), inset 0 0 0 2px rgba(255, 255, 255, 0.05);
+
+    pointer-events: auto; /* Enable clicks on the nav bar */
     transition: all 0.3s ease;
 }
 
-.donation-button-player:hover {
+
+
+
+.player-nav-btn, .donation-btn-top {
+    color: white;
+    text-decoration: none;
+    font-size: 1.5rem;
+    transition: all 0.3s ease;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.player-nav-btn:hover {
+    color: #fca5a5; /* Light red */
     transform: scale(1.1);
-    border-color: #ffdd57;
+}
+
+.donation-btn-top {
+    padding: 5px; /* Adjust padding for the image */
+}
+
+.donation-btn-top img {
+    width: 32px; /* Control icon size */
+    height: 32px;
+    transition: transform 0.3s ease;
+}
+
+.donation-btn-top:hover img {
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 10px #fca5a5); /* Glow effect */
+}
+
+
+/* Collapsible Sidebar Section */
+.collapsible-section {
+    pointer-events: auto; /* Enable clicks on the sidebar */
+    margin-top: 100px; /* Space below the top nav */
+    max-height: calc(100vh - 200px); /* Max height with padding */
+    overflow-y: auto; /* Vertical scroll on overflow */
+    transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smoother transition */
+    width: 350px;
+
+    /* Glassmorphism */
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 0 0 2px rgba(255, 255, 255, 0.05);
+}
+
+.collapsible-section.collapsed {
+    transform: translateX(-110%);
+    opacity: 0;
+    max-height: 0;
 }
 
 .selectors-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
-  width: 100%;
-}
-
-.source-selector-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .server-info {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #ccc;
-  font-size: 0.9rem;
-  background: rgba(0, 0, 0, 0.5);
-  padding: 8px 12px;
-  border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #e0e0e0;
+    font-size: 0.9rem;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 10px 15px;
+    border-radius: 12px;
+    text-align: center;
 }
 
 .source-selector {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
 }
 
 .source-btn {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 8px 16px;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 0.9rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    backdrop-filter: blur(5px);
 }
 
 .source-btn.active {
-  background-color: #ffdd57;
-  color: #1a1a1a;
-  border-color: #ffdd57;
+    background-color: #fca5a5; /* Light red */
+    color: #1a1a1a;
+    border-color: #fca5a5;
+    font-weight: 700;
+    box-shadow: 0 0 15px rgba(252, 165, 165, 0.5);
+}
+
+.source-btn:hover:not(.active) {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
 }
 
 .dropdown {
-  position: relative;
+    grid-column: span 2; /* Make dropdown span full width */
+    position: relative;
 }
 
 .dropdown-toggle {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 8px 12px;
-  border-radius: 50%;
-  cursor: pointer;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 10px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .dropdown-menu {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background-color: #1a1a1a;
-  border: 1px solid #333;
-  border-radius: 8px;
-  padding: 5px;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  z-index: 20;
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    right: 0;
+    background: rgba(30, 30, 30, 0.8);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    z-index: 20;
 }
 
 .episode-selector {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  flex-wrap: wrap;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
-@media (max-width: 768px) {
-  .episode-selector {
-    flex-direction: column;
+/* Collapse Button */
+.collapse-btn {
+    position: fixed; /* Keep it fixed relative to the viewport */
+    top: 120px;       /* Position below the top nav bar */
+    left: 20px;       /* Start position */
+    transform: translateX(360px); /* Move it next to the sidebar */
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    cursor: pointer;
+    width: 44px; /* Perfect circle */
+    height: 44px; /* Perfect circle */
+    border-radius: 50%;
+    display: flex;
     align-items: center;
-  }
+    justify-content: center;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    pointer-events: auto;
+    z-index: 11;
+}
+
+.collapsible-section.collapsed + .collapse-btn {
+    transform: translateX(0); /* Move back to the left when collapsed */
+}
+
+.collapse-btn .tooltip-text {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    left: 110%;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #1a1a1a;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 12px;
+    z-index: 1;
+    white-space: nowrap;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.collapse-btn:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+.collapse-btn span:not(.tooltip-text) {
+    display: none; /* Hide "Menu" text on desktop by default */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .player-overlay-nav { padding: 10px; }
+
+    .player-nav-top {
+        width: 95%;
+        top: 10px;
+    }
+
+    .collapsible-section {
+        width: calc(100% - 20px); /* Almost full width */
+        margin-top: 80px;
+        max-height: calc(100vh - 150px);
+    }
+
+    .collapse-btn {
+        top: 90px;
+        left: auto;
+        right: 15px;
+        transform: none; /* Reset desktop positioning */
+        width: auto;
+        padding: 8px 15px;
+        border-radius: 20px;
+    }
+
+    .collapsible-section.collapsed + .collapse-btn {
+        transform: none;
+    }
+
+    .collapse-btn span:not(.tooltip-text) {
+        display: inline; /* Show "Menu" text */
+        margin-right: 8px;
+        font-size: 1rem;
+    }
+
+    .collapse-btn .tooltip-text {
+        display: none; /* Hide tooltip on mobile */
+    }
 }

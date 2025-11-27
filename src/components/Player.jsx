@@ -56,6 +56,7 @@ const Player = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   const getParams = (search) => {
     const queryParams = new URLSearchParams(search);
@@ -151,12 +152,10 @@ const Player = () => {
           src={embedUrl}
           frameBorder="0"
           allowFullScreen
-         
         ></iframe>
       )}
 
       <div className="player-overlay-nav">
-        {/* The new top bar container */}
         <div className="player-nav-top">
           <Link to="/">
             <i className="fa-solid fa-home"></i>
@@ -168,55 +167,60 @@ const Player = () => {
           )}
         </div>
 
-        <div className="selectors-container">
-            <div className="source-selector-wrapper">
-              <div className="server-info">
-                <i className="fa-solid fa-info-circle"></i>
-                <span>If the movie isn&apos;t working, try changing the server.</span>
-              </div>
-              <div className="source-selector">
-                {sources.slice(0, visibleSourcesCount).map((source, index) => (
-                  <button
-                    key={source.name}
-                    className={`source-btn ${index === sourceIndex ? 'active' : ''}`}
-                    onClick={() => setSourceIndex(index)}
-                  >
-                    {isMobile ? source.abbr : source.name}
-                  </button>
-                ))}
-                {sources.length > visibleSourcesCount && (
-                  <div className="dropdown" ref={dropdownRef}>
-                    <button className="dropdown-toggle" onClick={() => setShowDropdown(!showDropdown)}>
-                      <i className={`fa-solid fa-chevron-${showDropdown ? 'up' : 'down'}`}></i>
+        <div className={`collapsible-section ${isCollapsed ? 'collapsed' : ''}`}>
+          <div className="selectors-container">
+              <div className="source-selector-wrapper">
+                <div className="server-info">
+                  <i className="fa-solid fa-info-circle"></i>
+                  <span>If the movie isn&apos;t working, try changing the server.</span>
+                </div>
+                <div className="source-selector">
+                  {sources.slice(0, visibleSourcesCount).map((source, index) => (
+                    <button
+                      key={source.name}
+                      className={`source-btn ${index === sourceIndex ? 'active' : ''}`}
+                      onClick={() => setSourceIndex(index)}
+                    >
+                      {isMobile ? source.abbr : source.name}
                     </button>
-                    {showDropdown && (
-                      <div className="dropdown-menu">
-                        {sources.slice(visibleSourcesCount).map((source, index) => (
-                          <button
-                            key={source.name}
-                            className={`source-btn ${index + visibleSourcesCount === sourceIndex ? 'active' : ''}`}
-                            onClick={() => {
-                              setSourceIndex(index + visibleSourcesCount);
-                              setShowDropdown(false);
-                            }}
-                          >
-                            {isMobile ? source.abbr : source.name}
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                )}
+                  ))}
+                  {sources.length > visibleSourcesCount && (
+                    <div className="dropdown" ref={dropdownRef}>
+                      <button className="dropdown-toggle" onClick={() => setShowDropdown(!showDropdown)}>
+                        <i className={`fa-solid fa-chevron-${showDropdown ? 'up' : 'down'}`}></i>
+                      </button>
+                      {showDropdown && (
+                        <div className="dropdown-menu">
+                          {sources.slice(visibleSourcesCount).map((source, index) => (
+                            <button
+                              key={source.name}
+                              className={`source-btn ${index + visibleSourcesCount === sourceIndex ? 'active' : ''}`}
+                              onClick={() => {
+                                setSourceIndex(index + visibleSourcesCount);
+                                setShowDropdown(false);
+                              }}
+                            >
+                              {isMobile ? source.abbr : source.name}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
 
-            {params.season && (
-              <div className="episode-selector">
-                <CustomDropdown options={seasonOptions} selected={Number(params.season)} onSelect={handleSeasonChange} />
-                <CustomDropdown options={episodeOptions} selected={Number(params.episode)} onSelect={handleEpisodeChange} />
-              </div>
-            )}
+              {params.season && (
+                <div className="episode-selector">
+                  <CustomDropdown options={seasonOptions} selected={Number(params.season)} onSelect={handleSeasonChange} />
+                  <CustomDropdown options={episodeOptions} selected={Number(params.episode)} onSelect={handleEpisodeChange} />
+                </div>
+              )}
+          </div>
         </div>
+        <button className="collapse-btn" onClick={() => setIsCollapsed(!isCollapsed)}>
+            <i className={`fa-solid fa-chevron-${isCollapsed ? 'down' : 'up'}`}></i>
+          </button>
       </div>
     </div>
   );

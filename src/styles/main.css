@@ -17,6 +17,10 @@
   --px: 120px;
 }
 
+.main-content {
+  padding-top: 8rem; /* 128px */
+}
+
 /* Movies section */
 .movies {
   margin-bottom: 60px;

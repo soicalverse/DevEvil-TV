@@ -3,9 +3,12 @@ import PropTypes from 'prop-types';
 import { useLocation } from 'react-router-dom';
 import NavBar from './NavBar';
 import MobileNavBar from './MobileNavBar';
+import PromoBanner from '../PromoBanner'; // Import PromoBanner
+import DonationModal from '../DonationModal'; // Import DonationModal
 
 const Layout = ({ children }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [showDonationModal, setShowDonationModal] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -18,12 +21,18 @@ const Layout = ({ children }) => {
     };
   }, []);
 
-  const shouldShowNavBar = !location.pathname.includes('/player');
+  const shouldShowHeader = !location.pathname.includes('/player');
 
   return (
     <>
-      {shouldShowNavBar && (isMobile ? <MobileNavBar /> : <NavBar />)}
-      {children}
+      {shouldShowHeader && (
+        <>
+          {isMobile ? <MobileNavBar /> : <NavBar />}
+          <PromoBanner setShowDonationModal={setShowDonationModal} />
+        </>
+      )}
+      <main>{children}</main>
+      <DonationModal show={showDonationModal} onClose={() => setShowDonationModal(false)} />
     </>
   );
 };

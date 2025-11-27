@@ -1,6 +1,6 @@
 .navbar-fixed {
   position: fixed;
-  top: 1.25rem;
+  top: 4rem; /* Updated from 1.25rem to create space for the banner */
   left: 50%;
   transform: translateX(-50%);
   width: 90%;
