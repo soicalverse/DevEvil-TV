@@ -4,6 +4,7 @@ import '../styles/Player.css';
 import { getTvShowDetails, getSeasonEpisodes } from '../services/tmdbService';
 import CustomDropdown from '../components/CustomDropdown';
 import DonationModal from '../components/DonationModal'; // Import the modal
+import { DotLottiePlayer } from '@dotlottie/react-player';
 
 const sources = [
     { name: 'VIDEASY', abbr: 'VEasy', movieUrl: (id) => `https://player.videasy.net/movie/${id}`, tvUrl: (id, s, e) => `https://player.videasy.net/tv/${id}/${s}/${e}` },
@@ -130,7 +131,13 @@ const Player = () => {
                         <i className="fa-solid fa-home"></i>
                     </Link>
                     <button className="player-nav-btn donation-btn-top" onClick={() => setShowDonationModal(true)}>
-                        <img src="/assets/gift-box.png" alt="Donate" />
+                        <span className="donation-text">Donate</span>
+                        <DotLottiePlayer
+                            src="https://lottie.host/4658c2ad-1eb1-4e06-92c0-5804be4db662/2c6Uf62AnL.lottie"
+                            loop
+                            autoplay
+                            style={{ width: '70px', height: '70px' }}
+                        />
                     </button>
                     {detailsUrl && (
                         <Link to={detailsUrl} className="player-nav-btn">

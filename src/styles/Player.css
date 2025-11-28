@@ -42,7 +42,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 8px 15px;
+    padding: 0 15px; /* Adjust padding */
+    height: 50px; /* Set a fixed height */
     border-radius: 50px; /* Pill shape */
 
     /* Glassmorphism */
@@ -80,16 +81,23 @@
 }
 
 .donation-btn-top {
-    padding: 5px; /* Adjust padding for the image */
+    padding: 0; /* Remove padding for the Lottie player */
+    position: relative;
+    height: 100%;
+    gap: 5px; /* Add space between text and animation */
 }
 
-.donation-btn-top img {
-    width: 32px; /* Control icon size */
-    height: 32px;
-    transition: transform 0.3s ease;
+.donation-text {
+    font-size: 1rem; /* Adjust font size as needed */
+    font-weight: 500;
 }
 
-.donation-btn-top:hover img {
+.donation-btn-top > div {
+    width: 50px !important; /* Control Lottie size */
+    height: 50px !important;
+}
+
+.donation-btn-top:hover > div {
     transform: scale(1.15);
     filter: drop-shadow(0 0 10px #fca5a5); /* Glow effect */
 }

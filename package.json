@@ -6,6 +6,7 @@
   "dependencies": {
     "@clerk/clerk-react": "^4.30.0",
     "@clerk/clerk-sdk-node": "^4.13.23",
+    "@dotlottie/react-player": "^1.6.19",
     "@fortawesome/fontawesome-svg-core": "^7.1.0",
     "@fortawesome/free-solid-svg-icons": "^7.1.0",
     "@fortawesome/react-fontawesome": "^3.1.0",

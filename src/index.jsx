@@ -8,7 +8,7 @@ import { ConvexReactClient } from 'convex/react';
 
 import Home from './Home';
 import MovieDetail from './components/MovieDetail';
-import Player from './components/Player';
+import Player from './pages/Player';
 import SearchPage from './components/SearchPage';
 import UpcomingPage from './components/UpcomingPage';
 import Privacy from './components/Others/NavSideFiles/Privacy';
@@ -43,21 +43,28 @@ root.render(
           <Router>
             <CustomCursor />
             <WelcomeLoader>
-              <Layout>
-                <Routes>
-                  <Route path='/' element={<Home />} />
-                  <Route path='/movie/:id' element={<MovieDetail />} />
-                  <Route path='/tv/:id' element={<MovieDetail />} />
-                  <Route path='/player/:id' element={<Player />} />
-                  <Route path='/player/:id?e=:episode&s=:season' element={<Player />} />
-                  <Route path='/search' element={<SearchPage />} />
-                  <Route path='/upcoming' element={<UpcomingPage />} />
-                  <Route path='/privacy' element={<Privacy />} />
-                  <Route path='/terms' element={<Terms />} />
-                  <Route path='/dmca' element={<DMCA />} />
-                  <Route path='/about' element={<About />} />
-                </Routes>
-              </Layout>
+              <Routes>
+                <Route path='/player/:id' element={<Player />} />
+                <Route path='/player/:id' element={<Player />} />
+                <Route
+                  path='/*'
+                  element={
+                    <Layout>
+                      <Routes>
+                        <Route path='/' element={<Home />} />
+                        <Route path='/movie/:id' element={<MovieDetail />} />
+                        <Route path='/tv/:id' element={<MovieDetail />} />
+                        <Route path='/search' element={<SearchPage />} />
+                        <Route path='/upcoming' element={<UpcomingPage />} />
+                        <Route path='/privacy' element={<Privacy />} />
+                        <Route path='/terms' element={<Terms />} />
+                        <Route path='/dmca' element={<DMCA />} />
+                        <Route path='/about' element={<About />} />
+                      </Routes>
+                    </Layout>
+                  }
+                />
+              </Routes>
             </WelcomeLoader>
           </Router>
         </HelmetProvider>

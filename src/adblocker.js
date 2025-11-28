@@ -1,4 +1,3 @@
-
 // In-Website Ad & Redirect Blocker
 (function() {
     'use strict';
@@ -98,7 +97,7 @@
             removeElement(node);
             return;
         }
-        if (blockedKeywords.some(keyword => (node.className || '').includes(keyword) || (node.id || '').includes(keyword))) {
+        if (blockedKeywords.some(keyword => (String(node.className) || '').includes(keyword) || (node.id || '').includes(keyword))) {
             removeElement(node);
             return;
         }

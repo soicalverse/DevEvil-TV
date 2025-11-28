@@ -16,7 +16,7 @@ const Carousel = ({ items, type, handleSeeMore, showSeeMore }) => {
         <MediaCard item={item} type={type} />
       </div>
     );
-    if ((index + 1) % 10 === 0) {
+    if ((index + 1) % 5 === 0) {
       acc.push(
         <div className="carousel-item" key={`donation-${index}`}>
           <DonationCard sectionId={type} />
