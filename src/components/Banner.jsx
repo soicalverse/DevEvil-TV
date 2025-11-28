@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { getTrendingMovies } from '../services/tmdbService';
 import { Link } from 'react-router-dom';
 
@@ -7,17 +8,24 @@ const Banner = () => {
   const [latestReleased, setLatestReleased] = useState(null);
 
   useEffect(() => {
+    const source = axios.CancelToken.source();
     const fetchLatestReleased = async () => {
       try {
-        const trendingMovies = await getTrendingMovies();
+        const trendingMovies = await getTrendingMovies(1, source.token);
         const latestReleasedItem = trendingMovies[0];
         setLatestReleased(latestReleasedItem);
       } catch (error) {
-        // Handle error
+        if (!axios.isCancel(error)) {
+          console.error('Error fetching latest released movie:', error);
+        }
       }
     };
 
     fetchLatestReleased();
+
+    return () => {
+      source.cancel('Component unmounted');
+    };
   }, []);
 
   const formatTime = (minutes) => {

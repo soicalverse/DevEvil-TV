@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 import { getTrendingMovies, getPopularMovies, getUpcomingMovies } from '../services/tmdbService';
 import Carousel from './Carousel';
 import '../styles/Movies.css';
@@ -10,20 +11,31 @@ const Movies = ({ movieType, page, setPage, onMovieTypeChange }) => {
   const [showSeeMore, setShowSeeMore] = useState(false);
 
   useEffect(() => {
+    const source = axios.CancelToken.source();
     const fetchMovies = async () => {
-      let fetchFunction;
-      if (movieType === 'trending') {
-        fetchFunction = getTrendingMovies;
-      } else if (movieType === 'popular') {
-        fetchFunction = getPopularMovies;
-      } else {
-        fetchFunction = getUpcomingMovies;
+      try {
+        let fetchFunction;
+        if (movieType === 'trending') {
+          fetchFunction = getTrendingMovies;
+        } else if (movieType === 'popular') {
+          fetchFunction = getPopularMovies;
+        } else {
+          fetchFunction = getUpcomingMovies;
+        }
+        const response = await fetchFunction(page, source.token);
+        setMovies(prev => page === 1 ? response : [...prev, ...response]);
+        setShowSeeMore(response.length > 0);
+      } catch (error) {
+        if (!axios.isCancel(error)) {
+          console.error('Error fetching movies:', error);
+        }
       }
-      const response = await fetchFunction(page);
-      setMovies(prev => page === 1 ? response : [...prev, ...response]);
-      setShowSeeMore(response.length > 0);
     };
     fetchMovies();
+
+    return () => {
+      source.cancel('Component unmounted');
+    };
   }, [page, movieType]);
 
   const handleSeeMore = () => {

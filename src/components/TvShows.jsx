@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { getTrendingTvShows, getPopularTvShows, getUpcomingTvShows } from '../services/tmdbService';
 import Carousel from './Carousel';
 import '../styles/Movies.css';
@@ -11,20 +12,31 @@ const TvShows = () => {
   const [showSeeMore, setShowSeeMore] = useState(false);
 
   useEffect(() => {
+    const source = axios.CancelToken.source();
     const fetchTvShows = async () => {
-      let fetchFunction;
-      if (showType === 'trending') {
-        fetchFunction = getTrendingTvShows;
-      } else if (showType === 'popular') {
-        fetchFunction = getPopularTvShows;
-      } else {
-        fetchFunction = getUpcomingTvShows;
+      try {
+        let fetchFunction;
+        if (showType === 'trending') {
+          fetchFunction = getTrendingTvShows;
+        } else if (showType === 'popular') {
+          fetchFunction = getPopularTvShows;
+        } else {
+          fetchFunction = getUpcomingTvShows;
+        }
+        const response = await fetchFunction(page, source.token);
+        setTvShows(prev => page === 1 ? response : [...prev, ...response]);
+        setShowSeeMore(response.length > 0);
+      } catch (error) {
+        if (!axios.isCancel(error)) {
+          console.error('Error fetching TV shows:', error);
+        }
       }
-      const response = await fetchFunction(page);
-      setTvShows(prev => page === 1 ? response : [...prev, ...response]);
-      setShowSeeMore(response.length > 0);
     };
     fetchTvShows();
+
+    return () => {
+      source.cancel('Component unmounted');
+    };
   }, [page, showType]);
 
   const handleSeeMore = () => {

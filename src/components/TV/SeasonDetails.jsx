@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { getSeasonEpisodes } from '../../services/tmdbService';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -8,16 +9,23 @@ const SeasonDetails = ({ tvShowId, seasonNumber, tvShowBackdrop, episodes: initi
 
   useEffect(() => {
     if (!initialEpisodes || initialEpisodes.length === 0) {
+        const source = axios.CancelToken.source();
         const fetchSeasonEpisodes = async () => {
             try {
-                const seasonEpisodes = await getSeasonEpisodes(tvShowId, seasonNumber);
+                const seasonEpisodes = await getSeasonEpisodes(tvShowId, seasonNumber, source.token);
                 setEpisodes(seasonEpisodes);
             } catch (error) {
-                console.error(`Error fetching episodes for tvShowId: ${tvShowId} and season: ${seasonNumber}`, error);
+                if (!axios.isCancel(error)) {
+                    console.error(`Error fetching episodes for tvShowId: ${tvShowId} and season: ${seasonNumber}`, error);
+                }
             }
         };
 
         fetchSeasonEpisodes();
+
+        return () => {
+            source.cancel('Component unmounted');
+        };
     }
   }, [tvShowId, seasonNumber, initialEpisodes]);
 

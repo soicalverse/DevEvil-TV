@@ -1,7 +1,9 @@
+
 import React, { useState, useEffect } from "react";
 import PropTypes from 'prop-types';
+import axios from 'axios';
 import MediaCard from './MediaCard';
-import { Link, useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import YouTube from "react-youtube";
 import "../../src/styles/MovieDetails.css";
 import SeasonDetails from './TV/SeasonDetails';
@@ -17,6 +19,7 @@ import Loader from "./Loader";
 import { blockedMedia } from '../blockedMedia';
 import BlockedContent from './BlockedContent';
 import DonationModal from './DonationModal';
+import adblockDetector from '../adblockDetector';
 
 // Carousel Components
 const Carousel = ({ items, type, handleSeeMore, showSeeMore }) => {
@@ -79,6 +82,7 @@ CastCarousel.propTypes = { items: PropTypes.array };
 const MovieDetails = () => {
   const { id } = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
   const isMovie = location.pathname.includes("/movie/");
 
   const [activeTab, setActiveTab] = useState(isMovie ? "suggested" : "seasons");
@@ -91,10 +95,24 @@ const MovieDetails = () => {
   const [loading, setLoading] = useState(true);
   const [isBlocked, setIsBlocked] = useState(false);
   const [showDonationModal, setShowDonationModal] = useState(false);
-
+  const [adblockerEnabled, setAdblockerEnabled] = useState(false);
+  const [checkingAdblocker, setCheckingAdblocker] = useState(true);
 
   useEffect(() => {
+    const checkAdBlock = async () => {
+      const detected = await adblockDetector();
+      setAdblockerEnabled(detected);
+      setCheckingAdblocker(false);
+    };
+    checkAdBlock();
+  }, []);
+
+  useEffect(() => {
+    // Stop if we are still checking for an adblocker or if the adblocker is not enabled.
+    if (checkingAdblocker || !adblockerEnabled) return;
+
     setLoading(true);
+    const source = axios.CancelToken.source();
 
     const mediaType = isMovie ? 'movie' : 'tv';
     const isMediaBlocked = blockedMedia.some(item => item.id.toString() === id && item.type === mediaType);
@@ -108,9 +126,8 @@ const MovieDetails = () => {
     setIsBlocked(false);
 
     const fetchData = async () => {
-      const startTime = Date.now();
       try {
-        const data = isMovie ? await getMovieDetails(id) : await getTvShowDetails(id);
+        const data = isMovie ? await getMovieDetails(id, source.token) : await getTvShowDetails(id, source.token);
         setMedia(data);
         const trailer = data.videos?.results?.find(vid => vid.type === "Trailer");
         setTrailerKey(trailer?.key);
@@ -119,31 +136,53 @@ const MovieDetails = () => {
           setSelectedSeason(firstSeason.season_number);
         }
       } catch (error) {
-        console.error("Error fetching media details:", error);
-      } finally {
-        const elapsedTime = Date.now() - startTime;
-        const remainingTime = 1000 - elapsedTime;
-        if (remainingTime > 0) {
-          setTimeout(() => setLoading(false), remainingTime);
-        } else {
-          setLoading(false);
+        if (!axios.isCancel(error)) {
+          console.error("Error fetching media details:", error);
         }
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();
-  }, [id, isMovie]);
 
-  const handleWatchTrailer = () => setShowTrailer(true);
+    return () => {
+      source.cancel('Component unmounted');
+    };
+  }, [id, isMovie, checkingAdblocker, adblockerEnabled]);
+
+  const handlePlay = async () => {
+    const detected = await adblockDetector();
+    if (detected) {
+      navigate(`/player/${id}${!isMovie ? `?s=${selectedSeason}&e=1` : ''}`);
+    } else {
+      setAdblockerEnabled(false);
+    }
+  };
+
+  const handleWatchTrailer = () => {
+    if (trailerKey) setShowTrailer(true);
+  };
   const handleCloseTrailer = () => setShowTrailer(false);
   const handlePosterClick = () => setShowPoster(true);
   const handleClosePoster = () => setShowPoster(false);
+
+  if (checkingAdblocker) {
+    return <div className="loading-container"><Loader /></div>;
+  }
+
+  if (!adblockerEnabled) {
+    return <BlockedContent title="Adblocker Required" message="Please enable an adblocker to watch content on this site." />;
+  }
+
+  if (loading) {
+    return <div className="loading-container"><Loader /></div>;
+  }
 
   if (isBlocked) {
     return <BlockedContent title="Sorry, this 18+ content is not available." message="This is a family-friendly movie site." />;
   }
 
-  if (loading) return <div className="loading-container"><Loader /></div>;
-  if (!media) return <div></div>; 
+  if (!media) return <div></div>;
 
   const { title, name, release_date, first_air_date, genres, runtime, number_of_seasons, vote_average, overview, backdrop_path, poster_path, recommendations, credits, reviews, seasons } = media;
   const mediaTitle = title || name;
@@ -175,7 +214,7 @@ const MovieDetails = () => {
       <div className="movie-details-page">
         <div className="movie-details-background" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${backdrop_path})` }}></div>
         <div className="page-overlay"></div>
-        {showTrailer && (
+        {showTrailer && trailerKey && (
           <div className="youtube-overlay" onClick={handleCloseTrailer}>
             <div className="youtube-container">
               <YouTube videoId={trailerKey} opts={{ width: "100%", height: "100%" }} className="youtube-player-wrapper" />
@@ -203,7 +242,6 @@ const MovieDetails = () => {
         
         <DonationModal show={showDonationModal} onClose={() => setShowDonationModal(false)} />
 
-
         <div className="movie-details-body px-4 sm:px-6 md:px-8 lg:px-10 pt-32 sm:pt-40 md:pt-48 lg:pt-56">
           <div className="movie-details-main-content">
             <div className="movie-details-container">
@@ -223,10 +261,10 @@ const MovieDetails = () => {
                     <p className="movie-overview">{overview}</p>
                   </div>
                   <div className="movie-details-actions">
-                      <Link to={`/player/${id}${!isMovie ? '?s=1&e=1' : ''}`} className="share-button">
+                      <button onClick={handlePlay} className="share-button">
                           <i className="fas fa-play"></i> Play
-                      </Link>
-                    <button className="trailer-button" onClick={handleWatchTrailer}><i className="fas fa-film"></i> Trailer</button>
+                      </button>
+                    <button className="trailer-button" onClick={handleWatchTrailer} disabled={!trailerKey}><i className="fas fa-film"></i> Trailer</button>
                     <button className="share-button" onClick={() => setShowShareModal(true)}><i className="fas fa-share-nodes"></i> Share</button>
                   </div>
                 </div>

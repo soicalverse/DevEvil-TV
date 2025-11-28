@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { getMoviesByGenre, getGenres, getTvGenres, getTvByGenre } from '../services/tmdbService';
 import Carousel from './Carousel';
 import GenreFilter from './GenreFilter';
@@ -31,30 +32,39 @@ const Categories = () => {
 }, []);
 
   useEffect(() => {
+    const source = axios.CancelToken.source();
     const fetchGenres = async () => {
       try {
-        const fetchedMovieGenres = await getGenres();
+        const fetchedMovieGenres = await getGenres(source.token);
         setMovieGenres(fetchedMovieGenres.filter(genre => genre.name !== 'Horror' && genre.name !== 'Drama' && genre.name !== 'Romance'));
 
-        const fetchedTvGenres = await getTvGenres();
+        const fetchedTvGenres = await getTvGenres(source.token);
         setTvGenres(fetchedTvGenres.filter(genre => genre.name !== 'Horror' && genre.name !== 'Drama' && genre.name !== 'Romance'));
       } catch (error) {
-        // Handle error
+        if (!axios.isCancel(error)) {
+          console.error('Error fetching genres:', error);
+        }
       }
     };
 
     fetchGenres();
+    return () => {
+      source.cancel('Component unmounted');
+    };
   }, []);
 
   useEffect(() => {
+    const source = axios.CancelToken.source();
     const fetchMoviesByCategory = async () => {
       if (selectedMovieGenre) {
         try {
-          const movies = await getMoviesByGenre(selectedMovieGenre, currentPageMovies);
+          const movies = await getMoviesByGenre(selectedMovieGenre, currentPageMovies, source.token);
           setMoviesByCategory(prev => currentPageMovies === 1 ? movies : [...prev, ...movies]);
           setShowSeeMoreMovies(movies.length > 0);
         } catch (error) {
-          // Handle error
+          if (!axios.isCancel(error)) {
+            console.error('Error fetching movies by category:', error);
+          }
         }
       } else {
         setMoviesByCategory([]);
@@ -62,17 +72,23 @@ const Categories = () => {
     };
 
     fetchMoviesByCategory();
+    return () => {
+      source.cancel('Component unmounted');
+    };
   }, [selectedMovieGenre, currentPageMovies]);
 
   useEffect(() => {
+    const source = axios.CancelToken.source();
     const fetchTvByCategory = async () => {
       if (selectedTvGenre) {
         try {
-          const tv = await getTvByGenre(selectedTvGenre, currentPageTv);
+          const tv = await getTvByGenre(selectedTvGenre, currentPageTv, source.token);
           setTvByCategory(prev => currentPageTv === 1 ? tv : [...prev, ...tv]);
           setShowSeeMoreTv(tv.length > 0);
         } catch (error) {
-          // Handle error
+          if (!axios.isCancel(error)) {
+            console.error('Error fetching TV shows by category:', error);
+          }
         }
       } else {
         setTvByCategory([]);
@@ -80,6 +96,9 @@ const Categories = () => {
     };
 
     fetchTvByCategory();
+    return () => {
+      source.cancel('Component unmounted');
+    };
   }, [selectedTvGenre, currentPageTv]);
 
   const handleMovieGenreChange = (genre) => {

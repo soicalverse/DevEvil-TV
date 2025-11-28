@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Carousel from './Carousel';
 import '../styles/Movies.css';
+import axios from 'axios';
 
 const PopularPerformers = () => {
   const [performers, setPerformers] = useState([]);
@@ -8,16 +9,26 @@ const PopularPerformers = () => {
   const [showSeeMore, setShowSeeMore] = useState(false);
 
   useEffect(() => {
+    const source = axios.CancelToken.source();
     const fetchPopularPerformers = async () => {
+      try {
         const API_KEY = process.env.REACT_APP_API_KEY;
-        const response = await fetch(`https://api.themoviedb.org/3/person/popular?api_key=${API_KEY}&page=${page}`);
-        const data = await response.json();
-      if (data && data.results) {
-        setPerformers(prev => page === 1 ? data.results : [...prev, ...data.results]);
-        setShowSeeMore(data.results.length > 0);
+        const response = await axios.get(`https://api.themoviedb.org/3/person/popular?api_key=${API_KEY}&page=${page}`, { cancelToken: source.token });
+        if (response.data && response.data.results) {
+          setPerformers(prev => page === 1 ? response.data.results : [...prev, ...response.data.results]);
+          setShowSeeMore(response.data.results.length > 0);
+        }
+      } catch (error) {
+        if (!axios.isCancel(error)) {
+          console.error('Error fetching popular performers:', error);
+        }
       }
     };
     fetchPopularPerformers();
+
+    return () => {
+      source.cancel('Component unmounted');
+    };
   }, [page]);
 
   const handleSeeMore = () => {

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { getAnimeMovies } from '../services/tmdbService';
 import Carousel from './Carousel';
 import '../styles/Movies.css';
@@ -9,12 +10,22 @@ const Anime = () => {
   const [showSeeMore, setShowSeeMore] = useState(false);
 
   useEffect(() => {
+    const source = axios.CancelToken.source();
     const fetchAnimeMovies = async () => {
-      const response = await getAnimeMovies(page);
-      setAnimeMovies(prev => page === 1 ? response : [...prev, ...response]);
-      setShowSeeMore(response.length > 0);
+      try {
+        const response = await getAnimeMovies(page, source.token);
+        setAnimeMovies(prev => page === 1 ? response : [...prev, ...response]);
+        setShowSeeMore(response.length > 0);
+      } catch (error) {
+        if (!axios.isCancel(error)) {
+          console.error('Error fetching anime movies:', error);
+        }
+      }
     };
     fetchAnimeMovies();
+    return () => {
+      source.cancel('Component unmounted');
+    };
   }, [page]);
 
   const handleSeeMore = () => {

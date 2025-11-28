@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { getTrendingMedia } from '../../services/tmdbService';
+import { getTrendingMovies, getTrendingTvShows } from '../../services/tmdbService';
 import MediaCard from '../MediaCard';
 import SeeMoreCard from '../SeeMoreCard';
 import '../../styles/Carousel.css';
@@ -36,7 +36,12 @@ const Trending = ({ mediaType }) => {
 
     useEffect(() => {
         const fetchTrending = async () => {
-            const trendingData = await getTrendingMedia(mediaType);
+            let trendingData;
+            if (mediaType === 'movie') {
+                trendingData = await getTrendingMovies();
+            } else if (mediaType === 'tv') {
+                trendingData = await getTrendingTvShows();
+            }
             setTrending(trendingData || []);
         };
 

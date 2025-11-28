@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
+import axios from 'axios';
 import { searchMedia, getTrendingMedia } from '../services/tmdbService';
 import MediaCard from './MediaCard';
 import Footer from './Others/Footer';
@@ -15,19 +16,21 @@ const SearchPage = () => {
   const [isBlocked, setIsBlocked] = useState(false);
   const location = useLocation();
 
-  const fetchMedia = useCallback(async (searchQuery) => {
+  const fetchMedia = useCallback(async (searchQuery, cancelToken) => {
     const startTime = Date.now();
     try {
       let results;
       if (searchQuery) {
-        results = await searchMedia(searchQuery);
+        results = await searchMedia(searchQuery, cancelToken);
       } else {
-        results = await getTrendingMedia();
+        results = await getTrendingMedia(1, cancelToken);
       }
       setSearchResults(results);
     } catch (error) {
-      console.error('Failed to fetch media:', error);
-      setSearchResults([]);
+      if (!axios.isCancel(error)) {
+        console.error('Failed to fetch media:', error);
+        setSearchResults([]);
+      }
     } finally {
       const elapsedTime = Date.now() - startTime;
       const remainingTime = 1300 - elapsedTime;
@@ -43,6 +46,7 @@ const SearchPage = () => {
     setLoading(true);
     setIsBlocked(false);
     const searchParam = new URLSearchParams(location.search).get('q');
+    const source = axios.CancelToken.source();
 
     if (searchParam) {
       const isQueryBlocked = blockedWords.some(word =>
@@ -56,7 +60,11 @@ const SearchPage = () => {
       }
     }
 
-    fetchMedia(searchParam);
+    fetchMedia(searchParam, source.token);
+
+    return () => {
+      source.cancel('Component unmounted');
+    };
   }, [location.search, fetchMedia]);
 
   return (
