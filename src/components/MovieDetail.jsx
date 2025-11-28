@@ -16,7 +16,6 @@ import Footer from "./Others/Footer";
 import Loader from "./Loader";
 import { blockedMedia } from '../blockedMedia';
 import BlockedContent from './BlockedContent';
-import DonationBanner from "./DonationBanner";
 import DonationModal from './DonationModal';
 
 // Carousel Components
@@ -144,7 +143,7 @@ const MovieDetails = () => {
   }
 
   if (loading) return <div className="loading-container"><Loader /></div>;
-  if (!media) return <div></div>; // Or some other placeholder/error
+  if (!media) return <div></div>; 
 
   const { title, name, release_date, first_air_date, genres, runtime, number_of_seasons, vote_average, overview, backdrop_path, poster_path, recommendations, credits, reviews, seasons } = media;
   const mediaTitle = title || name;
@@ -205,7 +204,7 @@ const MovieDetails = () => {
         <DonationModal show={showDonationModal} onClose={() => setShowDonationModal(false)} />
 
 
-        <div className="movie-details-body">
+        <div className="movie-details-body px-4 sm:px-6 md:px-8 lg:px-10 pt-32 sm:pt-40 md:pt-48 lg:pt-56">
           <div className="movie-details-main-content">
             <div className="movie-details-container">
               <section className="movie-details-header-section">
@@ -276,11 +275,6 @@ const MovieDetails = () => {
                     )}
                   </div>
               </div>
-            </div>
-          </div>
-          <div className="movie-details-sidebar">
-             <div onClick={() => setShowDonationModal(true)}>
-              <DonationBanner />
             </div>
           </div>
         </div>

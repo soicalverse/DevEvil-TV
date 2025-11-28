@@ -18,7 +18,7 @@
 }
 
 .main-content {
-  padding-top: 8rem; /* 128px */
+  /* padding-top: 8rem; */ /* Removed to fix layout conflicts */
 }
 
 /* Movies section */

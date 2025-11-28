@@ -7,15 +7,8 @@
     left: 0;
     right: 0;
     z-index: 500; 
-    height: 48px; /* Adjusted height */
-    display: none; /* Hidden by default on mobile */
-}
-
-/* Show banner only on medium screens and up */
-@media (min-width: 768px) {
-    .promo-banner-container {
-        display: block;
-    }
+    height: 48px; /* Default height for desktop */
+    display: block; /* Make it visible by default */
 }
 
 /* The main banner with glassmorphism */
@@ -25,7 +18,7 @@
     display: grid;
     grid-template-columns: auto 1fr auto; /* Logo, Text, Button */
     align-items: center;
-    padding: 0 1.5rem; /* Increased padding */
+    padding: 0 1.5rem; /* Default padding for desktop */
     gap: 1.5rem;
 
     /* Enhanced Glassmorphism */
@@ -36,82 +29,77 @@
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
 }
 
-/* Curve SVGs for the bottom corners */
-.banner-curve {
-    position: absolute;
-    top: 100%;
-    z-index: 10;
-    width: 16px;
-    height: 16px;
-    fill: rgba(22, 22, 22, 0.6); /* Match banner background */
-    backdrop-filter: blur(16px); /* Match banner blur */
-    -webkit-backdrop-filter: blur(16px);
-}
-
-.banner-curve.left {
-    left: 0;
-}
-
-.banner-curve.right {
-    right: 0;
-    transform: rotate(90deg);
-}
-
-/* Logo Section */
-.logo-section {
-    display: flex;
-    align-items: center;
-}
-
 .promo-logo {
-    height: 32px; /* Control logo size */
-    width: auto;
+    height: 24px;
 }
 
-/* Text Section - centered */
-.promo-text-section {
-    text-align: center;
-    color: #e0e0e0;
+.main-promo-text {
     font-size: 0.9rem;
-    font-weight: 500;
-    white-space: nowrap; /* Prevent text wrapping */
+    white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis; /* Add ... if text is too long */
-}
-
-
-/* Action Section (Donate Button) */
-.promo-action-section {
-    display: flex;
-    justify-content: flex-end;
+    text-overflow: ellipsis;
+    color: #f0f0f0;
 }
 
 .donate-button {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    background: linear-gradient(90deg, #fca5a5, #f87171);
-    color: white;
-    border: none;
+    gap: 8px;
     padding: 8px 16px;
-    border-radius: 50px; /* Pill shape */
+    border-radius: 20px;
+    background: #FC9732;
+    color: #111;
     font-weight: 600;
+    border: none;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 10px rgba(248, 113, 113, 0.3);
-}
-
-.donate-button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 20px rgba(248, 113, 113, 0.4);
-}
-
-.donate-button:active {
-    transform: scale(0.98);
+    font-size: 0.9rem;
 }
 
 .donate-icon {
-    height: 20px;
-    width: 20px;
-    filter: brightness(0) invert(1); /* Ensure icon is white */
+    height: 18px;
+}
+
+.banner-curve {
+    display: none;
+}
+
+
+/* Responsive styles for mobile */
+@media (max-width: 768px) {
+    .promo-banner-container {
+        height: 44px; /* Slightly smaller on mobile */
+    }
+
+    .promo-banner {
+        padding: 0 1rem; /* Reduced padding */
+        gap: 1rem;
+        grid-template-columns: 1fr auto; /* Remove logo space */
+    }
+
+    .promo-logo, .logo-section {
+        display: none; /* Hide logo on mobile */
+    }
+
+    .main-promo-text {
+        font-size: 0.8rem; /* Smaller text on mobile */
+    }
+
+    .donate-button {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+
+    .donate-icon {
+        height: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-promo-text {
+        font-size: 0.7rem; /* Even smaller text for very small screens */
+    }
+    .donate-button {
+        padding: 5px 10px;
+        font-size: 0.7rem;
+    }
 }
