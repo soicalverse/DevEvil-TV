@@ -62,7 +62,7 @@ const Banner = () => {
           )}
           {latestReleased && (
             <div className="banner-nav">
-              <Link to={`/player/${latestReleased.id}`} className="watch-now-button">
+              <Link to={{ pathname: `/player/${latestReleased.id}`, state: { fromBanner: true } }} className="watch-now-button">
                 Watch Now <i className="fa-solid fa-play"></i>
               </Link>
               <Link to={`/movie/${latestReleased.id}`} className="insights-button">
