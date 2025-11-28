@@ -20,6 +20,7 @@ import { blockedMedia } from '../blockedMedia';
 import BlockedContent from './BlockedContent';
 import DonationModal from './DonationModal';
 import adblockDetector from '../adblockDetector';
+import AdblockerModal from './AdblockerModal';
 
 // Carousel Components
 const Carousel = ({ items, type, handleSeeMore, showSeeMore }) => {
@@ -95,22 +96,9 @@ const MovieDetails = () => {
   const [loading, setLoading] = useState(true);
   const [isBlocked, setIsBlocked] = useState(false);
   const [showDonationModal, setShowDonationModal] = useState(false);
-  const [adblockerEnabled, setAdblockerEnabled] = useState(false);
-  const [checkingAdblocker, setCheckingAdblocker] = useState(true);
+  const [showAdblockerModal, setShowAdblockerModal] = useState(false);
 
   useEffect(() => {
-    const checkAdBlock = async () => {
-      const detected = await adblockDetector();
-      setAdblockerEnabled(detected);
-      setCheckingAdblocker(false);
-    };
-    checkAdBlock();
-  }, []);
-
-  useEffect(() => {
-    // Stop if we are still checking for an adblocker or if the adblocker is not enabled.
-    if (checkingAdblocker || !adblockerEnabled) return;
-
     setLoading(true);
     const source = axios.CancelToken.source();
 
@@ -148,14 +136,14 @@ const MovieDetails = () => {
     return () => {
       source.cancel('Component unmounted');
     };
-  }, [id, isMovie, checkingAdblocker, adblockerEnabled]);
+  }, [id, isMovie]);
 
   const handlePlay = async () => {
-    const detected = await adblockDetector();
-    if (detected) {
+    const adblockerDetected = await adblockDetector();
+    if (adblockerDetected) {
       navigate(`/player/${id}${!isMovie ? `?s=${selectedSeason}&e=1` : ''}`);
     } else {
-      setAdblockerEnabled(false);
+      setShowAdblockerModal(true);
     }
   };
 
@@ -165,14 +153,6 @@ const MovieDetails = () => {
   const handleCloseTrailer = () => setShowTrailer(false);
   const handlePosterClick = () => setShowPoster(true);
   const handleClosePoster = () => setShowPoster(false);
-
-  if (checkingAdblocker) {
-    return <div className="loading-container"><Loader /></div>;
-  }
-
-  if (!adblockerEnabled) {
-    return <BlockedContent title="Adblocker Required" message="Please enable an adblocker to watch content on this site." />;
-  }
 
   if (loading) {
     return <div className="loading-container"><Loader /></div>;
@@ -211,6 +191,7 @@ const MovieDetails = () => {
         <meta name="twitter:description" content={overview} />
         <meta name="twitter:image" content={posterUrl} />
       </Helmet>
+      <AdblockerModal show={showAdblockerModal} onClose={() => setShowAdblockerModal(false)} />
       <div className="movie-details-page">
         <div className="movie-details-background" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${backdrop_path})` }}></div>
         <div className="page-overlay"></div>
