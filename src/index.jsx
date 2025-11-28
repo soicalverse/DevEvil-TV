@@ -24,7 +24,6 @@ import './styles/CustomCursor.css';
 import CustomCursor from './components/CustomCursor.jsx';
 import Layout from './components/Others/Layout';
 import WelcomeLoader from './components/WelcomeLoader';
-import './adblocker.js';
 
 const PUBLISHABLE_KEY = 'pk_test_YnJpZWYtc2FpbGZpc2gtNDkuY2xlcmsuYWNjb3VudHMuZGV2JA';
 const convex = new ConvexReactClient(process.env.REACT_APP_CONVEX_URL);
