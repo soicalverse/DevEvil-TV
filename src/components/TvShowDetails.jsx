@@ -23,7 +23,7 @@ import adblockDetector from '../adblockDetector';
 import AdblockerModal from './AdblockerModal';
 
 // Carousel Components
-const Carousel = ({ items, type, handleSeeMore, showSeeMore }) => {
+const Carousel = ({ items, type, handleSeeMore, showSeeMore = false }) => {
   const carouselRef = useHorizontalScroll();
   return (
     <div className="carousel-container" ref={carouselRef}>
@@ -33,13 +33,6 @@ const Carousel = ({ items, type, handleSeeMore, showSeeMore }) => {
             <MediaCard item={item} type={type} />
           </div>
         ))}
-        {showSeeMore && (
-          <div className="see-more-card-container">
-            <div className="see-more-card" onClick={handleSeeMore}>
-              <i className="fas fa-arrow-right"></i>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );
@@ -271,7 +264,7 @@ const TvShowDetails = () => {
                     )}
                     {activeTab === "recommendations" && (
                         (recommendations && recommendations.results.length > 0) ? (
-                            <Carousel items={recommendations.results} type='tv' showSeeMore={false} />
+                            <Carousel items={recommendations.results} type='tv' />
                         ) : (
                             <Trending mediaType='tv' />
                         )

@@ -23,7 +23,7 @@ import adblockDetector from '../adblockDetector';
 import AdblockerModal from './AdblockerModal';
 
 // Carousel Components
-const Carousel = ({ items, type, handleSeeMore, showSeeMore }) => {
+const Carousel = ({ items, type, handleSeeMore, showSeeMore = false }) => {
   const carouselRef = useHorizontalScroll();
   return (
     <div className="carousel-container" ref={carouselRef}>
@@ -33,13 +33,6 @@ const Carousel = ({ items, type, handleSeeMore, showSeeMore }) => {
             <MediaCard item={item} type={type} />
           </div>
         ))}
-        {showSeeMore && (
-          <div className="see-more-card-container">
-            <div className="see-more-card" onClick={handleSeeMore}>
-              <i className="fas fa-arrow-right"></i>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );
@@ -226,7 +219,7 @@ const MovieDetails = () => {
         
         <DonationModal show={showDonationModal} onClose={() => setShowDonationModal(false)} />
 
-        <div className="movie-details-body px-4 sm:px-6 md:px-8 lg:px-10 pt-32 sm:pt-40 md:pt-48 lg:pt-56">
+        <div className="movie-details-.body px-4 sm:px-6 md:px-8 lg:px-10 pt-32 sm:pt-40 md:pt-48 lg:pt-56">
           <div className="movie-details-main-content">
             <div className="movie-details-container">
               <section className="movie-details-header-section">
@@ -277,7 +270,7 @@ const MovieDetails = () => {
                     )}
                     {activeTab === (isMovie ? "suggested" : "recommendations") && (
                         (recommendations && recommendations.results.length > 0) ? (
-                            <Carousel items={recommendations.results} type={isMovie ? 'movie' : 'tv'} showSeeMore={false} />
+                            <Carousel items={recommendations.results} type={isMovie ? 'movie' : 'tv'} />
                         ) : (
                             <Trending mediaType={isMovie ? 'movie' : 'tv'} />
                         )
