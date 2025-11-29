@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
-import { searchMedia, getTrendingMedia } from '../services/tmdbService';
+import { searchMedia, getTrendingMovies, getTrendingTvShows } from '../services/tmdbService';
 import MediaCard from './MediaCard';
 import Footer from './Others/Footer';
 import Loader from './Loader';
@@ -23,7 +23,16 @@ const SearchPage = () => {
       if (searchQuery) {
         results = await searchMedia(searchQuery, cancelToken);
       } else {
-        results = await getTrendingMedia(1, cancelToken);
+        // Fetch both trending movies and TV shows
+        const [movies, tvShows] = await Promise.all([
+          getTrendingMovies(1, cancelToken),
+          getTrendingTvShows(1, cancelToken)
+        ]);
+        // Add media_type to each item for the MediaCard
+        const moviesWithMediaType = movies.map(movie => ({ ...movie, media_type: 'movie' }));
+        const tvShowsWithMediaType = tvShows.map(tv => ({ ...tv, media_type: 'tv' }));
+        // Combine and shuffle the results for a mixed view
+        results = [...moviesWithMediaType, ...tvShowsWithMediaType].sort(() => Math.random() - 0.5);
       }
       setSearchResults(results);
     } catch (error) {

@@ -16,7 +16,7 @@ const PromoBanner = ({ setShowDonationModal }) => {
                 </div>
 
                 <div className="promo-text-section">
-                    <span className="main-promo-text">Every gift keeps the stream alive  !</span>
+                    <span className="main-promo-text">Every gift keeps the stream alive !</span>
                 </div>
 
                 <div className="promo-action-section">

@@ -1,5 +1,44 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import '../styles/AdblockerModal.css';
+
+const BYPASS_FLAG = 'adblockAllowed';
+const PROTECTED_ELEMENT_SELECTORS = ['.play-button', '.watch-now'].join(', ');
+
+// --- DETECTION LOGIC ---
+
+/**
+ * A highly reliable, universal ad-block detection function using a "bait" element.
+ * This is used for both DESKTOP and MOBILE browsers.
+ * @returns {Promise<boolean>} A promise that resolves to `true` if an ad-blocker is active, and `false` otherwise.
+ */
+function isAdblockerActive() {
+    return new Promise(resolve => {
+        const bait = document.createElement('div');
+        bait.className = 'adsbox ad-container ad-banner';
+        bait.style.position = 'absolute';
+        bait.style.left = '-9999px';
+        bait.style.height = '1px';
+        bait.style.width = '1px';
+        bait.setAttribute('aria-hidden', 'true');
+        document.body.appendChild(bait);
+
+        requestAnimationFrame(() => {
+            setTimeout(() => {
+                const adblockerIsActive = (
+                    bait.offsetHeight === 0 ||
+                    window.getComputedStyle(bait).display === 'none' ||
+                    window.getComputedStyle(bait).visibility === 'hidden'
+                );
+                if (bait.parentNode) {
+                    bait.parentNode.removeChild(bait);
+                }
+                resolve(adblockerIsActive);
+            }, 100);
+        });
+    });
+}
+
+// --- BROWSER DATA ---
 
 const browsers = {
   desktop: [
@@ -17,33 +56,47 @@ const browsers = {
   ],
 };
 
+// --- COMPONENT ---
+
 const AdblockerModal = () => {
   const [showModal, setShowModal] = useState(false);
   const [activeTab, setActiveTab] = useState('desktop');
   const [selectedDesktop, setSelectedDesktop] = useState(null);
   const [selectedMobile, setSelectedMobile] = useState('Android');
 
-  useEffect(() => {
-    const openModal = () => setShowModal(true);
-    document.body.addEventListener('openAdblockModal', openModal);
+  const isMobile = /android|iphone|ipad|ipod|harmonyos/i.test(navigator.userAgent);
 
-    // Initial check for mobile
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    if (isMobile) {
-      setActiveTab('mobile');
+  const handleProtectedClick = useCallback(async (event) => {
+    const targetElement = event.target.closest(PROTECTED_ELEMENT_SELECTORS);
+    if (!targetElement || localStorage.getItem(BYPASS_FLAG) === 'true' || showModal) {
+      return;
     }
 
+    const adblockerIsActive = await isAdblockerActive();
+
+    if (!adblockerIsActive) {
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+      setShowModal(true);
+    }
+  }, [showModal]);
+
+  useEffect(() => {
+    if (isMobile) {
+        setActiveTab('mobile');
+    }
+    document.addEventListener('click', handleProtectedClick, true);
     return () => {
-      document.body.removeEventListener('openAdblockModal', openModal);
+      document.removeEventListener('click', handleProtectedClick, true);
     };
-  }, []);
+  }, [handleProtectedClick, isMobile]);
 
   if (!showModal) {
     return null;
   }
 
   const handleClose = () => setShowModal(false);
-
   const getMobileInfo = () => browsers.mobile.find(m => m.name === selectedMobile);
 
   return (
@@ -102,7 +155,6 @@ const AdblockerModal = () => {
               )}
             </div>
           )}
-          
         </div>
       </div>
     </div>
