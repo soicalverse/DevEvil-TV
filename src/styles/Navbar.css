@@ -89,7 +89,7 @@
     cursor: pointer;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
     .navbar {
         top: 20px;
         left: 50%;
@@ -99,7 +99,7 @@
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1023px) {
     .nav-links {
         display: none;
         flex-direction: column;
@@ -117,5 +117,11 @@
 
     .nav-toggle {
         display: block;
+    }
+
+    .navbar {
+        width: 100%;
+        max-width: none;
+        border-radius: 0;
     }
 }

@@ -7,7 +7,6 @@ import adblockDetector from '../adblockDetector';
 
 const Banner = () => {
   const [latestReleased, setLatestReleased] = useState(null);
-  const [adblockDetected, setAdblockDetected] = useState(false);
   const [showAdblockModal, setShowAdblockModal] = useState(false);
   const navigate = useNavigate();
 
@@ -34,12 +33,11 @@ const Banner = () => {
 
   const handleWatchNowClick = async () => {
     const isAdblockerActive = await adblockDetector();
-    setAdblockDetected(isAdblockerActive);
 
     if (isAdblockerActive) {
-      setShowAdblockModal(true);
+        navigate(`/player/${latestReleased.id}`);
     } else {
-      navigate(`/player/${latestReleased.id}`);
+        setShowAdblockModal(true);
     }
   };
 

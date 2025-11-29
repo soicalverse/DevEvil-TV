@@ -102,7 +102,7 @@ const AdblockerModal = () => {
               )}
             </div>
           )}
-           <button onClick={() => window.bypassAdblockCheck && window.bypassAdblockCheck()} className="continue-button">Continue Anyway</button>
+          
         </div>
       </div>
     </div>

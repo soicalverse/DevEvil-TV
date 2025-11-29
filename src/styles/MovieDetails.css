@@ -9,7 +9,7 @@
 }
 
 .page-overlay {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
@@ -234,23 +234,25 @@
   color: #000;
 }
 
-.donation-button-round {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
+.play-button:hover, .trailer-button:hover, .share-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
-.donation-button-round:hover {
-    transform: scale(1.1);
-    border-color: #ffdd57;
+.trailer-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
 }
+
+.share-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.play-button:hover {
+    background-color: #ffed4a;
+}
+
 
 
 /* === Tabs & Content Sections === */

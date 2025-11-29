@@ -87,7 +87,6 @@ const TvShowDetails = () => {
   const [loading, setLoading] = useState(true);
   const [isBlocked, setIsBlocked] = useState(false);
   const [showDonationModal, setShowDonationModal] = useState(false);
-  const [adblockDetected, setAdblockDetected] = useState(false);
   const [showAdblockModal, setShowAdblockModal] = useState(false);
 
   useEffect(() => {
@@ -133,12 +132,11 @@ const TvShowDetails = () => {
 
   const handlePlayClick = async () => {
     const isAdblockerActive = await adblockDetector();
-    setAdblockDetected(isAdblockerActive);
 
     if (isAdblockerActive) {
-      setShowAdblockModal(true);
-    } else {
       navigate(playerPath);
+    } else {
+      setShowAdblockModal(true);
     }
   };
 

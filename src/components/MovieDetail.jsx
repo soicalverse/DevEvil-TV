@@ -21,7 +21,6 @@ import BlockedContent from './BlockedContent';
 import DonationModal from './DonationModal';
 import AdblockerModal from './AdblockerModal';
 import adblockDetector from '../adblockDetector';
-
 // Carousel Components
 const Carousel = ({ items, type, handleSeeMore, showSeeMore = false }) => {
   const carouselRef = useHorizontalScroll();
@@ -89,7 +88,6 @@ const MovieDetails = () => {
   const [loading, setLoading] = useState(true);
   const [isBlocked, setIsBlocked] = useState(false);
   const [showDonationModal, setShowDonationModal] = useState(false);
-  const [adblockDetected, setAdblockDetected] = useState(false);
   const [showAdblockModal, setShowAdblockModal] = useState(false);
 
   useEffect(() => {
@@ -136,12 +134,11 @@ const MovieDetails = () => {
 
   const handlePlayClick = async () => {
     const isAdblockerActive = await adblockDetector();
-    setAdblockDetected(isAdblockerActive);
 
     if (isAdblockerActive) {
-      setShowAdblockModal(true);
-    } else {
       navigate(playerPath);
+    } else {
+      setShowAdblockModal(true);
     }
   };
 
@@ -222,7 +219,7 @@ const MovieDetails = () => {
 
         <AdblockerModal show={showAdblockModal} onClose={() => setShowAdblockModal(false)} />
 
-        <div className="movie-details-.body px-4 sm:px-6 md:px-8 lg:px-10 pt-32 sm:pt-40 md:pt-48 lg:pt-56">
+        <div className="movie-details-body px-4 sm:px-6 md:px-8 lg:px-10 pt-32 sm:pt-40 md:pt-48 lg:pt-56">
           <div className="movie-details-main-content">
             <div className="movie-details-container">
               <section className="movie-details-header-section">

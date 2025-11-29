@@ -143,6 +143,19 @@
   height: 2.5rem;
 }
 
+@media (max-width: 1024px) {
+  .navbar-fixed {
+    width: 95%;
+    top: 3.5rem; /* Adjust position for smaller screens */
+  }
+
+  .search-bar-form {
+    width: 18rem;
+  }
+
+
+}
+
 @media (max-width: 768px) {
   .navbar-fixed {
     display: none;
