@@ -19,8 +19,6 @@ import Loader from "./Loader";
 import { blockedMedia } from '../blockedMedia';
 import BlockedContent from './BlockedContent';
 import DonationModal from './DonationModal';
-import adblockDetector from '../adblockDetector';
-import AdblockerModal from './AdblockerModal';
 
 // Carousel Components
 const Carousel = ({ items, type, handleSeeMore, showSeeMore = false }) => {
@@ -89,7 +87,6 @@ const MovieDetails = () => {
   const [loading, setLoading] = useState(true);
   const [isBlocked, setIsBlocked] = useState(false);
   const [showDonationModal, setShowDonationModal] = useState(false);
-  const [showAdblockerModal, setShowAdblockerModal] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -131,18 +128,6 @@ const MovieDetails = () => {
     };
   }, [id, isMovie]);
 
-  const handlePlay = async () => {
-    const adblockerIsActive = await adblockDetector();
-    if (adblockerIsActive) {
-      // If an adblocker is active, navigate directly to the player.
-      const playerPath = isMovie ? `/player/${id}` : `/player/${id}?s=${selectedSeason}&e=1`;
-      navigate(playerPath);
-    } else {
-      // If no adblocker is active, show the modal and do NOT navigate.
-      setShowAdblockerModal(true);
-    }
-  };
-
   const handleWatchTrailer = () => {
     if (trailerKey) setShowTrailer(true);
   };
@@ -172,6 +157,7 @@ const MovieDetails = () => {
 
   const pageUrl = window.location.href;
   const posterUrl = `https://image.tmdb.org/t/p/w500${poster_path}`;
+  const playerPath = isMovie ? `/player/${id}` : `/player/${id}?s=${selectedSeason}&e=1`;
 
   return (
     <>
@@ -187,7 +173,6 @@ const MovieDetails = () => {
         <meta name="twitter:description" content={overview} />
         <meta name="twitter:image" content={posterUrl} />
       </Helmet>
-      <AdblockerModal show={showAdblockerModal} onClose={() => setShowAdblockerModal(false)} />
       <div className="movie-details-page">
         <div className="movie-details-background" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${backdrop_path})` }}></div>
         <div className="page-overlay"></div>
@@ -238,9 +223,9 @@ const MovieDetails = () => {
                     <p className="movie-overview">{overview}</p>
                   </div>
                   <div className="movie-details-actions">
-                      <button onClick={handlePlay} className="share-button">
+                      <a href={playerPath} className="play-button share-button">
                           <i className="fas fa-play"></i> Play
-                      </button>
+                      </a>
                     <button className="trailer-button" onClick={handleWatchTrailer} disabled={!trailerKey}><i className="fas fa-film"></i> Trailer</button>
                     <button className="share-button" onClick={() => setShowShareModal(true)}><i className="fas fa-share-nodes"></i> Share</button>
                   </div>

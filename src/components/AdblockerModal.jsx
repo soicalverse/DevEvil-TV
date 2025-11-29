@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import '../styles/AdblockerModal.css';
 
 const browsers = {
@@ -18,28 +17,37 @@ const browsers = {
   ],
 };
 
-const AdblockerModal = ({ show, onClose }) => {
+const AdblockerModal = () => {
+  const [showModal, setShowModal] = useState(false);
   const [activeTab, setActiveTab] = useState('desktop');
   const [selectedDesktop, setSelectedDesktop] = useState(null);
   const [selectedMobile, setSelectedMobile] = useState('Android');
 
   useEffect(() => {
-    if (show) {
-      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-      if (isMobile) {
-        setActiveTab('mobile');
-      }
-    }
-  }, [show]);
+    const openModal = () => setShowModal(true);
+    document.body.addEventListener('openAdblockModal', openModal);
 
-  if (!show) {
+    // Initial check for mobile
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if (isMobile) {
+      setActiveTab('mobile');
+    }
+
+    return () => {
+      document.body.removeEventListener('openAdblockModal', openModal);
+    };
+  }, []);
+
+  if (!showModal) {
     return null;
   }
+
+  const handleClose = () => setShowModal(false);
 
   const getMobileInfo = () => browsers.mobile.find(m => m.name === selectedMobile);
 
   return (
-    <div className="adblocker-modal-overlay" onClick={onClose}>
+    <div className="adblocker-modal-overlay" onClick={handleClose}>
       <div className="adblocker-modal" onClick={(e) => e.stopPropagation()}>
         <div className="adblocker-modal-header">
           <button className={`adblocker-tab ${activeTab === 'desktop' ? 'active' : ''}`} onClick={() => setActiveTab('desktop')}>Desktop</button>
@@ -94,15 +102,11 @@ const AdblockerModal = ({ show, onClose }) => {
               )}
             </div>
           )}
+           <button onClick={() => window.bypassAdblockCheck && window.bypassAdblockCheck()} className="continue-button">Continue Anyway</button>
         </div>
       </div>
     </div>
   );
-};
-
-AdblockerModal.propTypes = {
-  show: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
 };
 
 export default AdblockerModal;

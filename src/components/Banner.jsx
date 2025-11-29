@@ -1,14 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { getTrendingMovies } from '../services/tmdbService';
 import { Link, useNavigate } from 'react-router-dom';
-import AdblockerModal from './AdblockerModal';
-import adblockDetector from '../adblockDetector';
 
 const Banner = () => {
   const [latestReleased, setLatestReleased] = useState(null);
-  const [showAdblockerModal, setShowAdblockerModal] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,19 +28,6 @@ const Banner = () => {
     };
   }, []);
 
-  const handlePlay = async () => {
-    const adblockerIsActive = await adblockDetector();
-    if (adblockerIsActive) {
-      // If an adblocker is active, navigate directly to the player.
-      if (latestReleased) {
-        navigate(`/player/${latestReleased.id}`);
-      }
-    } else {
-      // If no adblocker is active, show the modal and do NOT navigate.
-      setShowAdblockerModal(true);
-    }
-  };
-
   const formatTime = (minutes) => {
     if (!minutes) return 'N/A';
     const hours = Math.floor(minutes / 60);
@@ -54,7 +37,6 @@ const Banner = () => {
 
   return (
     <section className="banner" id="home">
-      <AdblockerModal show={showAdblockerModal} onClose={() => setShowAdblockerModal(false)} />
       <div className="banner-card">
         {latestReleased && (
           <div className="banner-img-wrapper">
@@ -81,9 +63,9 @@ const Banner = () => {
           )}
           {latestReleased && (
             <div className="banner-nav">
-              <button onClick={handlePlay} className="watch-now-button">
+              <a href={`/player/${latestReleased.id}`} className="watch-now watch-now-button">
                 Watch Now <i className="fa-solid fa-play"></i>
-              </button>
+              </a>
               <Link to={`/movie/${latestReleased.id}`} className="insights-button">
                 Insights
               </Link>

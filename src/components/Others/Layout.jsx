@@ -4,6 +4,7 @@ import NavBar from './NavBar';
 import MobileNavBar from './MobileNavBar';
 import PromoBanner from '../PromoBanner';
 import DonationModal from '../DonationModal';
+import AdblockerModal from '../AdblockerModal';
 
 const Layout = ({ children }) => {
   const [showDonationModal, setShowDonationModal] = useState(false);
@@ -17,6 +18,7 @@ const Layout = ({ children }) => {
         {children}
       </main>
       <DonationModal show={showDonationModal} onClose={() => setShowDonationModal(false)} />
+      <AdblockerModal />
     </div>
   );
 };
