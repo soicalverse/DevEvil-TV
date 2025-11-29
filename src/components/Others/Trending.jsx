@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { getTrendingMovies, getTrendingTvShows } from '../../services/tmdbService';
 import MediaCard from '../MediaCard';
-import SeeMoreCard from '../SeeMoreCard';
 import '../../styles/Carousel.css';
 import useHorizontalScroll from '../../hooks/useHorizontalScroll';
 
@@ -18,9 +17,6 @@ const Carousel = ({ items, type }) => {
                         <MediaCard item={item} type={type} />
                     </div>
                 ))}
-                <div className="carousel-item">
-                    <SeeMoreCard type={type} />
-                </div>
             </div>
         </div>
     );
