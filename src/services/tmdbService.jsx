@@ -81,7 +81,7 @@ export const getPopularTvShows = async (page = 1) => {
 
 export const getMovieDetails = async (movieId) => {
   try {
-    const response = await tmdbService.get(`/movie/${movieId}?include_adult=false&api_key=${TMDB_API_KEY}&append_to_response=credits,videos,images`);
+    const response = await tmdbService.get(`/movie/${movieId}?include_adult=false&api_key=${TMDB_API_KEY}&append_to_response=credits,videos,images,recommendations`);
     return response.data;
   } catch (error) {
     console.error('Error fetching movie details:', error);
@@ -91,7 +91,7 @@ export const getMovieDetails = async (movieId) => {
 
 export const getTvShowDetails = async (id) => {
   try {
-    const response = await axios.get(`${BASE_URL}/tv/${id}?include_adult=false&api_key=${TMDB_API_KEY}&append_to_response=credits,seasons,videos,images`);
+    const response = await axios.get(`${BASE_URL}/tv/${id}?include_adult=false&api_key=${TMDB_API_KEY}&append_to_response=credits,seasons,videos,images,recommendations`);
 
     if (!response.data || !response.data.seasons) {
       throw new Error('Failed to fetch TV show details');
@@ -99,12 +99,10 @@ export const getTvShowDetails = async (id) => {
 
     const data = response.data;
 
-    console.log('TV Show Details API Response:', data);
-
     const seasonPromises = data.seasons.map(async (season) => {
       const episodes = await getSeasonEpisodes(id, season.season_number);
       return {
-        season_number: season.season_number,
+        ...season,
         episodes,
       };
     });
@@ -112,20 +110,8 @@ export const getTvShowDetails = async (id) => {
     const seasons = await Promise.all(seasonPromises);
 
     const tvShowDetails = {
-      name: data.name,
-      first_air_date: data.first_air_date,
-      episode_run_time: data.episode_run_time,
-      genres: data.genres,
-      overview: data.overview,
-      vote_average: data.vote_average,
-      created_by: data.created_by,
-      backdrop_path: data.backdrop_path,
-      tagline: data.tagline,
-      number_of_seasons: data.number_of_seasons,
-      number_of_episodes: data.number_of_episodes,
+      ...data,
       seasons,
-      credits: data.credits,
-      images: data.images
     };
 
     return tvShowDetails;
@@ -144,8 +130,6 @@ export const getSeasonEpisodes = async (tvShowId, seasonNumber) => {
     }
 
     const data = await response.json();
-
-    console.log(`Season ${seasonNumber} Episodes API Response:`, data);
 
     const episodes = data.episodes.map((episode) => ({
       id: episode.id,
@@ -172,8 +156,6 @@ export const searchMedia = async (query) => {
     }
 
     const data = await response.json();
-
-    console.log('Search API Response:', data);
 
     const results = data.results.map((result) => ({
       id: result.id,

@@ -8,6 +8,7 @@ import { ConvexReactClient } from 'convex/react';
 
 import Home from './Home';
 import MovieDetail from './components/MovieDetail';
+import TvShowDetails from './components/TvShowDetails';
 import Player from './pages/Player';
 import SearchPage from './components/SearchPage';
 import UpcomingPage from './components/UpcomingPage';
@@ -52,7 +53,7 @@ root.render(
                       <Routes>
                         <Route path='/' element={<Home />} />
                         <Route path='/movie/:id' element={<MovieDetail />} />
-                        <Route path='/tv/:id' element={<MovieDetail />} />
+                        <Route path='/tv/:id' element={<TvShowDetails />} />
                         <Route path='/search' element={<SearchPage />} />
                         <Route path='/upcoming' element={<UpcomingPage />} />
                         <Route path='/privacy' element={<Privacy />} />

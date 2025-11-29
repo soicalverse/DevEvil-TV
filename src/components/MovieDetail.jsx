@@ -139,10 +139,13 @@ const MovieDetails = () => {
   }, [id, isMovie]);
 
   const handlePlay = async () => {
-    const adblockerDetected = await adblockDetector();
-    if (adblockerDetected) {
-      navigate(`/player/${id}${!isMovie ? `?s=${selectedSeason}&e=1` : ''}`);
+    const adblockerIsActive = await adblockDetector();
+    if (adblockerIsActive) {
+      // If an adblocker is active, navigate directly to the player.
+      const playerPath = isMovie ? `/player/${id}` : `/player/${id}?s=${selectedSeason}&e=1`;
+      navigate(playerPath);
     } else {
+      // If no adblocker is active, show the modal and do NOT navigate.
       setShowAdblockerModal(true);
     }
   };
@@ -274,7 +277,7 @@ const MovieDetails = () => {
                     )}
                     {activeTab === (isMovie ? "suggested" : "recommendations") && (
                         (recommendations && recommendations.results.length > 0) ? (
-                            <Carousel items={recommendations.results} type={isMovie ? 'movie' : 'tv'} />
+                            <Carousel items={recommendations.results} type={isMovie ? 'movie' : 'tv'} showSeeMore={false} />
                         ) : (
                             <Trending mediaType={isMovie ? 'movie' : 'tv'} />
                         )
