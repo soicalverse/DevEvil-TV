@@ -142,7 +142,7 @@ const Player = () => {
                         <i className="fa-solid fa-home"></i>
                     </Link>
                     <button className="player-nav-btn donation-btn-top" onClick={() => setShowDonationModal(true)}>
-                        <span className="donation-text">Donate</span>
+                        
                         <DotLottiePlayer
                             src="https://lottie.host/4658c2ad-1eb1-4e06-92c0-5804be4db662/2c6Uf62AnL.lottie"
                             loop
