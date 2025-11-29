@@ -4,8 +4,6 @@ import '../styles/Player.css';
 import { getTvShowDetails, getSeasonEpisodes } from '../services/tmdbService';
 import CustomDropdown from '../components/CustomDropdown';
 import DonationModal from '../components/DonationModal';
-import AdblockerModal from '../components/AdblockerModal';
-import adblockDetector from '../adblockDetector';
 import { DotLottiePlayer } from '@dotlottie/react-player';
 
 const sources = [
@@ -27,14 +25,7 @@ const Player = () => {
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
     const [isCollapsed, setIsCollapsed] = useState(isMobile);
     const [showDonationModal, setShowDonationModal] = useState(false);
-    const [adblockDetected, setAdblockDetected] = useState(false);
     const fromBanner = location.state?.fromBanner || false;
-
-    useEffect(() => {
-        if (!fromBanner) {
-            adblockDetector().then(setAdblockDetected);
-        }
-    }, [fromBanner]);
 
     const getParams = (search) => {
         const queryParams = new URLSearchParams(search);
@@ -125,8 +116,7 @@ const Player = () => {
 
     return (
         <div className='player'>
-            {adblockDetected && <AdblockerModal show={adblockDetected} onClose={() => setAdblockDetected(false)} />}
-            {embedUrl && !adblockDetected && (
+            {embedUrl && (
                 <iframe
                     key={embedUrl}
                     title="player"
@@ -142,7 +132,6 @@ const Player = () => {
                         <i className="fa-solid fa-home"></i>
                     </Link>
                     <button className="player-nav-btn donation-btn-top" onClick={() => setShowDonationModal(true)}>
-                        
                         <DotLottiePlayer
                             src="https://lottie.host/4658c2ad-1eb1-4e06-92c0-5804be4db662/2c6Uf62AnL.lottie"
                             loop

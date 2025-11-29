@@ -19,6 +19,8 @@ import Loader from "./Loader";
 import { blockedMedia } from '../blockedMedia';
 import BlockedContent from './BlockedContent';
 import DonationModal from './DonationModal';
+import AdblockerModal from './AdblockerModal';
+import adblockDetector from '../adblockDetector';
 
 // Carousel Components
 const Carousel = ({ items, type, handleSeeMore, showSeeMore = false }) => {
@@ -85,6 +87,8 @@ const TvShowDetails = () => {
   const [loading, setLoading] = useState(true);
   const [isBlocked, setIsBlocked] = useState(false);
   const [showDonationModal, setShowDonationModal] = useState(false);
+  const [adblockDetected, setAdblockDetected] = useState(false);
+  const [showAdblockModal, setShowAdblockModal] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -124,6 +128,19 @@ const TvShowDetails = () => {
       source.cancel('Component unmounted');
     };
   }, [id]);
+  
+  const playerPath = `/player/${id}?s=${selectedSeason}&e=1`;
+
+  const handlePlayClick = async () => {
+    const isAdblockerActive = await adblockDetector();
+    setAdblockDetected(isAdblockerActive);
+
+    if (isAdblockerActive) {
+      setShowAdblockModal(true);
+    } else {
+      navigate(playerPath);
+    }
+  };
 
   const handleWatchTrailer = () => {
     if (trailerKey) setShowTrailer(true);
@@ -154,7 +171,6 @@ const TvShowDetails = () => {
 
   const pageUrl = window.location.href;
   const posterUrl = `https://image.tmdb.org/t/p/w500${poster_path}`;
-  const playerPath = `/player/${id}?s=${selectedSeason}&e=1`;
 
   return (
     <>
@@ -201,6 +217,8 @@ const TvShowDetails = () => {
         
         <DonationModal show={showDonationModal} onClose={() => setShowDonationModal(false)} />
 
+        <AdblockerModal show={showAdblockModal} onClose={() => setShowAdblockModal(false)} />
+
         <div className="movie-details-body px-4 sm:px-6 md:px-8 lg:px-10 pt-32 sm:pt-40 md:pt-48 lg:pt-56">
           <div className="movie-details-main-content">
             <div className="movie-details-container">
@@ -220,9 +238,9 @@ const TvShowDetails = () => {
                     <p className="movie-overview">{overview}</p>
                   </div>
                   <div className="movie-details-actions">
-                      <a href={playerPath} className="play-button share-button">
+                      <button onClick={handlePlayClick} className="play-button share-button">
                           <i className="fas fa-play"></i> Play
-                      </a>
+                      </button>
                     <button className="trailer-button" onClick={handleWatchTrailer} disabled={!trailerKey}><i className="fas fa-film"></i> Trailer</button>
                     <button className="share-button" onClick={() => setShowShareModal(true)}><i className="fas fa-share-nodes"></i> Share</button>
                   </div>

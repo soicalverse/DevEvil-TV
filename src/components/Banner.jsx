@@ -2,9 +2,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { getTrendingMovies } from '../services/tmdbService';
 import { Link, useNavigate } from 'react-router-dom';
+import AdblockerModal from './AdblockerModal';
+import adblockDetector from '../adblockDetector';
 
 const Banner = () => {
   const [latestReleased, setLatestReleased] = useState(null);
+  const [adblockDetected, setAdblockDetected] = useState(false);
+  const [showAdblockModal, setShowAdblockModal] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,6 +31,17 @@ const Banner = () => {
       source.cancel('Component unmounted');
     };
   }, []);
+
+  const handleWatchNowClick = async () => {
+    const isAdblockerActive = await adblockDetector();
+    setAdblockDetected(isAdblockerActive);
+
+    if (isAdblockerActive) {
+      setShowAdblockModal(true);
+    } else {
+      navigate(`/player/${latestReleased.id}`);
+    }
+  };
 
   const formatTime = (minutes) => {
     if (!minutes) return 'N/A';
@@ -63,9 +78,9 @@ const Banner = () => {
           )}
           {latestReleased && (
             <div className="banner-nav">
-              <a href={`/player/${latestReleased.id}`} className="watch-now watch-now-button">
+              <button onClick={handleWatchNowClick} className="watch-now watch-now-button">
                 Watch Now <i className="fa-solid fa-play"></i>
-              </a>
+              </button>
               <Link to={`/movie/${latestReleased.id}`} className="insights-button">
                 Insights
               </Link>
@@ -73,6 +88,7 @@ const Banner = () => {
           )}
         </div>
       </div>
+      <AdblockerModal show={showAdblockModal} onClose={() => setShowAdblockModal(false)} />
     </section>
   );
 };
