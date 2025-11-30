@@ -38,6 +38,17 @@ function isAdblockerActive() {
     });
 }
 
+/**
+ * Detects if the user is on a secure mobile browser.
+ * @returns {boolean} `true` if the browser is considered secure, `false` otherwise.
+ */
+function isSecureBrowser() {
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    // Add more secure browser keywords here if needed
+    const secureBrowserKeywords = ['Brave', 'DuckDuckGo', 'Focus', 'Quetta', 'Free Adblocker Browser'];
+    return secureBrowserKeywords.some(keyword => userAgent.includes(keyword));
+}
+
 // --- BROWSER DATA ---
 
 const browsers = {
@@ -72,15 +83,22 @@ const AdblockerModal = () => {
       return;
     }
 
+    // If on mobile with a secure browser, bypass the ad-block check
+    if (isMobile && isSecureBrowser()) {
+        return;
+    }
+
+    // For all other cases (desktop, or non-secure mobile), check for an ad-blocker
     const adblockerIsActive = await isAdblockerActive();
 
+    // If no ad-blocker is detected, prevent the action and show the modal
     if (!adblockerIsActive) {
       event.preventDefault();
       event.stopPropagation();
       event.stopImmediatePropagation();
       setShowModal(true);
     }
-  }, [showModal]);
+  }, [showModal, isMobile]);
 
   useEffect(() => {
     if (isMobile) {
