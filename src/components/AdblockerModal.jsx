@@ -4,52 +4,38 @@ import '../styles/AdblockerModal.css';
 const BYPASS_FLAG = 'adblockAllowed';
 const PROTECTED_ELEMENT_SELECTORS = ['.play-button', '.watch-now'].join(', ');
 
-// --- DETECTION LOGIC ---
+// --- NEW, HIGHLY ROBUST DETECTION LOGIC ---
 
-/**
- * A highly reliable, universal ad-block detection function using a "bait" element.
- * This is used for both DESKTOP and MOBILE browsers.
- * @returns {Promise<boolean>} A promise that resolves to `true` if an ad-blocker is active, and `false` otherwise.
- */
-function isAdblockerActive() {
-    return new Promise(resolve => {
+function checkAdBlock() {
+    return new Promise((resolve) => {
         const bait = document.createElement('div');
-        bait.className = 'adsbox ad-container ad-banner';
-        bait.style.position = 'absolute';
-        bait.style.left = '-9999px';
-        bait.style.height = '1px';
-        bait.style.width = '1px';
+        bait.className = 'ad-zone ad-space ad-banner ad-container ads ad-placeholder pub_300x250 pub_300x250m pub_728x90 text-ad text-ads text-ad-links ad-wrapper';
+        bait.style.cssText = 'position:absolute!important;left:-9999px!important;top:-9999px!important;width:1px!important;height:1px!important;pointer-events:none!important;';
         bait.setAttribute('aria-hidden', 'true');
         document.body.appendChild(bait);
 
         requestAnimationFrame(() => {
             setTimeout(() => {
                 const adblockerIsActive = (
+                    !document.body.contains(bait) ||
                     bait.offsetHeight === 0 ||
+                    bait.clientHeight === 0 ||
+                    bait.offsetWidth === 0 ||
+                    bait.clientWidth === 0 ||
                     window.getComputedStyle(bait).display === 'none' ||
                     window.getComputedStyle(bait).visibility === 'hidden'
                 );
+
                 if (bait.parentNode) {
                     bait.parentNode.removeChild(bait);
                 }
                 resolve(adblockerIsActive);
-            }, 100);
+            }, 200);
         });
     });
 }
 
-/**
- * Detects if the user is on a secure mobile browser.
- * @returns {boolean} `true` if the browser is considered secure, `false` otherwise.
- */
-function isSecureBrowser() {
-    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-    // Add more secure browser keywords here if needed
-    const secureBrowserKeywords = ['Brave', 'DuckDuckGo', 'Focus', 'Quetta', 'Free Adblocker Browser'];
-    return secureBrowserKeywords.some(keyword => userAgent.includes(keyword));
-}
-
-// --- BROWSER DATA ---
+// --- BROWSER DATA (For the modal content) ---
 
 const browsers = {
   desktop: [
@@ -83,22 +69,16 @@ const AdblockerModal = () => {
       return;
     }
 
-    // If on mobile with a secure browser, bypass the ad-block check
-    if (isMobile && isSecureBrowser()) {
-        return;
-    }
+    const adblockerIsActive = await checkAdBlock();
 
-    // For all other cases (desktop, or non-secure mobile), check for an ad-blocker
-    const adblockerIsActive = await isAdblockerActive();
-
-    // If no ad-blocker is detected, prevent the action and show the modal
     if (!adblockerIsActive) {
       event.preventDefault();
       event.stopPropagation();
       event.stopImmediatePropagation();
       setShowModal(true);
     }
-  }, [showModal, isMobile]);
+
+  }, [showModal]);
 
   useEffect(() => {
     if (isMobile) {
