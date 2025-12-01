@@ -103,7 +103,7 @@
 }
 
 .search-bar-button {
-  background: #a8fbd3;
+  background: #fff;
   border: none;
   color: #1a1a1a;
   font-size: 1.1rem;
@@ -118,7 +118,7 @@
 }
 
 .search-bar-button:hover {
-  background: #fff;
+  background: #a8fbd3;
   color: #000;
   transform: scale(1.1) rotate(15deg);
   box-shadow: 0 0 12px rgba(168, 251, 211, 0.7);

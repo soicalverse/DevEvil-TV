@@ -1,41 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles/AdblockerModal.css';
+import adblockDetector from '../adblockDetector';
 
-const BYPASS_FLAG = 'adblockAllowed';
-const PROTECTED_ELEMENT_SELECTORS = ['.play-button', '.watch-now'].join(', ');
-
-// --- NEW, HIGHLY ROBUST DETECTION LOGIC ---
-
-function checkAdBlock() {
-    return new Promise((resolve) => {
-        const bait = document.createElement('div');
-        bait.className = 'ad-zone ad-space ad-banner ad-container ads ad-placeholder pub_300x250 pub_300x250m pub_728x90 text-ad text-ads text-ad-links ad-wrapper';
-        bait.style.cssText = 'position:absolute!important;left:-9999px!important;top:-9999px!important;width:1px!important;height:1px!important;pointer-events:none!important;';
-        bait.setAttribute('aria-hidden', 'true');
-        document.body.appendChild(bait);
-
-        requestAnimationFrame(() => {
-            setTimeout(() => {
-                const adblockerIsActive = (
-                    !document.body.contains(bait) ||
-                    bait.offsetHeight === 0 ||
-                    bait.clientHeight === 0 ||
-                    bait.offsetWidth === 0 ||
-                    bait.clientWidth === 0 ||
-                    window.getComputedStyle(bait).display === 'none' ||
-                    window.getComputedStyle(bait).visibility === 'hidden'
-                );
-
-                if (bait.parentNode) {
-                    bait.parentNode.removeChild(bait);
-                }
-                resolve(adblockerIsActive);
-            }, 200);
-        });
-    });
-}
-
-// --- BROWSER DATA (For the modal content) ---
+const PROTECTED_ELEMENT_SELECTORS = '.play-button, .watch-now';
 
 const browsers = {
   desktop: [
@@ -53,52 +21,20 @@ const browsers = {
   ],
 };
 
-// --- COMPONENT ---
-
-const AdblockerModal = () => {
-  const [showModal, setShowModal] = useState(false);
+const AdblockerModal = ({ onClose }) => {
   const [activeTab, setActiveTab] = useState('desktop');
   const [selectedDesktop, setSelectedDesktop] = useState(null);
   const [selectedMobile, setSelectedMobile] = useState('Android');
-
   const isMobile = /android|iphone|ipad|ipod|harmonyos/i.test(navigator.userAgent);
 
-  const handleProtectedClick = useCallback(async (event) => {
-    const targetElement = event.target.closest(PROTECTED_ELEMENT_SELECTORS);
-    if (!targetElement || localStorage.getItem(BYPASS_FLAG) === 'true' || showModal) {
-      return;
-    }
-
-    const adblockerIsActive = await checkAdBlock();
-
-    if (!adblockerIsActive) {
-      event.preventDefault();
-      event.stopPropagation();
-      event.stopImmediatePropagation();
-      setShowModal(true);
-    }
-
-  }, [showModal]);
-
   useEffect(() => {
-    if (isMobile) {
-        setActiveTab('mobile');
-    }
-    document.addEventListener('click', handleProtectedClick, true);
-    return () => {
-      document.removeEventListener('click', handleProtectedClick, true);
-    };
-  }, [handleProtectedClick, isMobile]);
+    if (isMobile) setActiveTab('mobile');
+  }, [isMobile]);
 
-  if (!showModal) {
-    return null;
-  }
-
-  const handleClose = () => setShowModal(false);
   const getMobileInfo = () => browsers.mobile.find(m => m.name === selectedMobile);
 
   return (
-    <div className="adblocker-modal-overlay" onClick={handleClose}>
+    <div className="adblocker-modal-overlay" onClick={onClose}>
       <div className="adblocker-modal" onClick={(e) => e.stopPropagation()}>
         <div className="adblocker-modal-header">
           <button className={`adblocker-tab ${activeTab === 'desktop' ? 'active' : ''}`} onClick={() => setActiveTab('desktop')}>Desktop</button>
@@ -159,4 +95,36 @@ const AdblockerModal = () => {
   );
 };
 
-export default AdblockerModal;
+const AdBlockerTrigger = () => {
+    const [showModal, setShowModal] = useState(false);
+    const navigate = useNavigate();
+
+    const handleProtectedClick = useCallback(async (event) => {
+        const targetElement = event.target.closest(PROTECTED_ELEMENT_SELECTORS);
+        if (!targetElement) return;
+
+        event.preventDefault();
+
+        const adblockerIsActive = await adblockDetector();
+
+        if (!adblockerIsActive) { 
+            setShowModal(true);
+        } else { 
+            const destination = targetElement.getAttribute('href');
+            if (destination) {
+                navigate(destination);
+            }
+        }
+    }, [navigate]);
+
+    useEffect(() => {
+        document.addEventListener('click', handleProtectedClick, true);
+        return () => {
+            document.removeEventListener('click', handleProtectedClick, true);
+        };
+    }, [handleProtectedClick]);
+
+    return showModal ? <AdblockerModal onClose={() => setShowModal(false)} /> : null;
+}
+
+export default AdBlockerTrigger;

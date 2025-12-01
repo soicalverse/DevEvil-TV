@@ -25,7 +25,6 @@ const Player = () => {
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
     const [isCollapsed, setIsCollapsed] = useState(isMobile);
     const [showDonationModal, setShowDonationModal] = useState(false);
-    const fromBanner = location.state?.fromBanner || false;
 
     const getParams = (search) => {
         const queryParams = new URLSearchParams(search);

@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import '../../styles/Footer.css';
 import { Link } from 'react-router-dom';
@@ -50,6 +51,11 @@ const Footer = () => {
                   </a>
                 </li>
                 <li>
+                  <a className="footer-link pulse" href="/dmca">
+                    DMCA
+                  </a>
+                </li>
+                <li>
                 <button onClick={() => setShowDonationModal(true)} className="donation-link">Donation</button>
                 </li>
               </ul>
@@ -94,7 +100,8 @@ const Footer = () => {
               
               {/* Copyright */}
               <span className="footer-copyright text-glow">
-                © 2024 Your Company, Inc. All rights reserved.
+                © 2024 FilmFind, Inc. All rights reserved. <br/>
+                Mail or Support: <a href="mailto:support@filmfind.online">support@filmfind.online</a>
               </span>
             </div>
             

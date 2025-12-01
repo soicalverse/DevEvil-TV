@@ -3,15 +3,15 @@ import React, { useState, useEffect } from "react";
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import MediaCard from './MediaCard';
-import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import YouTube from "react-youtube";
 import "../../src/styles/MovieDetails.css";
 import SeasonDetails from './TV/SeasonDetails';
-import { getTvShowDetails } from "../services/tmdbService";
+import { getTvShowDetails, getTvTrailer } from "../services/tmdbService";
 import useHorizontalScroll from "../hooks/useHorizontalScroll";
 import CustomDropdown from './CustomDropdown';
 import ShareModal from "./Share/ShareModal";
-import { Helmet } from 'react-helmet-async';
+import SEO from './SEO'; // Import the SEO component
 import '../styles/Carousel.css';
 import Trending from "./Others/Trending";
 import Footer from "./Others/Footer";
@@ -107,8 +107,8 @@ const TvShowDetails = () => {
       try {
         const data = await getTvShowDetails(id, source.token);
         setMedia(data);
-        const trailer = data.videos?.results?.find(vid => vid.type === "Trailer");
-        setTrailerKey(trailer?.key);
+        const trailer = await getTvTrailer(id);
+        setTrailerKey(trailer);
         if (data.seasons && data.seasons.length > 0) {
           const firstSeason = data.seasons.find(s => s.season_number > 0) || data.seasons[0];
           setSelectedSeason(firstSeason.season_number);
@@ -168,22 +168,10 @@ const TvShowDetails = () => {
   const seasonOptions = (seasons || []).filter(s => s.season_number > 0).map(s => ({ value: s.season_number, label: s.name }));
 
   const pageUrl = window.location.href;
-  const posterUrl = `https://image.tmdb.org/t/p/w500${poster_path}`;
 
   return (
     <>
-      <Helmet>
-        <title>{mediaTitle}</title>
-        <meta name="description" content={overview} />
-        <meta property="og:title" content={mediaTitle} />
-        <meta property="og:description" content={overview} />
-        <meta property="og:image" content={posterUrl} />
-        <meta property="og:url" content={pageUrl} />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={mediaTitle} />
-        <meta name="twitter:description" content={overview} />
-        <meta name="twitter:image" content={posterUrl} />
-      </Helmet>
+      <SEO media={media} mediaType="tv" />
       <div className="movie-details-page">
         <div className="movie-details-background" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${backdrop_path})` }}></div>
         <div className="page-overlay"></div>

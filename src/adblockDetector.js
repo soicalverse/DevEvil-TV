@@ -4,52 +4,38 @@ const adblockDetector = () => {
       return resolve(false);
     }
 
-    const adScript = document.createElement('script');
-    const baitDiv = document.createElement('div');
-    let detectionFinished = false;
+    // Method 1: Bait element. More likely to work for element-hiding rules.
+    const bait = document.createElement('div');
+    bait.className = 'ad-zone ad-space ad-banner ad-container ads ad-placeholder pub_300x250 pub_300x250m pub_728x90 text-ad text-ads text-ad-links ad-wrapper';
+    bait.style.cssText = 'position:absolute!important;left:-9999px!important;top:-9999px!important;width:1px!important;height:1px!important;pointer-events:none!important;';
+    bait.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(bait);
 
-    const cleanup = () => {
-      if (adScript.parentNode) adScript.parentNode.removeChild(adScript);
-      if (baitDiv.parentNode) baitDiv.parentNode.removeChild(baitDiv);
-    };
-
-    const resolveOnce = (result) => {
-      if (!detectionFinished) {
-        detectionFinished = true;
-        cleanup();
-        resolve(result);
-      }
-    };
-
+    // Give the browser a moment to apply styles
     setTimeout(() => {
-      resolveOnce(false);
-    }, 800);
+      const baitFailed = !document.body.contains(bait) || bait.offsetHeight === 0 || window.getComputedStyle(bait).display === 'none';
+      if (bait.parentNode) {
+        bait.parentNode.removeChild(bait);
+      }
+      if (baitFailed) {
+        return resolve(true); // Ad blocker detected by bait element
+      }
 
-    adScript.onerror = () => {
-      resolveOnce(true);
-    };
-
-    adScript.onload = () => {
-      setTimeout(() => {
-        if (baitDiv.offsetHeight === 0) {
-          resolveOnce(true);
-        } else {
-          resolveOnce(false);
-        }
-      }, 50);
-    };
-
-    baitDiv.className = 'adsbygoogle';
-    baitDiv.style.cssText = 'position:absolute !important; left:-9999px !important; top:-9999px !important; width:1px !important; height:1px !important;';
-    if (document.body) {
-        document.body.appendChild(baitDiv);
-    } else {
-        return resolveOnce(false);
-    }
-    
-adScript.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
-adScript.async = true;
-    document.head.appendChild(adScript);
+      // Method 2: Fetch request to a known ad-serving domain.
+      // This is very reliable for network-level blockers.
+      fetch('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js', {
+        method: 'HEAD',
+        mode: 'no-cors',
+        cache: 'no-store'
+      }).then(response => {
+        // If fetch succeeds, it might still be a false negative, but it's less likely.
+        // We'll trust the bait check result if fetch succeeds.
+        resolve(false);
+      }).catch(error => {
+        // A failed fetch is a strong indicator of an ad blocker.
+        resolve(true);
+      });
+    }, 100);
   });
 };
 

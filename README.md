@@ -1,6 +1,6 @@
-6# FilmFind
+# FilmFind
 
-FilmFind is a web application for discovering and tracking movies and TV shows.
+FilmFind is a web application for discovering and tracking movies and TV shows. It uses the TMDB API to fetch movie and TV show data and Clerk for user authentication.
 
 ## Prerequisites
 
@@ -9,6 +9,7 @@ Before you begin, ensure you have the following installed:
 *   [Node.js](https://nodejs.org/) (v14 or later)
 *   [npm](https://www.npmjs.com/) (usually comes with Node.js)
 *   A [Clerk](https://clerk.com/) account
+*   A [TMDB](https://www.themoviedb.org/documentation/api) API key
 
 ## Installation
 
@@ -29,29 +30,14 @@ Before you begin, ensure you have the following installed:
 
 1.  **Set up environment variables:**
 
-    Create a `.env` file in the root of the project and add the following variables:
+    Create a `.env` file in the root of the project and add the following variables. You can use the `.env.example` file as a template.
 
     ```
-    REACT_APP_SUPABASE_URL=your-supabase-url
-    REACT_APP_SUPABASE_ANON_KEY=your-supabase-anon-key
-    CLERK_PUBLISHABLE_KEY=your-clerk-publishable-key
-    CLERK_SECRET_KEY=your-clerk-secret-key
+    REACT_APP_CLERK_PUBLISHABLE_KEY=your-clerk-publishable-key
+    REACT_APP_TMDB_API_KEY=your-tmdb-api-key
     ```
 
-    You can find your Supabase URL and anon key in your Supabase project settings. You can find your Clerk publishable and secret keys in your Clerk dashboard.
-
-2.  **Set up the Supabase database:**
-
-    Log in to your Supabase account and run the SQL from the `supabase_setup.sql` file in the SQL editor.
-
-3.  **Set up Prisma:**
-
-    Run the following commands to generate the Prisma client and push the schema to the database:
-
-    ```bash
-    npx prisma generate
-    npx prisma db push
-    ```
+    You can find your Clerk publishable key in your Clerk dashboard. You can get a TMDB API key by creating an account on the TMDB website.
 
 ## Running the Application
 
@@ -63,20 +49,20 @@ Before you begin, ensure you have the following installed:
 
     This will start the React development server.
 
-*   **Production mode:**
+*   **Production build:**
 
     ```bash
-    npm run serve
+    npm run build
     ```
 
-    This will build the React application and start the Node.js server.
+    This will build the React application for production.
 
 ## Deployment
 
-To deploy the application to Firebase Hosting, run the following command:
+To deploy the application, you can use any static site hosting service. For example, to deploy to Firebase Hosting, you can run:
 
 ```bash
-firebase deploy
+firebase deploy --only hosting
 ```
 
 This will deploy the contents of the `build` directory to Firebase Hosting.

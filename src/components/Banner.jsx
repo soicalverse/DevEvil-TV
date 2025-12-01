@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { getTrendingMovies } from '../services/tmdbService';
-import { Link, useNavigate } from 'react-router-dom';
-import AdblockerModal from './AdblockerModal';
-import adblockDetector from '../adblockDetector';
+import { Link } from 'react-router-dom';
 
 const Banner = () => {
   const [latestReleased, setLatestReleased] = useState(null);
-  const [showAdblockModal, setShowAdblockModal] = useState(false);
-  const navigate = useNavigate();
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+        setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const source = axios.CancelToken.source();
@@ -31,16 +36,6 @@ const Banner = () => {
     };
   }, []);
 
-  const handleWatchNowClick = async () => {
-    const isAdblockerActive = await adblockDetector();
-
-    if (isAdblockerActive) {
-        navigate(`/player/${latestReleased.id}`);
-    } else {
-        setShowAdblockModal(true);
-    }
-  };
-
   const formatTime = (minutes) => {
     if (!minutes) return 'N/A';
     const hours = Math.floor(minutes / 60);
@@ -48,11 +43,23 @@ const Banner = () => {
     return `${hours}h ${remainingMinutes}m`;
   };
 
+  if (!latestReleased) {
+    return (
+        <section className="banner" id="home">
+            <div className="banner-card">
+                {/* Loading Skeleton can be placed here */}
+            </div>
+        </section>
+    );
+  }
+
+  const watchNowPath = isMobile ? `/movie/${latestReleased.id}` : `/player/${latestReleased.id}`;
+  const watchNowClasses = `watch-now-button ${isMobile ? '' : 'watch-now'}`;
+
   return (
     <section className="banner" id="home">
       <div className="banner-card">
-        {latestReleased && (
-          <div className="banner-img-wrapper">
+        <div className="banner-img-wrapper">
             <img
               className="banner-img"
               src={`https://image.tmdb.org/t/p/w1280/${latestReleased.backdrop_path}`}
@@ -60,33 +67,27 @@ const Banner = () => {
               key={latestReleased.id}
               draggable="false"
             />
-          </div>
-        )}
+        </div>
 
         <div className="card-content">
           <div className="title-wrapper">
-            <h1 className="banner-title">{latestReleased && (latestReleased.title || latestReleased.name)}</h1>
+            <h1 className="banner-title">{latestReleased.title || latestReleased.name}</h1>
           </div>
-          {latestReleased && (
-            <div className="card-info">
+          <div className="card-info">
               <span>{latestReleased.release_date ? latestReleased.release_date.substring(0, 4) : 'N/A'}</span> •
               <span>{formatTime(latestReleased.runtime)}</span> •
               <span>{latestReleased.vote_average ? `${Math.round(latestReleased.vote_average * 10)}% liked` : 'N/A'}</span>
-            </div>
-          )}
-          {latestReleased && (
-            <div className="banner-nav">
-              <button onClick={handleWatchNowClick} className="watch-now watch-now-button">
+          </div>
+          <div className="banner-nav">
+              <Link to={watchNowPath} className={watchNowClasses}>
                 Watch Now <i className="fa-solid fa-play"></i>
-              </button>
+              </Link>
               <Link to={`/movie/${latestReleased.id}`} className="insights-button">
                 Insights
               </Link>
-            </div>
-          )}
+          </div>
         </div>
       </div>
-      <AdblockerModal show={showAdblockModal} onClose={() => setShowAdblockModal(false)} />
     </section>
   );
 };

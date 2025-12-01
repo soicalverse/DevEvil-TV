@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import '../../styles/NavBar.css';
 import { blockedWords } from '../../blockedWords'; // Import the blocked words
 import AuthNavbar from '../AuthNavbar.tsx';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 const NavBar = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -59,7 +61,7 @@ const NavBar = () => {
               className="search-bar-input"
             />
             <button type="submit" className="search-bar-button">
-              <i className="fas fa-search"></i>
+              <FontAwesomeIcon icon={faSearch} />
             </button>
           </form>
         </div>
