@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useLocation, Link, useNavigate } from 'react-router-dom';
 import '../styles/Player.css';
 import { getTvShowDetails, getSeasonEpisodes } from '../services/tmdbService';
@@ -26,13 +26,13 @@ const Player = () => {
     const [isCollapsed, setIsCollapsed] = useState(isMobile);
     const [showDonationModal, setShowDonationModal] = useState(false);
 
-    const getParams = (search) => {
+    const getParams = useCallback((search) => {
         const queryParams = new URLSearchParams(search);
         const id = queryParams.get('id') || routeId || '';
         const season = queryParams.get('s') || '';
         const episode = queryParams.get('e') || '';
         return { id, season, episode };
-    };
+    }, [routeId]);
 
     useEffect(() => {
         const handleResize = () => {
@@ -55,7 +55,7 @@ const Player = () => {
         const newParams = getParams(location.search);
         setParams(newParams);
         setSourceIndex(0);
-    }, [location.search, routeId]);
+    }, [location.search, getParams]);
 
     useEffect(() => {
         const { id, season, episode } = params;

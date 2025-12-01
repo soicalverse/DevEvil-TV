@@ -3,7 +3,6 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
-import { ClerkProvider, useAuth } from '@clerk/clerk-react';
 
 import Home from './Home';
 import MovieDetail from './components/MovieDetail';
@@ -26,17 +25,10 @@ import CustomCursor from './components/CustomCursor.jsx';
 import Layout from './components/Others/Layout';
 import WelcomeLoader from './components/WelcomeLoader';
 
-const PUBLISHABLE_KEY = process.env.REACT_APP_CLERK_PUBLISHABLE_KEY;
-
-if (!PUBLISHABLE_KEY) {
-  throw new Error("Missing Clerk Publishable Key");
-}
-
 const root = createRoot(document.getElementById('root'));
 
 root.render(
   <React.StrictMode>
-    <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
         <HelmetProvider>
           <Router>
             <CustomCursor />
@@ -66,7 +58,6 @@ root.render(
             </WelcomeLoader>
           </Router>
         </HelmetProvider>
-    </ClerkProvider>
   </React.StrictMode>
 );
 

@@ -330,7 +330,7 @@ export const blockedWords = [
   "onlyfans",
   "camgirl",
   "camwhore",
-  "escort",
+ 
   "hooker",
   "prostitute",
   "hentai",

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { searchMedia, getTrendingMovies, getTrendingTvShows } from '../services/tmdbService';
+import { advancedSearch } from '../advancedSearch';
 import MediaCard from './MediaCard';
 import Footer from './Others/Footer';
 import Loader from './Loader';
@@ -21,7 +22,12 @@ const SearchPage = () => {
     try {
       let results;
       if (searchQuery) {
-        results = await searchMedia(searchQuery, cancelToken);
+        results = await advancedSearch(searchQuery, async (query) => {
+          const res = await searchMedia(query, cancelToken);
+          return res;
+      });
+      results = results.map(r => ({...r.result, confidence: r.confidence, debug: r.debug}));
+
       } else {
         // Fetch both trending movies and TV shows
         const [movies, tvShows] = await Promise.all([

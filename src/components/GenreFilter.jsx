@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import '../styles/GenreFilter.css';
 
@@ -21,14 +21,14 @@ const GenreFilter = ({ genres, selectedGenre, onGenreChange, title, onToggle }) 
     }
   };
 
-  const handleClickOutside = (event) => {
+  const handleClickOutside = useCallback((event) => {
     if (sheetRef.current && !sheetRef.current.contains(event.target)) {
       setIsOpen(false);
       if (onToggle) {
         onToggle(false);
       }
     }
-  };
+  }, [onToggle]);
 
   useEffect(() => {
     if (isOpen) {
@@ -39,7 +39,7 @@ const GenreFilter = ({ genres, selectedGenre, onGenreChange, title, onToggle }) 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isOpen]);
+  }, [isOpen, handleClickOutside]);
 
   return (
     <div className="genre-filter-container">
